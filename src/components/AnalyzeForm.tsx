@@ -13,6 +13,7 @@ interface Props {
 export function AnalyzeForm({ defaultValue = "", large = false }: Props) {
   const [value, setValue] = useState(defaultValue);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const { username: currentUsername } = useParams();
 
   useEffect(() => {
