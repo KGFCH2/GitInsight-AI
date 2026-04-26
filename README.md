@@ -1,6 +1,8 @@
 # 🚀 GitInsight AI
 
 > AI-powered GitHub Profile Analyzer with recruiter-grade insights and gamified feedback.
+>
+> **Built for AICore Connect Hackathon by UnsaidTalks Education.**
 
 Enter a GitHub username, get a **0–100 profile score**, AI-generated strengths and weaknesses, a recruiter view, repo-level classification (Good / Improve / Archive), badges, and a downloadable PDF report — all in under 2 minutes.
 
@@ -88,6 +90,16 @@ npm run build
 ```
 
 The build artifacts will be located in the `dist/` directory.
+
+---
+
+## 🏆 Hackathon & Attribution
+
+This project was developed for the **AICore Connect Hackathon**.
+
+- **Organization:** UnsaidTalks Education
+- **Project Name:** GitInsight AI
+- **Focus:** AI-powered evaluation for Campus Ambassador programs and developer profiles.
 
 ---
 
