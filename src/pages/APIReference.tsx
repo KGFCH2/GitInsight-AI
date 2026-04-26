@@ -1,3 +1,4 @@
+import React from "react";
 import { Code2, Globe, Lock, Cpu, Server, Zap } from "lucide-react";
 
 export default function APIReference() {
@@ -20,7 +21,7 @@ export default function APIReference() {
                 <li>Repository listings (stars, forks, languages)</li>
                 <li>Recent commit activity (push events)</li>
               </ul>
-            </div>
+            </Feature>
 
             <Feature icon={Lock} title="Authentication & Rate Limits">
               <p className="text-sm leading-relaxed text-muted-foreground">
