@@ -100,7 +100,7 @@ const Home = () => {
               <span>AI-powered • Gemini + Groq</span>
             </div>
             <h1 className="hover-pop font-display text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl">
-              Score your <span className="text-brand">GitHub</span>
+              Score your <span className="text-brand">Ambassadors</span>
               <br />
               like a recruiter would.
             </h1>
@@ -120,7 +120,7 @@ const Home = () => {
               </div>
               <div className="mt-4 text-xs text-muted-foreground">
                 Try{" "}
-                {["KGFCH2", "DebasmitaBose0"].map((u, i) => (
+                {["KGFCH2"].map((u, i) => (
                   <span key={u}>
                     {i > 0 && " · "}
                     <a href={`/result/${u}`} className="font-mono text-foreground/80 hover:text-brand-1">
@@ -137,7 +137,7 @@ const Home = () => {
       {/* Features */}
       <section className="container py-20">
         <div className="mb-12 text-center">
-          <div className="text-xs font-semibold uppercase tracking-widest text-brand">Why GitInsight</div>
+          <div className="text-xs font-semibold uppercase tracking-widest text-brand">Why CampusConnect</div>
           <h2 className="hover-pop mt-2 font-display text-3xl font-bold sm:text-4xl">Everything you need to level up</h2>
         </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -157,6 +157,81 @@ const Home = () => {
               <p className="mt-1.5 text-sm text-muted-foreground">{f.desc}</p>
             </motion.div>
           ))}
+        </div>
+      </section>
+
+      {/* For Organizations */}
+      <section className="bg-muted/30 py-24">
+        <div className="container">
+          <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-8"
+            >
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full bg-brand/10 px-4 py-1.5 text-sm font-semibold text-brand">
+                  For Organizations
+                </div>
+                <h2 className="hover-pop mt-6 font-display text-4xl font-bold leading-tight sm:text-5xl">
+                  Built for campus ambassador programs
+                </h2>
+                <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+                  CampusConnect is an AI-powered evaluation system that helps organizations identify, rank, and improve campus ambassadors using GitHub performance metrics. Track ambassadors on a single leaderboard, spot rising stars, and ship targeted improvement plans.
+                </p>
+              </div>
+
+              <div className="grid gap-6 sm:grid-cols-2">
+                {[
+                  { title: "Identify Top Performers", desc: "Surface high-impact ambassadors through a real-time leaderboard and points engine." },
+                  { title: "Automate Task Workflows", desc: "Assign, track, and verify tasks with proof-upload and auto-scoring." },
+                  { title: "Drive Retention", desc: "Award badges, streaks, and rewards that keep ambassadors motivated week over week." },
+                  { title: "Measure ROI", desc: "Identify top performers and measure the impact of your community-led marketing." }
+                ].map((item, i) => (
+                  <div key={i} className="hover-pop space-y-2 rounded-2xl border border-border bg-background p-5 shadow-sm">
+                    <div className="font-display font-bold text-brand">{item.title}</div>
+                    <p className="text-sm text-muted-foreground">{item.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="relative rounded-3xl border border-border bg-card-grad p-8 shadow-elev"
+            >
+              <div className="mb-6 flex items-center justify-between border-b border-border pb-6">
+                <div className="font-display text-xl font-bold italic underline decoration-brand decoration-2 underline-offset-4">Ambassador Dashboard</div>
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand/10 text-brand">
+                  <BarChart3 className="h-4 w-4" />
+                </div>
+              </div>
+              <ul className="space-y-4">
+                {[
+                  "Rank ambassadors by 0–100 score, XP and streaks",
+                  "Recruiter-style first impressions & TL;DRs",
+                  "Per-repo classification: Strong / Improve / Archive",
+                  "Shareable reports, exportable JSON"
+                ].map((text, i) => (
+                  <li key={i} className="flex items-center gap-3 text-sm">
+                    <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-success/20 text-success">
+                      <Sparkles className="h-3 w-3" />
+                    </div>
+                    <span className="text-foreground/90">{text}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-8 rounded-2xl bg-muted/50 p-6 text-center border border-dashed border-border">
+                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Problem Statement</p>
+                <p className="mt-2 text-sm italic text-muted-foreground">
+                  "Turn a single ambassador cohort into an always-on, self-sustaining growth engine — making community-led marketing structured, scalable, and measurable."
+                </p>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
