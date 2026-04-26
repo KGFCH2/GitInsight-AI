@@ -152,8 +152,8 @@ const Home = () => {
               transition={{ delay: i * 0.05, duration: 0.4 }}
               className="group rounded-2xl border border-border bg-card-grad p-6 transition-all hover:-translate-y-1 hover:border-brand-1/60 hover:shadow-glow"
             >
-              <div className="icon-pop mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand text-primary-foreground">
-                <f.icon className="h-5 w-5" />
+              <div className="icon-pop mb-4 inline-flex h-11 w-11 items-center justify-center text-brand-1">
+                <f.icon className="h-7 w-7" />
               </div>
               <h3 className="font-display text-lg font-semibold">{f.title}</h3>
               <p className="mt-1.5 text-sm text-muted-foreground">{f.desc}</p>
@@ -192,8 +192,8 @@ const Home = () => {
                   { title: "Measure ROI", icon: Target, desc: "Identify top performers and measure the impact of your community-led marketing." }
                 ].map((item, i) => (
                   <div key={i} className="hover-pop group space-y-3 rounded-2xl border border-border bg-background p-5 shadow-sm transition-all hover:bg-gradient-to-br hover:from-brand/10 hover:to-brand-1/10 hover:shadow-glow">
-                    <div className="icon-pop flex h-10 w-10 items-center justify-center rounded-xl bg-brand/5 text-brand transition-colors group-hover:bg-brand group-hover:text-primary-foreground">
-                      <item.icon className="h-5 w-5" />
+                    <div className="icon-pop flex h-10 w-10 items-center justify-center text-brand-1">
+                      <item.icon className="h-7 w-7" />
                     </div>
                     <div className="space-y-1">
                       <div className="font-display font-bold text-brand group-hover:text-foreground">{item.title}</div>
@@ -212,8 +212,8 @@ const Home = () => {
             >
               <div className="mb-6 flex items-center justify-between border-b border-border pb-6">
                 <div className="font-display text-xl font-bold italic underline decoration-brand decoration-2 underline-offset-4">Ambassador Dashboard</div>
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand/10 text-brand">
-                  <BarChart3 className="h-4 w-4" />
+                <div className="flex h-8 w-8 items-center justify-center text-brand-1">
+                  <BarChart3 className="icon-pop h-6 w-6" />
                 </div>
               </div>
               <ul className="space-y-4">
@@ -245,7 +245,7 @@ const Home = () => {
       {/* CTA */}
       <section className="container pb-12">
         <div className="overflow-hidden rounded-3xl border border-border bg-card-grad p-10 text-center shadow-elev sm:p-16">
-          <Target className="icon-pop mx-auto mb-4 h-10 w-10 text-brand-1" />
+          <Target className="icon-pop mx-auto mb-4 h-12 w-12 text-brand-1" />
           <h2 className="hover-pop font-display text-3xl font-bold sm:text-4xl">
             Ready to see your score?
           </h2>
