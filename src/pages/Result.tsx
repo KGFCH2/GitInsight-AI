@@ -17,6 +17,7 @@ import {
   TrendingUp,
   Users,
   ChevronUp,
+  RefreshCw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -49,27 +50,27 @@ const Result = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    let cancelled = false;
+  const loadData = (isRefresh = false) => {
     setLoading(true);
     setError(null);
-    setData(null);
-    analyzeProfile(username)
+    if (!isRefresh) {
+      setData(null);
+    }
+    analyzeProfile(username, isRefresh)
       .then((r) => {
-        if (cancelled) return;
         setData(r);
         cacheResult(r);
         addToHistory(r);
       })
       .catch((e: Error) => {
-        if (cancelled) return;
         setError(e.message || "Failed to analyze");
         toast.error(e.message || "Failed to analyze");
       })
-      .finally(() => !cancelled && setLoading(false));
-    return () => {
-      cancelled = true;
-    };
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    loadData(false);
   }, [username]);
 
   const share = async () => {
@@ -111,20 +112,34 @@ const Result = () => {
             @{username}
           </h1>
         </div>
-        <div className="w-full max-w-md sm:w-auto">
+        <div className="flex w-full max-w-md flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
           <AnalyzeForm defaultValue={username} />
+          {data && (
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-12 w-12 shrink-0 rounded-xl"
+              onClick={() => loadData(true)}
+              disabled={loading}
+              title="Refresh latest data"
+            >
+              <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
+            </Button>
+          )}
         </div>
       </div>
 
-      {loading && <LoadingState />}
-      {error && !loading && (
+      {loading && !data && <LoadingState />}
+      
+      {error && !loading && !data && (
         <div className="rounded-2xl border border-destructive/40 bg-destructive/5 p-8 text-center">
           <div className="font-display text-lg font-semibold">{error}</div>
           <p className="mt-1 text-sm text-muted-foreground">Try a different username or check the spelling.</p>
         </div>
       )}
 
-      {data && !loading && (
+      {data && (
+        <div className={`transition-opacity duration-300 ${loading ? "opacity-40 grayscale-[0.5] pointer-events-none" : ""}`}>
         <>
           {/* Top profile + score */}
           <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
@@ -330,7 +345,7 @@ const Result = () => {
               </TabsContent>
             </Tabs>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
