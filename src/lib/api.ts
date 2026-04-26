@@ -258,7 +258,6 @@ export async function analyzeProfile(username: string, force = false): Promise<A
   const badges = deriveBadges(user, repos, score.total);
 
   const classified: AnalyzedRepo[] = repos
-    .filter((r) => !r.fork)
     .map((r) => ({
       name: r.name,
       url: r.html_url,
@@ -270,10 +269,11 @@ export async function analyzeProfile(username: string, force = false): Promise<A
       pushedAt: r.pushed_at,
       archived: r.archived,
       classification: classifyRepo(r),
+      isFork: r.fork,
     }))
     .sort((a, b) => b.stars - a.stars);
 
-  const bestRepo = classified[0] ?? null;
+  const bestRepo = classified.find(r => !r.isFork) || classified[0] || null;
 
   const aiPayload = {
     user: {
