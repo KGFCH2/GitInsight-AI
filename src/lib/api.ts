@@ -85,14 +85,19 @@ function computeScore(user: GhUser, repos: GhRepo[]) {
   const stars = allRepos.reduce((s, r) => s + r.stargazers_count, 0);
   const forks = allRepos.reduce((s, r) => s + r.forks_count, 0);
   
-  // Language frequency
+  // Language frequency & percentages
   const langCounts: Record<string, number> = {};
   original.forEach(r => {
     if (r.language) langCounts[r.language] = (langCounts[r.language] || 0) + 1;
   });
+  const totalWithLang = original.filter(r => r.language).length;
   const sortedLangs = Object.entries(langCounts)
     .sort((a, b) => b[1] - a[1])
-    .map(([lang]) => lang);
+    .map(([lang, count]) => ({
+      name: lang,
+      count,
+      percentage: Math.round((count / Math.max(1, totalWithLang)) * 100)
+    }));
 
   const withDesc = original.filter((r) => r.description).length;
   const withTopics = original.filter((r) => r.topics && r.topics.length > 0).length;
@@ -117,10 +122,11 @@ function computeScore(user: GhUser, repos: GhRepo[]) {
     total,
     breakdown: { popularity, activity, breadth, quality, community, tenure },
     stats: {
-      totalStars: stars,
+      totalStars: stars, // Stars received
       totalForks: forks,
       languageCount: sortedLangs.length,
-      languages: sortedLangs,
+      languages: sortedLangs.map(l => l.name),
+      langDetails: sortedLangs,
       originalRepoCount: original.length,
       recentlyActive,
       accountAgeYears: Math.round(accountAgeYears * 10) / 10,
@@ -243,10 +249,10 @@ export async function analyzeProfile(username: string, force = false): Promise<A
   const user = await gh<GhUser>(`https://api.github.com/users/${cleaned}`, force);
   const repos = await gh<GhRepo[]>(`https://api.github.com/users/${cleaned}/repos?per_page=100&sort=updated`, force);
 
-  // We can't easily get the total starred count without multiple requests or a specific GraphQL query.
-  // We'll use the public_repos and totalStars as the primary reputation metrics.
-  // The user asked for "all star provided by the users".
-  // I will interpret this as emphasizing the 'Total Stars' (received) and 'Public Repos'.
+  // Fetch Starred Repos (for the "Total Stars" click)
+  const starred = await gh<GhRepo[]>(`https://api.github.com/users/${cleaned}/starred?per_page=30`, force);
+  // Fetch Followers (for the "Followers" click)
+  const followers = await gh<{ login: string; avatar_url: string; html_url: string }[]>(`https://api.github.com/users/${cleaned}/followers?per_page=30`, force);
 
   const score = computeScore(user, repos);
   const badges = deriveBadges(user, repos, score.total);
@@ -318,6 +324,8 @@ export async function analyzeProfile(username: string, force = false): Promise<A
       projectIdeas: [],
     },
     aiProvider: aiText ? (GEMINI_KEYS.length > 0 ? "gemini" : "groq") : "none",
+    starredRepos: starred.map(r => ({ name: r.name, url: r.html_url, stars: r.stargazers_count })),
+    followersList: followers.map(f => ({ login: f.login, avatar: f.avatar_url, url: f.html_url })),
   };
 }
 
