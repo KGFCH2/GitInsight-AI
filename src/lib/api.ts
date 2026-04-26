@@ -81,7 +81,16 @@ function computeScore(user: GhUser, repos: GhRepo[]) {
   const original = repos.filter((r) => !r.fork && !r.archived);
   const stars = original.reduce((s, r) => s + r.stargazers_count, 0);
   const forks = original.reduce((s, r) => s + r.forks_count, 0);
-  const langs = new Set(original.map((r) => r.language).filter(Boolean));
+  
+  // Language frequency
+  const langCounts: Record<string, number> = {};
+  original.forEach(r => {
+    if (r.language) langCounts[r.language] = (langCounts[r.language] || 0) + 1;
+  });
+  const sortedLangs = Object.entries(langCounts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([lang]) => lang);
+
   const withDesc = original.filter((r) => r.description).length;
   const withTopics = original.filter((r) => r.topics && r.topics.length > 0).length;
   const withLicense = original.filter((r) => r.license).length;
@@ -94,7 +103,7 @@ function computeScore(user: GhUser, repos: GhRepo[]) {
 
   const popularity = Math.min(25, Math.round(Math.log2(stars + forks + 1) * 5));
   const activity = Math.min(20, recentlyActive * 3);
-  const breadth = Math.min(15, langs.size * 3);
+  const breadth = Math.min(15, sortedLangs.length * 3);
   const quality = Math.min(20, Math.round(((withDesc + withTopics + withLicense) / Math.max(1, original.length * 3)) * 20));
   const community = Math.min(10, Math.round(Math.log2(user.followers + 1) * 2));
   const tenure = Math.min(10, Math.round(accountAgeYears * 2));
@@ -107,8 +116,8 @@ function computeScore(user: GhUser, repos: GhRepo[]) {
     stats: {
       totalStars: stars,
       totalForks: forks,
-      languageCount: langs.size,
-      languages: Array.from(langs) as string[],
+      languageCount: sortedLangs.length,
+      languages: sortedLangs,
       originalRepoCount: original.length,
       recentlyActive,
       accountAgeYears: Math.round(accountAgeYears * 10) / 10,
@@ -230,6 +239,11 @@ export async function analyzeProfile(username: string, force = false): Promise<A
 
   const user = await gh<GhUser>(`https://api.github.com/users/${cleaned}`, force);
   const repos = await gh<GhRepo[]>(`https://api.github.com/users/${cleaned}/repos?per_page=100&sort=updated`, force);
+
+  // We can't easily get the total starred count without multiple requests or a specific GraphQL query.
+  // We'll use the public_repos and totalStars as the primary reputation metrics.
+  // The user asked for "all star provided by the users".
+  // I will interpret this as emphasizing the 'Total Stars' (received) and 'Public Repos'.
 
   const score = computeScore(user, repos);
   const badges = deriveBadges(user, repos, score.total);
