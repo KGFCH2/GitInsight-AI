@@ -64,9 +64,9 @@ export default function Documentation() {
 
 function SectionHeading({ icon: Icon, title }: { icon: any; title: string }) {
   return (
-    <div className="hover-pop flex items-center gap-3">
-      <div className="icon-pop flex h-10 w-10 items-center justify-center rounded-xl bg-brand text-primary-foreground shadow-glow">
-        <Icon className="h-5 w-5" />
+    <div className="hover-pop group flex items-center gap-3">
+      <div className="icon-pop flex h-10 w-10 items-center justify-center text-brand-1">
+        <Icon className="h-6 w-6" />
       </div>
       <h2 className="font-display text-2xl font-bold">{title}</h2>
     </div>
