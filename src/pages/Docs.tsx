@@ -1,32 +1,58 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Book, Code2, FileQuestion, Rocket } from "lucide-react";
+import { Book, Code2, FileQuestion, Rocket, BarChart3, ShieldCheck, Cpu, Users, TrendingUp, Download, Key, Tags, Lock, Zap } from "lucide-react";
 
 const faqs = [
   {
     q: "How is the profile score calculated?",
     a: "We score across six dimensions: popularity (stars + forks), activity (recent commits), breadth (languages used), quality (descriptions, topics, licenses), community (followers), and tenure (account age). Total is capped at 100.",
+    icon: BarChart3,
   },
   {
     q: "Is my data stored?",
     a: "No. We fetch your public GitHub data on-demand and pass it through our analyzer. Nothing is persisted on our servers.",
+    icon: ShieldCheck,
   },
   {
     q: "Which AI model powers the insights?",
     a: "Google Gemini is the primary model. If unavailable, we fall back to Groq (Llama 3.3 70B). Both are called directly from your browser using your provided API keys.",
+    icon: Cpu,
   },
   {
     q: "Can I analyze any GitHub user?",
     a: "Yes — any public GitHub username. Private repos are not visible to us.",
+    icon: Users,
   },
   {
     q: "How do I improve my score quickly?",
     a: "Add descriptions, topics, and licenses to your top repos. Pin your best work. Push consistently. The Action Steps tab gives personalized advice.",
+    icon: TrendingUp,
   },
   {
     q: "Can I export the report?",
     a: "Yes — click the Export PDF button on any result page to download a polished report card.",
+    icon: Download,
+  },
+  {
+    q: "What happens if I don't provide an API key?",
+    a: "The app will still calculate your score and classify your repositories using deterministic logic, but you won't get AI-powered insights or the recruiter view.",
+    icon: Key,
+  },
+  {
+    q: "How does the 'Good / Improve / Archive' classification work?",
+    a: "Our algorithm analyzes repo age, recent activity, star count, and documentation completeness to categorize them. 'Good' repos are active and well-maintained.",
+    icon: Tags,
+  },
+  {
+    q: "Can I use this for private repositories?",
+    a: "Currently, GitInsight AI only analyzes public data. Support for private repositories would require a GitHub OAuth flow which is not implemented in this version.",
+    icon: Lock,
+  },
+  {
+    q: "Is there a limit to how many profiles I can analyze?",
+    a: "The limit is primarily determined by your GitHub API token rate limits. For public tokens, it's quite generous, but you can always provide your own token for higher limits.",
+    icon: Zap,
   },
 ];
 
@@ -76,7 +102,7 @@ const Docs = () => {
               ["Community", "10", "Follower count, log-scaled."],
               ["Tenure", "10", "Years on GitHub."],
             ].map(([k, max, d]) => (
-              <div key={k} className="rounded-xl border border-border bg-card-grad p-4">
+              <div key={k} className="hover-pop rounded-xl border border-border bg-card-grad p-4">
                 <div className="flex items-baseline justify-between">
                   <div className="font-display font-semibold">{k}</div>
                   <div className="font-mono text-xs text-muted-foreground">/{max}</div>
@@ -107,11 +133,19 @@ const Docs = () => {
           >
             {faqs.map((f, i) => (
               <AccordionItem key={i} value={`item-${i}`} className="border-b border-border last:border-0">
-                <AccordionTrigger className="px-5 text-left font-display text-base font-semibold hover:no-underline">
-                  {f.q}
+                <AccordionTrigger className="hover-pop group px-5 text-left font-display text-base font-semibold hover:no-underline">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand text-primary-foreground shadow-sm">
+                      <f.icon className="h-4 w-4" />
+                    </div>
+                    <span>{f.q}</span>
+                  </div>
                 </AccordionTrigger>
                 <AccordionContent className="px-5 text-sm text-muted-foreground">
-                  {f.a}
+                  <div className="flex gap-3 pb-4 pt-1">
+                    <div className="w-8 shrink-0" aria-hidden="true" /> {/* Spacer to align with text above */}
+                    <div>{f.a}</div>
+                  </div>
                 </AccordionContent>
               </AccordionItem>
             ))}
@@ -124,18 +158,18 @@ const Docs = () => {
 
 function SectionHeading({ icon: Icon, title }: { icon: React.ComponentType<{ className?: string }>; title: string }) {
   return (
-    <div className="flex items-center gap-2.5">
-      <div className="icon-pop flex h-9 w-9 items-center justify-center rounded-lg bg-brand text-primary-foreground">
+    <div className="hover-pop flex items-center gap-2.5">
+      <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand text-primary-foreground">
         <Icon className="h-4 w-4" />
       </div>
-      <h2 className="hover-pop font-display text-2xl font-bold">{title}</h2>
+      <h2 className="font-display text-2xl font-bold">{title}</h2>
     </div>
   );
 }
 
 function Step({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
   return (
-    <li className="flex gap-3 rounded-xl border border-border bg-card-grad p-4">
+    <li className="hover-pop flex gap-3 rounded-xl border border-border bg-card-grad p-4">
       <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand font-mono text-xs font-bold text-primary-foreground">
         {n}
       </span>
