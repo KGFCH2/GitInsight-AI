@@ -7,6 +7,7 @@ import {
   FileText,
   Gauge,
   Sparkles,
+  ShieldCheck,
   Target,
   Users,
   Zap,
@@ -183,7 +184,8 @@ const Home = () => {
                   <Building2 className="h-4 w-4" />
                   For Organizations
                 </div>
-                <h2 className="hover-pop mt-6 font-display text-4xl font-bold leading-tight sm:text-5xl">
+                <h2 className="hover-pop mt-6 flex items-center gap-3 font-display text-4xl font-bold leading-tight sm:text-5xl">
+                  <ShieldCheck className="h-10 w-10 shrink-0 text-brand" />
                   Built for campus ambassador programs
                 </h2>
                 <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
