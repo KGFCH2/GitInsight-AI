@@ -20,21 +20,9 @@ export function Footer() {
             </p>
           </div>
 
-          <FooterCol title="Product" links={[
-            { to: "/analyze", label: "Analyze" },
-            { to: "/history", label: "History" },
-            { to: "/docs", label: "Documentation" },
-            { to: "/docs#faq", label: "FAQs" },
-          ]} />
-          <FooterCol title="Legal" links={[
-            { to: "/terms", label: "Terms of Service" },
-            { to: "/privacy", label: "Privacy Policy" },
-          ]} />
-          <FooterCol title="Resources" links={[
-            { to: "/docs", label: "Getting Started" },
-            { to: "/docs#api", label: "API Reference" },
-            { to: "/docs#faq", label: "FAQ" },
-          ]} />
+          <FooterCol title="Product" links={[{ to: "/product", label: "Product" }]} />
+          <FooterCol title="Legal" links={[{ to: "/legal", label: "Legal" }]} />
+          <FooterCol title="Resources" links={[{ to: "/resources", label: "Resources" }]} />
         </div>
 
         <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
