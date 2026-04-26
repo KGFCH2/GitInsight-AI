@@ -50,7 +50,7 @@ const Docs = () => {
     <div className="container py-12">
       <div className="mx-auto max-w-3xl">
         <div className="text-xs uppercase tracking-widest text-brand">Documentation</div>
-        <h1 className="mt-2 font-display text-4xl font-bold sm:text-5xl">Everything you need to know</h1>
+        <h1 className="hover-pop mt-2 font-display text-4xl font-bold sm:text-5xl">Everything you need to know</h1>
         <p className="mt-3 text-muted-foreground">Learn how GitInsight AI works, and how to get the most out of your profile report.</p>
 
         {/* Getting Started */}
@@ -125,10 +125,10 @@ const Docs = () => {
 function SectionHeading({ icon: Icon, title }: { icon: React.ComponentType<{ className?: string }>; title: string }) {
   return (
     <div className="flex items-center gap-2.5">
-      <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand text-primary-foreground">
+      <div className="icon-pop flex h-9 w-9 items-center justify-center rounded-lg bg-brand text-primary-foreground">
         <Icon className="h-4 w-4" />
       </div>
-      <h2 className="font-display text-2xl font-bold">{title}</h2>
+      <h2 className="hover-pop font-display text-2xl font-bold">{title}</h2>
     </div>
   );
 }
