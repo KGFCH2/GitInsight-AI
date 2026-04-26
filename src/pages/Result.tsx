@@ -9,7 +9,6 @@ import {
   ExternalLink,
   Globe,
   Lightbulb,
-  Loader2,
   MapPin,
   Share2,
   Sparkles,
@@ -107,7 +106,7 @@ const Result = () => {
       {/* Header */}
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <div className="text-xs uppercase tracking-widest text-muted-foreground">Profile Report</div>
+          <div className="text-xs uppercase tracking-widest text-muted-foreground">Public Profile Report</div>
           <h1 className="font-display text-3xl font-bold sm:text-4xl">
             @{username}
           </h1>
@@ -140,7 +139,6 @@ const Result = () => {
 
       {data && (
         <div className={`transition-opacity duration-300 ${loading ? "opacity-40 grayscale-[0.5] pointer-events-none" : ""}`}>
-        <>
           {/* Top profile + score */}
           <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
             <motion.div
@@ -193,10 +191,10 @@ const Result = () => {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-                <Stat label="Stars" value={data.score.stats.totalStars} icon={Star} />
+                <Stat label="Total Stars" value={data.score.stats.totalStars} icon={Star} />
                 <Stat label="Followers" value={data.user.followers} icon={Users} />
-                <Stat label="Repos" value={data.score.stats.originalRepoCount} icon={Sparkles} />
-                <Stat label="Languages" value={data.score.stats.languageCount} icon={TrendingUp} />
+                <Stat label="Public Repos" value={data.score.stats.originalRepoCount} icon={Sparkles} />
+                <Stat label="Top Languages" value={data.score.stats.languageCount} icon={TrendingUp} />
               </div>
 
               <div className="mt-6 flex flex-wrap gap-2">
