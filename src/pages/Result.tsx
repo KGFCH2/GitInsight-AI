@@ -418,18 +418,23 @@ const Result = () => {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-border bg-card shadow-2xl"
             >
-              <div className={`flex items-center justify-between border-b p-4 ${
-                modalType === "stars" ? "bg-amber/10 text-amber" : 
-                modalType === "followers" ? "bg-purple/10 text-purple" : 
-                "bg-blue/10 text-blue"
+              <div className={`flex items-center justify-between border-b p-5 ${
+                modalType === "stars" ? "bg-amber text-white" : 
+                modalType === "followers" ? "bg-purple text-white" : 
+                "bg-blue-600 text-white"
               }`}>
-                <h3 className="flex items-center gap-2 font-display text-lg font-bold">
-                  {modalType === "stars" && <><Star className="h-5 w-5" /> Starred Repositories</>}
-                  {modalType === "followers" && <><Users className="h-5 w-5" /> Followers List</>}
-                  {modalType === "langs" && <><TrendingUp className="h-5 w-5" /> Language Breakdown</>}
+                <h3 className="flex items-center gap-2 font-display text-xl font-black italic tracking-tight">
+                  {modalType === "stars" && <><Star className="h-6 w-6 fill-current" /> Starred Repositories</>}
+                  {modalType === "followers" && <><Users className="h-6 w-6" /> Followers List</>}
+                  {modalType === "langs" && <><TrendingUp className="h-6 w-6" /> Language Breakdown</>}
                 </h3>
-                <Button variant="ghost" size="icon" onClick={() => setModalType(null)} className="hover:bg-background/20">
-                  <X className="h-4 w-4" />
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={() => setModalType(null)} 
+                  className="rounded-full bg-white/20 text-red-500 hover:bg-white/40 hover:text-red-600 shadow-sm"
+                >
+                  <X className="h-5 w-5 stroke-[3]" />
                 </Button>
               </div>
               <div className="max-h-[60vh] overflow-y-auto p-4">
@@ -441,11 +446,11 @@ const Result = () => {
                         href={r.url} 
                         target="_blank" 
                         rel="noreferrer"
-                        className="flex items-center justify-between rounded-xl border p-3 transition-colors hover:bg-muted/50"
+                        className="flex items-center justify-between rounded-xl border p-3 transition-all hover:border-amber/40 hover:bg-amber/5 hover:shadow-sm"
                       >
                         <span className="font-medium">{r.name}</span>
-                        <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                          <Star className="h-3 w-3" /> {r.stars}
+                        <span className="flex items-center gap-1 text-xs text-amber font-bold">
+                          <Star className="h-3 w-3 fill-current" /> {r.stars}
                         </span>
                       </a>
                     ))}
@@ -459,10 +464,10 @@ const Result = () => {
                         href={f.url} 
                         target="_blank" 
                         rel="noreferrer"
-                        className="flex flex-col items-center gap-2 rounded-xl border p-3 transition-colors hover:bg-muted/50"
+                        className="flex flex-col items-center gap-2 rounded-xl border p-3 transition-all hover:border-purple/40 hover:bg-purple/5 hover:shadow-sm"
                       >
-                        <img src={f.avatar} alt={f.login} className="h-10 w-10 rounded-full border" />
-                        <span className="text-xs font-medium">@{f.login}</span>
+                        <img src={f.avatar} alt={f.login} className="h-12 w-12 rounded-full border-2 border-purple/20" />
+                        <span className="text-xs font-bold text-purple">@{f.login}</span>
                       </a>
                     ))}
                   </div>
