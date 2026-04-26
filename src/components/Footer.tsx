@@ -8,10 +8,10 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-4">
           <div>
             <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-background">
+              <div className="icon-pop flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-background">
                 <img src="/favicon.png" alt="GitInsight AI" className="h-full w-full object-cover" />
               </div>
-              <div className="font-display font-bold">
+              <div className="hover-pop font-display font-bold">
                 GitInsight<span className="text-brand"> AI</span>
               </div>
             </div>
