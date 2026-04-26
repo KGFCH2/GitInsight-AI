@@ -11,6 +11,7 @@ export interface AnalyzedRepo {
   pushedAt: string;
   archived: boolean;
   classification: RepoClassification;
+  isFork?: boolean;
 }
 
 export interface AnalyzedUser {
@@ -45,6 +46,7 @@ export interface ScoreStats {
   originalRepoCount: number;
   recentlyActive: number;
   accountAgeYears: number;
+  langDetails?: { name: string; count: number; percentage: number }[];
 }
 
 export interface AiInsights {
@@ -65,4 +67,7 @@ export interface AnalysisResult {
   bestRepo: AnalyzedRepo | null;
   ai: AiInsights;
   aiProvider: "gemini" | "groq" | "none";
+  starredRepos?: { name: string; url: string; stars: number }[];
+  followersList?: { login: string; avatar: string; url: string }[];
+  langDetails?: { name: string; count: number; percentage: number }[];
 }
