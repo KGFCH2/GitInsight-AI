@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Award,
   BarChart3,
@@ -9,6 +10,12 @@ import {
   Users,
 } from "lucide-react";
 import { AnalyzeForm } from "@/components/AnalyzeForm";
+
+const heroImages = [
+  "/hero-1.png",
+  "/hero-2.png",
+  "/hero-3.png",
+];
 
 const features = [
   {
@@ -44,12 +51,44 @@ const features = [
 ];
 
 const Home = () => {
+  const [imgIndex, setImgIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setImgIndex((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-hero">
-        <div className="pointer-events-none absolute inset-0 grid-pattern opacity-50" />
-        <div className="container relative py-20 sm:py-28">
+      <section className="relative h-[85vh] min-h-[600px] w-full overflow-hidden">
+        {/* Carousel Background */}
+        <div className="absolute inset-0 z-0">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={imgIndex}
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.2, ease: "easeInOut" }}
+              className="absolute inset-0 h-full w-full"
+            >
+              <img 
+                src={heroImages[imgIndex]} 
+                alt="Background" 
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/60 to-background" />
+              <div className="absolute inset-0 bg-black/40" />
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        <div className="pointer-events-none absolute inset-0 z-10 grid-pattern opacity-30" />
+        
+        <div className="container relative z-20 flex h-full items-center justify-center pt-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -65,13 +104,21 @@ const Home = () => {
               <br />
               like a recruiter would.
             </h1>
-            <p className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground">
+            <p className="mx-auto mt-6 max-w-xl text-lg text-foreground/90 drop-shadow-sm">
               Get a profile score, AI feedback, repo-level analysis, and a clear improvement plan in under 2 minutes.
             </p>
 
             <div className="mx-auto mt-10 max-w-xl">
               <AnalyzeForm large />
-              <div className="mt-3 text-xs text-muted-foreground">
+              <div className="mt-4 flex justify-center gap-1.5">
+                {heroImages.map((_, i) => (
+                  <div 
+                    key={i} 
+                    className={`h-1 rounded-full transition-all duration-500 ${i === imgIndex ? "w-8 bg-brand" : "w-2 bg-white/30"}`}
+                  />
+                ))}
+              </div>
+              <div className="mt-4 text-xs text-muted-foreground">
                 Try{" "}
                 {["KGFCH2", "DebasmitaBose0"].map((u, i) => (
                   <span key={u}>
