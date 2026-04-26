@@ -209,37 +209,41 @@ const Result = () => {
                   icon={Star} 
                   onClick={() => setModalType("stars")}
                   subLabel="Starred by user"
+                  color="amber"
                 />
                 <Stat 
                   label="Followers" 
                   value={data.user.followers} 
                   icon={Users} 
                   onClick={() => setModalType("followers")}
+                  color="purple"
                 />
                 <Stat 
                   label="Public Repos" 
-                  value={data.score.stats.originalRepoCount} 
+                  value={data.repos.length} 
                   icon={Sparkles} 
                   onClick={() => {
                     const el = document.getElementById("repos-tab");
                     el?.click();
                     el?.scrollIntoView({ behavior: "smooth" });
                   }}
+                  color="brand"
                 />
                 <Stat 
                   label="Top Languages" 
                   value={data.score.stats.languageCount} 
                   icon={TrendingUp} 
                   onClick={() => setModalType("langs")}
+                  color="blue"
                 />
               </div>
 
               <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
-                <div className="flex h-5 items-center gap-1 rounded-md border border-brand/20 bg-brand/5 px-2 font-semibold text-brand">
+                <div className="flex h-5 items-center gap-1 rounded-md border border-amber/20 bg-amber/5 px-2 font-semibold text-amber">
                   <Star className="h-3 w-3" /> {data.score.stats.totalStars} Stars Earned
                 </div>
                 <span>•</span>
-                <span>Click tiles for details</span>
+                <span>Click tiles for deep analysis</span>
               </div>
 
               <div className="mt-6 flex flex-wrap gap-2">
@@ -455,20 +459,24 @@ const Result = () => {
                 )}
                 {modalType === "langs" && (
                   <div className="space-y-4">
-                    {data?.langDetails?.map((l, i) => (
+                    {data?.score.stats.langDetails?.map((l, i) => (
                       <div key={i} className="space-y-1.5">
                         <div className="flex justify-between text-sm">
                           <span className="font-semibold">{l.name}</span>
-                          <span className="text-muted-foreground">{l.percentage}%</span>
+                          <span className="text-muted-foreground">{l.percentage}% ({l.count} repos)</span>
                         </div>
                         <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-                          <div 
-                            className="h-full bg-brand" 
-                            style={{ width: `${l.percentage}%` }}
+                          <motion.div 
+                            initial={{ width: 0 }}
+                            animate={{ width: `${l.percentage}%` }}
+                            className="h-full bg-brand"
                           />
                         </div>
                       </div>
                     ))}
+                    {(!data?.score.stats.langDetails || data.score.stats.langDetails.length === 0) && (
+                      <p className="py-8 text-center text-sm text-muted-foreground">No language data available.</p>
+                    )}
                   </div>
                 )}
               </div>
@@ -486,24 +494,40 @@ function Stat({
   icon: Icon,
   onClick,
   subLabel,
+  color = "brand",
 }: {
   label: string;
   value: number;
   icon: React.ComponentType<{ className?: string }>;
   onClick?: () => void;
   subLabel?: string;
+  color?: "brand" | "amber" | "purple" | "blue";
 }) {
+  const themes = {
+    brand: "hover:border-brand/40 hover:bg-brand/5 text-brand",
+    amber: "hover:border-amber/40 hover:bg-amber/5 text-amber",
+    purple: "hover:border-purple/40 hover:bg-purple/5 text-purple",
+    blue: "hover:border-blue/40 hover:bg-blue/5 text-blue",
+  };
+
   return (
     <button 
       onClick={onClick}
       disabled={!onClick}
-      className={`group rounded-xl border border-border bg-background/40 p-3 text-left transition-all ${onClick ? "hover:border-brand/40 hover:bg-brand/5 active:scale-95" : ""}`}
+      className={`group relative overflow-hidden rounded-xl border border-border bg-background/40 p-3 text-left transition-all ${onClick ? themes[color] + " active:scale-95 shadow-sm" : ""}`}
     >
-      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-        <Icon className={`h-3 w-3 transition-colors ${onClick ? "group-hover:text-brand" : ""}`} /> {label}
+      <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground transition-colors group-hover:text-inherit">
+        <Icon className="h-3.5 w-3.5 shrink-0" /> {label}
       </div>
-      <div className="mt-1 font-display text-xl font-bold tabular-nums">{value.toLocaleString()}</div>
-      {subLabel && <div className="mt-0.5 text-[10px] text-muted-foreground/60">{subLabel}</div>}
+      <div className="mt-1 font-display text-2xl font-black tabular-nums transition-transform group-hover:scale-105 group-hover:tracking-tight">{value.toLocaleString()}</div>
+      {subLabel && <div className="mt-0.5 text-[10px] font-medium text-muted-foreground/60 transition-colors group-hover:text-inherit">{subLabel}</div>}
+      
+      {/* Subtle background glow on hover */}
+      {onClick && (
+        <div className={`absolute -right-4 -top-4 h-12 w-12 rounded-full opacity-0 blur-2xl transition-opacity group-hover:opacity-20 ${
+          color === "brand" ? "bg-brand" : color === "amber" ? "bg-amber" : color === "purple" ? "bg-purple" : "bg-blue"
+        }`} />
+      )}
     </button>
   );
 }
