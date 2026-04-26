@@ -419,9 +419,9 @@ const Result = () => {
               className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-border bg-card shadow-2xl"
             >
               <div className={`flex items-center justify-between border-b p-5 ${
-                modalType === "stars" ? "bg-amber text-white" : 
-                modalType === "followers" ? "bg-purple text-white" : 
-                "bg-blue-600 text-white"
+                modalType === "stars" ? "bg-[#f59e0b] text-white" : 
+                modalType === "followers" ? "bg-[#a855f7] text-white" : 
+                "bg-[#2563eb] text-white"
               }`}>
                 <h3 className="flex items-center gap-2 font-display text-xl font-black italic tracking-tight">
                   {modalType === "stars" && <><Star className="h-6 w-6 fill-current" /> Starred Repositories</>}
@@ -432,9 +432,9 @@ const Result = () => {
                   variant="ghost" 
                   size="icon" 
                   onClick={() => setModalType(null)} 
-                  className="rounded-full bg-white/20 text-red-500 hover:bg-white/40 hover:text-red-600 shadow-sm"
+                  className="h-10 w-10 rounded-full bg-white text-[#ef4444] shadow-lg hover:bg-red-50 hover:text-red-600"
                 >
-                  <X className="h-5 w-5 stroke-[3]" />
+                  <X className="h-6 w-6 stroke-[3]" />
                 </Button>
               </div>
               <div className="max-h-[60vh] overflow-y-auto p-4">
@@ -446,11 +446,16 @@ const Result = () => {
                         href={r.url} 
                         target="_blank" 
                         rel="noreferrer"
-                        className="flex items-center justify-between rounded-xl border p-3 transition-all hover:border-amber/40 hover:bg-amber/5 hover:shadow-sm"
+                        className="flex items-center justify-between rounded-xl border border-l-4 border-l-[#f59e0b] bg-card p-4 transition-all hover:bg-[#f59e0b]/5 hover:shadow-md"
                       >
-                        <span className="font-medium">{r.name}</span>
-                        <span className="flex items-center gap-1 text-xs text-amber font-bold">
-                          <Star className="h-3 w-3 fill-current" /> {r.stars}
+                        <div className="flex items-center gap-3">
+                          <div className="rounded-lg bg-[#f59e0b]/10 p-2 text-[#f59e0b]">
+                            <Star className="h-4 w-4 fill-current" />
+                          </div>
+                          <span className="font-bold">{r.name}</span>
+                        </div>
+                        <span className="flex items-center gap-1 font-display text-lg font-black text-[#f59e0b]">
+                          {r.stars}
                         </span>
                       </a>
                     ))}
@@ -464,10 +469,15 @@ const Result = () => {
                         href={f.url} 
                         target="_blank" 
                         rel="noreferrer"
-                        className="flex flex-col items-center gap-2 rounded-xl border p-3 transition-all hover:border-purple/40 hover:bg-purple/5 hover:shadow-sm"
+                        className="flex flex-col items-center gap-3 rounded-2xl border border-l-4 border-l-[#a855f7] bg-card p-4 transition-all hover:bg-[#a855f7]/5 hover:shadow-md"
                       >
-                        <img src={f.avatar} alt={f.login} className="h-12 w-12 rounded-full border-2 border-purple/20" />
-                        <span className="text-xs font-bold text-purple">@{f.login}</span>
+                        <div className="relative">
+                          <img src={f.avatar} alt={f.login} className="h-16 w-16 rounded-full border-2 border-[#a855f7]/30 shadow-sm" />
+                          <div className="absolute -bottom-1 -right-1 rounded-full bg-[#a855f7] p-1 text-white shadow-sm">
+                            <Users className="h-3 w-3" />
+                          </div>
+                        </div>
+                        <span className="text-xs font-black text-[#a855f7]">@{f.login}</span>
                       </a>
                     ))}
                   </div>
