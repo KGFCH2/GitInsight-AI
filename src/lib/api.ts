@@ -51,8 +51,11 @@ const ghHeaders = () => {
   return h;
 };
 
-async function gh<T>(url: string): Promise<T> {
-  const r = await fetch(url, { headers: ghHeaders() });
+async function gh<T>(url: string, force = false): Promise<T> {
+  const r = await fetch(url, { 
+    headers: ghHeaders(),
+    ...(force ? { cache: "no-store" } : {})
+  });
   if (!r.ok) throw new Error(`GitHub ${r.status}: ${await r.text()}`);
   return r.json() as Promise<T>;
 }
@@ -219,14 +222,14 @@ function safeParseJson(text: string): Record<string, unknown> | null {
   }
 }
 
-export async function analyzeProfile(username: string): Promise<AnalysisResult> {
+export async function analyzeProfile(username: string, force = false): Promise<AnalysisResult> {
   const cleaned = username.trim().replace(/^@/, "");
   if (!/^[a-zA-Z0-9-]+$/.test(cleaned)) {
     throw new Error("Invalid GitHub username format");
   }
 
-  const user = await gh<GhUser>(`https://api.github.com/users/${cleaned}`);
-  const repos = await gh<GhRepo[]>(`https://api.github.com/users/${cleaned}/repos?per_page=100&sort=updated`);
+  const user = await gh<GhUser>(`https://api.github.com/users/${cleaned}`, force);
+  const repos = await gh<GhRepo[]>(`https://api.github.com/users/${cleaned}/repos?per_page=100&sort=updated`, force);
 
   const score = computeScore(user, repos);
   const badges = deriveBadges(user, repos, score.total);
