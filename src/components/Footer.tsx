@@ -9,14 +9,14 @@ export function Footer() {
           <div>
             <div className="flex items-center gap-2.5">
               <div className="icon-pop flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-background">
-                <img src="/favicon.png" alt="GitInsight AI" className="h-full w-full object-cover" />
+                <img src="/favicon.png" alt="CampusConnect" className="h-full w-full object-cover" />
               </div>
               <div className="font-display font-bold">
-                GitInsight<span className="text-brand"> AI</span>
+                CampusConnect
               </div>
             </div>
             <p className="mt-3 max-w-xs text-sm text-muted-foreground">
-              AI-powered GitHub profile analyzer with recruiter-grade insights and gamified feedback.
+              AI-powered platform for organizations to onboard, rank, and improve campus ambassadors using GitHub performance metrics.
             </p>
           </div>
 
@@ -36,7 +36,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
-          <div>© {new Date().getFullYear()} GitInsight AI. Built for developers.</div>
+          <div>© {new Date().getFullYear()} CampusConnect. Built for organizations.</div>
           <div className="font-mono">v1.0.0</div>
         </div>
       </div>
