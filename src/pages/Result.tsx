@@ -107,7 +107,7 @@ const Result = () => {
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="text-xs uppercase tracking-widest text-muted-foreground">Profile Report</div>
-          <h1 className="hover-pop font-display text-3xl font-bold sm:text-4xl">
+          <h1 className="font-display text-3xl font-bold sm:text-4xl">
             @{username}
           </h1>
         </div>
@@ -142,7 +142,7 @@ const Result = () => {
                 />
                 <div className="flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <h2 className="hover-pop font-display text-2xl font-bold">
+                    <h2 className="font-display text-2xl font-bold">
                       {data.user.name || data.user.login}
                     </h2>
                     <a
@@ -230,7 +230,7 @@ const Result = () => {
                     href={data.bestRepo.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="hover-pop font-display text-2xl font-bold hover:text-brand-1"
+                    className="font-display text-2xl font-bold hover:text-brand-1"
                   >
                     {data.bestRepo.name}
                   </a>
@@ -346,7 +346,7 @@ function Stat({
   icon: React.ComponentType<{ className?: string }>;
 }) {
   return (
-    <div className="icon-pop rounded-xl border border-border bg-background/40 p-3">
+    <div className="rounded-xl border border-border bg-background/40 p-3">
       <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
         <Icon className="h-3 w-3" /> {label}
       </div>
@@ -369,10 +369,10 @@ function Card({
   const accentClass =
     accent === "success" ? "text-success" : accent === "warning" ? "text-warning" : "text-brand-1";
   return (
-    <div className="icon-pop rounded-2xl border border-border bg-card-grad p-6">
+    <div className="rounded-2xl border border-border bg-card-grad p-6">
       <div className="mb-4 flex items-center gap-2">
         <Icon className={`h-4 w-4 ${accentClass}`} />
-        <h3 className="hover-pop font-display text-base font-semibold">{title}</h3>
+        <h3 className="font-display text-base font-semibold">{title}</h3>
       </div>
       {children}
     </div>
