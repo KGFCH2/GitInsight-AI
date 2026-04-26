@@ -9,6 +9,7 @@ import {
   ExternalLink,
   Globe,
   Lightbulb,
+  Loader2,
   MapPin,
   Share2,
   Sparkles,
@@ -39,6 +40,7 @@ const Result = () => {
   const [data, setData] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [filter, setFilter] = useState<"all" | RepoClassification>("all");
   const [showTop, setShowTop] = useState(false);
   const { username = "" } = useParams();
@@ -54,6 +56,9 @@ const Result = () => {
     setError(null);
     if (!isRefresh) {
       setData(null);
+      setIsRefreshing(false);
+    } else {
+      setIsRefreshing(true);
     }
     analyzeProfile(username, isRefresh)
       .then((r) => {
@@ -65,7 +70,10 @@ const Result = () => {
         setError(e.message || "Failed to analyze");
         toast.error(e.message || "Failed to analyze");
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        setIsRefreshing(false);
+      });
   };
 
   useEffect(() => {
@@ -128,7 +136,8 @@ const Result = () => {
         </div>
       </div>
 
-      {loading && !data && <LoadingState />}
+      {loading && !data && <LoadingState simple />}
+      {loading && data && isRefreshing && <LoadingState />}
       
       {error && !loading && !data && (
         <div className="rounded-2xl border border-destructive/40 bg-destructive/5 p-8 text-center">
@@ -408,7 +417,21 @@ function BulletList({ items, numbered = false }: { items: string[]; numbered?: b
   );
 }
 
-function LoadingState() {
+function LoadingState({ simple = false }: { simple?: boolean }) {
+  if (simple) {
+    return (
+      <div className="space-y-6">
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-card-grad p-12 shadow-sm">
+          <Loader2 className="h-10 w-10 animate-spin text-brand" />
+          <p className="mt-4 text-sm font-medium text-muted-foreground">Analyzing GitHub profile...</p>
+        </div>
+        <div className="grid gap-6 lg:grid-cols-2">
+          <SkeletonBlock className="h-56" />
+          <SkeletonBlock className="h-56" />
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="space-y-6">
       <div className="rounded-2xl border border-border bg-card-grad p-8 shadow-sm">
