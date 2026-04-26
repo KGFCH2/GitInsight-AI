@@ -108,12 +108,12 @@ const Home = () => {
                 <span>AICore Connect Hackathon • UnsaidTalks</span>
               </div>
             </div>
-            <h1 className="hover-pop font-display text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl">
+            <h1 className="hover-pop font-display text-5xl font-bold leading-[1.05] tracking-tight text-white drop-shadow-lg sm:text-6xl md:text-7xl">
               Score your <span className="text-brand">Ambassadors</span>
               <br />
               like a recruiter would.
             </h1>
-            <p className="mx-auto mt-6 max-w-xl text-lg text-foreground/90 drop-shadow-sm">
+            <p className="mx-auto mt-6 max-w-xl text-lg font-medium text-white/90 drop-shadow-md">
               Get a profile score, AI feedback, repo-level analysis, and a clear improvement plan in under 2 minutes.
             </p>
 
