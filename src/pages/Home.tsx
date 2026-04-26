@@ -8,7 +8,9 @@ import {
   Sparkles,
   Target,
   Users,
+  Zap,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import { AnalyzeForm } from "@/components/AnalyzeForm";
 
 const heroImages = [
@@ -123,9 +125,9 @@ const Home = () => {
                 {["KGFCH2"].map((u, i) => (
                   <span key={u}>
                     {i > 0 && " · "}
-                    <a href={`/result/${u}`} className="font-mono text-foreground/80 hover:text-brand-1">
+                    <Link to={`/result/${u}`} className="font-mono text-foreground/80 hover:text-brand-1">
                       @{u}
-                    </a>
+                    </Link>
                   </span>
                 ))}
               </div>
@@ -184,14 +186,19 @@ const Home = () => {
 
               <div className="grid gap-6 sm:grid-cols-2">
                 {[
-                  { title: "Identify Top Performers", desc: "Surface high-impact ambassadors through a real-time leaderboard and points engine." },
-                  { title: "Automate Task Workflows", desc: "Assign, track, and verify tasks with proof-upload and auto-scoring." },
-                  { title: "Drive Retention", desc: "Award badges, streaks, and rewards that keep ambassadors motivated week over week." },
-                  { title: "Measure ROI", desc: "Identify top performers and measure the impact of your community-led marketing." }
+                  { title: "Identify Top Performers", icon: Users, desc: "Surface high-impact ambassadors through a real-time leaderboard and points engine." },
+                  { title: "Automate Task Workflows", icon: Zap, desc: "Assign, track, and verify tasks with proof-upload and auto-scoring." },
+                  { title: "Drive Retention", icon: Award, desc: "Award badges, streaks, and rewards that keep ambassadors motivated week over week." },
+                  { title: "Measure ROI", icon: Target, desc: "Identify top performers and measure the impact of your community-led marketing." }
                 ].map((item, i) => (
-                  <div key={i} className="hover-pop space-y-2 rounded-2xl border border-border bg-background p-5 shadow-sm">
-                    <div className="font-display font-bold text-brand">{item.title}</div>
-                    <p className="text-sm text-muted-foreground">{item.desc}</p>
+                  <div key={i} className="hover-pop group space-y-3 rounded-2xl border border-border bg-background p-5 shadow-sm transition-all hover:bg-gradient-to-br hover:from-brand/10 hover:to-brand-1/10 hover:shadow-glow">
+                    <div className="icon-pop flex h-10 w-10 items-center justify-center rounded-xl bg-brand/5 text-brand transition-colors group-hover:bg-brand group-hover:text-primary-foreground">
+                      <item.icon className="h-5 w-5" />
+                    </div>
+                    <div className="space-y-1">
+                      <div className="font-display font-bold text-brand group-hover:text-foreground">{item.title}</div>
+                      <p className="text-sm text-muted-foreground group-hover:text-foreground/80">{item.desc}</p>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -201,7 +208,7 @@ const Home = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="relative rounded-3xl border border-border bg-card-grad p-8 shadow-elev"
+              className="relative rounded-3xl border border-border bg-card-grad p-8 shadow-elev transition-all hover:bg-gradient-to-tl hover:from-brand/5 hover:to-brand-1/5 hover:shadow-glow"
             >
               <div className="mb-6 flex items-center justify-between border-b border-border pb-6">
                 <div className="font-display text-xl font-bold italic underline decoration-brand decoration-2 underline-offset-4">Ambassador Dashboard</div>
