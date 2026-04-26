@@ -22,8 +22,10 @@ const App = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2000);
-    return () => clearTimeout(timer);
+    // Initialize theme immediately
+    const saved = localStorage.getItem("theme");
+    const isDark = saved ? saved === "dark" : true;
+    document.documentElement.classList.toggle("dark", isDark);
   }, []);
 
   return (
@@ -35,19 +37,14 @@ const App = () => {
             <motion.div
               key="loader"
               initial={{ opacity: 1 }}
-              exit={{ opacity: 0, scale: 1.1 }}
-              transition={{ duration: 0.6, ease: "easeInOut" }}
+              exit={{ opacity: 0, scale: 1.05 }}
+              transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
               className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background"
             >
-              <div className="mb-8 flex items-center gap-3">
-                <div className="h-12 w-12 overflow-hidden rounded-2xl bg-card shadow-glow">
-                  <img src="/favicon.png" alt="Logo" className="h-full w-full object-cover" />
-                </div>
-                <h1 className="font-display text-3xl font-bold tracking-tight">
-                  GitInsight<span className="text-brand"> AI</span>
-                </h1>
-              </div>
-              <Loader text="Initializing developer insights engine…" />
+              <Loader 
+                duration={2500} 
+                onComplete={() => setLoading(false)} 
+              />
             </motion.div>
           ) : (
             <motion.div
