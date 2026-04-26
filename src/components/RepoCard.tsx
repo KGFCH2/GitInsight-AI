@@ -26,8 +26,11 @@ export function RepoCard({ repo, index = 0 }: { repo: AnalyzedRepo; index?: numb
       className="group flex h-full flex-col rounded-xl border border-border bg-card-grad p-5 transition-all hover:-translate-y-0.5 hover:border-brand-1/60 hover:shadow-glow"
     >
       <div className="mb-2 flex items-start justify-between gap-3">
-        <div className="font-display text-base font-semibold leading-tight">
+        <div className="flex items-center gap-2 font-display text-base font-semibold leading-tight">
           {repo.name}
+          {repo.isFork && (
+            <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Fork</span>
+          )}
         </div>
         <ExternalLink className="h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground" />
       </div>
