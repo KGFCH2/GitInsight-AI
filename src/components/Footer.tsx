@@ -11,7 +11,7 @@ export function Footer() {
               <div className="icon-pop flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-background">
                 <img src="/favicon.png" alt="GitInsight AI" className="h-full w-full object-cover" />
               </div>
-              <div className="hover-pop font-display font-bold">
+              <div className="font-display font-bold">
                 GitInsight<span className="text-brand"> AI</span>
               </div>
             </div>
