@@ -42,7 +42,7 @@ export function BadgeGrid({ badges }: { badges: string[] }) {
             className="group relative overflow-hidden rounded-xl border border-border bg-card-grad p-4 transition-all hover:border-brand-1 hover:shadow-glow"
           >
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand text-primary-foreground">
+              <div className="icon-pop flex h-10 w-10 items-center justify-center rounded-lg bg-brand text-primary-foreground">
                 <Icon className="h-5 w-5" />
               </div>
               <div className="text-sm font-semibold leading-tight">{b}</div>
