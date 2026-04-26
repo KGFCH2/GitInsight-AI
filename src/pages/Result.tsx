@@ -245,19 +245,27 @@ const Result = () => {
                 />
               </div>
 
-              <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
-                <div className="flex h-5 items-center gap-1 rounded-md border border-amber/20 bg-amber/5 px-2 font-semibold text-amber">
-                  <Star className="h-3 w-3" /> {data.score.stats.totalStars} Stars Earned
+              <div className="mt-4 flex items-center gap-2 text-xs font-medium">
+                <div className="flex h-5 items-center gap-1 rounded-md border border-amber/30 bg-amber/10 px-2 font-black text-[#f59e0b] shadow-sm">
+                  <Star className="h-3.5 w-3.5 fill-current" /> {data.score.stats.totalStars} Stars Earned
                 </div>
-                <span>•</span>
-                <span>Click tiles for deep analysis</span>
+                <span className="text-muted-foreground">•</span>
+                <span className="italic text-brand-1">Click tiles for deep analysis</span>
               </div>
 
-              <div className="mt-6 flex flex-wrap gap-2">
-                <Button onClick={share} variant="outline" size="sm" className="gap-2">
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Button 
+                  onClick={share} 
+                  size="sm" 
+                  className="gap-2 bg-blue-600 font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400"
+                >
                   <Share2 className="h-4 w-4" /> Share
                 </Button>
-                <Button onClick={() => exportPdf(data)} variant="outline" size="sm" className="gap-2">
+                <Button 
+                  onClick={() => exportPdf(data)} 
+                  size="sm" 
+                  className="gap-2 bg-emerald-600 font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-400"
+                >
                   <Download className="h-4 w-4" /> Export PDF
                 </Button>
               </div>
