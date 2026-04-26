@@ -1,0 +1,66 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowRight, Loader2, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+
+interface Props {
+  defaultValue?: string;
+  large?: boolean;
+}
+
+export function AnalyzeForm({ defaultValue = "", large = false }: Props) {
+  const [value, setValue] = useState(defaultValue);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => setValue(defaultValue), [defaultValue]);
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const cleaned = value.trim().replace(/^@/, "");
+    if (!cleaned) {
+      toast.error("Enter a GitHub username");
+      return;
+    }
+    if (!/^[a-zA-Z0-9-]+$/.test(cleaned) || cleaned.length > 39) {
+      toast.error("Invalid GitHub username");
+      return;
+    }
+    setLoading(true);
+    navigate(`/result/${encodeURIComponent(cleaned)}`);
+  };
+
+  return (
+    <form onSubmit={submit} className="w-full">
+      <div
+        className={
+          "group relative flex flex-col gap-2 rounded-2xl border border-border bg-card p-2 shadow-elev transition-all focus-within:ring-brand sm:flex-row " +
+          (large ? "sm:p-3" : "")
+        }
+      >
+        <div className="flex flex-1 items-center gap-3 px-3">
+          <Search className="h-5 w-5 shrink-0 text-muted-foreground" />
+          <Input
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            placeholder="GitHub username (e.g. torvalds)"
+            className="h-12 border-0 bg-transparent text-base shadow-none focus-visible:ring-0"
+            spellCheck={false}
+            autoComplete="off"
+          />
+        </div>
+        <Button
+          type="submit"
+          disabled={loading}
+          size={large ? "lg" : "default"}
+          className="h-12 gap-2 rounded-xl bg-brand font-semibold text-primary-foreground hover:opacity-90"
+        >
+          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ArrowRight className="h-4 w-4" />}
+          Analyze Profile
+        </Button>
+      </div>
+    </form>
+  );
+}
