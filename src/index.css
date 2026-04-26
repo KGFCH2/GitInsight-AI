@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* GitInsight AI — Premium developer-grade design system.
+   All tokens HSL. Dark by default, light variant supported. */
+
+@layer base {
+  :root {
+    --background: 240 40% 99%;
+    --foreground: 224 71% 4%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 224 71% 4%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71% 4%;
+
+    --primary: 262 83% 58%;
+    --primary-foreground: 210 20% 98%;
+
+    --secondary: 240 20% 96%;
+    --secondary-foreground: 224 71% 4%;
+
+    --muted: 240 10% 94%;
+    --muted-foreground: 240 5% 45%;
+
+    --accent: 280 80% 65%;
+    --accent-foreground: 210 20% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 20% 98%;
+
+    --warning: 38 92% 50%;
+    --success: 142 76% 36%;
+    --info: 217 91% 60%;
+
+    --border: 240 20% 90%;
+    --input: 240 20% 90%;
+    --ring: 262 83% 58%;
+
+    --radius: 0.85rem;
+
+    /* Brand */
+    --brand-1: 262 83% 58%;
+    --brand-2: 280 80% 65%;
+    --brand-3: 320 80% 70%;
+
+    --gradient-hero: radial-gradient(ellipse at top, hsl(var(--brand-3) / 0.15), transparent 60%),
+      radial-gradient(ellipse at bottom right, hsl(var(--brand-1) / 0.12), transparent 60%),
+      linear-gradient(180deg, hsl(var(--background)), hsl(var(--background)));
+    --gradient-brand: linear-gradient(135deg, hsl(var(--brand-1)), hsl(var(--brand-2)) 60%, hsl(var(--brand-3)));
+    --gradient-card: linear-gradient(160deg, hsl(var(--card)) 0%, hsl(240 20% 98%) 100%);
+    --shadow-glow: 0 10px 40px -10px hsl(var(--brand-1) / 0.35);
+    --shadow-elev: 0 20px 60px -20px hsl(240 40% 10% / 0.12);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 262 83% 58%;
+  }
+
+  .dark {
+    --background: 240 22% 6%;
+    --foreground: 240 10% 96%;
+
+    --card: 240 20% 9%;
+    --card-foreground: 240 10% 96%;
+
+    --popover: 240 22% 8%;
+    --popover-foreground: 240 10% 96%;
+
+    --primary: 158 84% 50%;
+    --primary-foreground: 240 22% 6%;
+
+    --secondary: 240 18% 14%;
+    --secondary-foreground: 240 10% 96%;
+
+    --muted: 240 18% 12%;
+    --muted-foreground: 240 8% 66%;
+
+    --accent: 270 90% 70%;
+    --accent-foreground: 240 22% 6%;
+
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --warning: 38 95% 60%;
+    --success: 158 84% 50%;
+    --info: 210 95% 65%;
+
+    --border: 240 18% 18%;
+    --input: 240 18% 16%;
+    --ring: 158 84% 50%;
+
+    --brand-1: 158 84% 50%;
+    --brand-2: 188 95% 55%;
+    --brand-3: 270 90% 70%;
+
+    --gradient-hero: radial-gradient(ellipse at top, hsl(var(--brand-3) / 0.22), transparent 55%),
+      radial-gradient(ellipse at bottom right, hsl(var(--brand-1) / 0.18), transparent 55%),
+      linear-gradient(180deg, hsl(240 30% 5%), hsl(240 22% 6%));
+    --gradient-brand: linear-gradient(135deg, hsl(var(--brand-1)), hsl(var(--brand-2)) 60%, hsl(var(--brand-3)));
+    --gradient-card: linear-gradient(160deg, hsl(240 20% 10%) 0%, hsl(240 22% 7%) 100%);
+    --shadow-glow: 0 10px 50px -10px hsl(var(--brand-1) / 0.55);
+    --shadow-elev: 0 20px 60px -20px hsl(0 0% 0% / 0.6);
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  .font-display {
+    font-family: "Cambria Math", "Cambria", serif;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer utilities {
+  .bg-hero { background: var(--gradient-hero); }
+  .bg-brand { background: var(--gradient-brand); }
+  .bg-card-grad { background: var(--gradient-card); }
+  .text-brand {
+    background: var(--gradient-brand);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .shadow-glow { box-shadow: var(--shadow-glow); }
+  .shadow-elev { box-shadow: var(--shadow-elev); }
+
+  .grid-pattern {
+    background-image:
+      linear-gradient(hsl(var(--border) / 0.6) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.6) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+  }
+
+  .glass {
+    background: hsl(var(--card) / 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--border) / 0.6);
+  }
+}
+
+@layer components {
+  .ring-brand {
+    box-shadow: 0 0 0 1px hsl(var(--brand-1) / 0.4), 0 0 30px hsl(var(--brand-1) / 0.25);
+  }
+}
