@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Award,
   BarChart3,
+  Building2,
   FileText,
   Gauge,
   Sparkles,
@@ -174,6 +175,7 @@ const Home = () => {
             >
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full bg-brand/10 px-4 py-1.5 text-sm font-semibold text-brand">
+                  <Building2 className="h-4 w-4" />
                   For Organizations
                 </div>
                 <h2 className="hover-pop mt-6 font-display text-4xl font-bold leading-tight sm:text-5xl">
