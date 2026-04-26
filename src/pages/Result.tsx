@@ -28,6 +28,7 @@ import { BadgeGrid } from "@/components/BadgeGrid";
 import { RepoCard } from "@/components/RepoCard";
 import { AnalyzeForm } from "@/components/AnalyzeForm";
 import { exportPdf } from "@/lib/pdf";
+import { Loader } from "@/components/Loader";
 
 const SkeletonBlock = ({ className = "" }: { className?: string }) => (
   <div className={`animate-pulse rounded-xl bg-muted ${className}`} />
@@ -374,9 +375,8 @@ function BulletList({ items, numbered = false }: { items: string[]; numbered?: b
 function LoadingState() {
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-center gap-3 rounded-2xl border border-border bg-card-grad p-10">
-        <Loader2 className="h-5 w-5 animate-spin text-brand-1" />
-        <span className="text-sm text-muted-foreground">Fetching GitHub data and generating AI insights…</span>
+      <div className="rounded-2xl border border-border bg-card-grad p-8 shadow-sm">
+        <Loader text="Fetching GitHub data and generating AI insights…" />
       </div>
       <div className="grid gap-6 lg:grid-cols-2">
         <SkeletonBlock className="h-56" />
