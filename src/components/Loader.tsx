@@ -1,70 +1,122 @@
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Props {
   text?: string;
+  duration?: number;
+  onComplete?: () => void;
 }
 
-export function Loader({ text = "Loading insights..." }: Props) {
+const statusMessages = [
+  "Initializing GitInsight Engine",
+  "Fetching GitHub Profile Data",
+  "Analyzing Repository Patterns",
+  "Classifying Code Quality",
+  "Computing Developer Score",
+  "Generating AI Insights",
+  "Finalizing Report",
+];
+
+export function Loader({ text, duration = 2500, onComplete }: Props) {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const step = 100 / (duration / 30);
+    const progressInterval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(progressInterval);
+          if (onComplete) {
+            setTimeout(onComplete, 300);
+          }
+          return 100;
+        }
+        return Math.min(100, prev + step);
+      });
+    }, 30);
+
+    return () => clearInterval(progressInterval);
+  }, [duration, onComplete]);
+
   return (
-    <div className="flex flex-col items-center justify-center py-12">
-      <div className="relative flex h-24 w-24 items-center justify-center">
-        {/* Outer Ring */}
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-0 rounded-full border-b-2 border-l-2 border-brand shadow-[0_0_20px_-5px_hsl(var(--brand-1))]"
-        />
-        
-        {/* Middle Ring */}
-        <motion.div
-          animate={{ rotate: -360 }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-2 rounded-full border-t-2 border-r-2 border-brand-2 opacity-70"
-        />
-        
-        {/* Inner Pulsing Core */}
-        <motion.div
-          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
-          className="h-8 w-8 rounded-full bg-brand shadow-glow"
-        />
-        
-        {/* Scanning Beam */}
+    <div className="flex flex-col items-center justify-center py-6 transition-colors duration-500">
+      {/* Centered Brand Icon */}
+      <div className="relative mb-8">
         <motion.div
           animate={{ 
-            rotate: 360,
-            opacity: [0, 1, 0]
+            scale: [1, 1.15, 1],
+            opacity: [0.2, 0.4, 0.2]
           }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-[-4px] rounded-full border-t border-brand/20 blur-[1px]"
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute inset-0 rounded-full bg-brand/30 blur-3xl"
         />
+        <motion.div
+          animate={{ y: [0, -6, 0] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          className="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-border/50 bg-card/80 shadow-glow backdrop-blur"
+        >
+          <img src="/favicon.png" alt="GitInsight" className="h-10 w-10 object-contain" />
+        </motion.div>
       </div>
-      
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-        className="mt-8 font-display text-sm font-medium tracking-wide text-muted-foreground"
-      >
-        <span className="bg-brand bg-clip-text text-transparent">{text}</span>
-      </motion.p>
-      
-      <div className="mt-2 flex gap-1">
-        {[0, 1, 2].map((i) => (
-          <motion.div
-            key={i}
-            animate={{ 
-              scale: [1, 1.5, 1],
-              opacity: [0.3, 1, 0.3]
-            }}
-            transition={{ 
-              duration: 1, 
-              repeat: Infinity, 
-              delay: i * 0.2 
-            }}
-            className="h-1 w-1 rounded-full bg-brand"
-          />
-        ))}
+
+      <div className="w-full max-w-[300px] space-y-6">
+        {/* Step List */}
+        <div className="space-y-3 px-1">
+          {statusMessages.map((msg, i) => {
+            const stepThreshold = (i / statusMessages.length) * 100;
+            const isCompleted = progress > stepThreshold + (100 / statusMessages.length);
+            const isActive = progress > stepThreshold && !isCompleted;
+            
+            return (
+              <motion.div 
+                key={i}
+                animate={{ 
+                  opacity: isActive || isCompleted ? 1 : 0.3,
+                  x: isActive ? 4 : 0
+                }}
+                className="flex items-center gap-3"
+              >
+                <div className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border transition-colors ${
+                  isCompleted ? "border-brand bg-brand text-primary-foreground" : 
+                  isActive ? "border-brand animate-pulse" : "border-muted"
+                }`}>
+                  {isCompleted && (
+                    <motion.svg 
+                      initial={{ scale: 0 }} 
+                      animate={{ scale: 1 }} 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="4" 
+                      className="h-2.5 w-2.5"
+                    >
+                      <polyline points="20 6 9 17 4 12" />
+                    </motion.svg>
+                  )}
+                </div>
+                <span className={`text-xs font-bold uppercase tracking-widest transition-colors ${
+                  isActive ? "text-brand" : isCompleted ? "text-foreground" : "text-muted-foreground"
+                }`}>
+                  {msg}
+                </span>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Progress System */}
+        <div className="space-y-2">
+          <div className="flex justify-between px-1 font-mono text-[10px] font-black uppercase tracking-tighter text-muted-foreground">
+            <span>Neural Analysis</span>
+            <span className="text-brand">{Math.round(progress)}%</span>
+          </div>
+          <div className="h-1 w-full overflow-hidden rounded-full bg-muted/30">
+            <motion.div
+              style={{ width: `${progress}%` }}
+              className="h-full bg-brand shadow-[0_0_15px_rgba(168,85,247,0.5)]"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
