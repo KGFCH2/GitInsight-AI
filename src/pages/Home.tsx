@@ -98,9 +98,14 @@ const Home = () => {
             transition={{ duration: 0.6 }}
             className="mx-auto max-w-3xl text-center"
           >
-            <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-medium backdrop-blur">
-              <img src="/favicon.png" alt="Logo" className="h-4 w-4 object-contain" />
-              <span>AI-powered • Gemini + Groq</span>
+            <div className="mx-auto mb-4 flex flex-wrap justify-center gap-3">
+              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-medium backdrop-blur">
+                <img src="/favicon.png" alt="Logo" className="h-4 w-4 object-contain" />
+                <span>AI-powered • Gemini + Groq</span>
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand/10 px-3 py-1 text-xs font-bold text-brand backdrop-blur">
+                <span>AICore Connect Hackathon • UnsaidTalks</span>
+              </div>
             </div>
             <h1 className="hover-pop font-display text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl">
               Score your <span className="text-brand">Ambassadors</span>
