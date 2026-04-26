@@ -15,7 +15,10 @@ export function AnalyzeForm({ defaultValue = "", large = false }: Props) {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => setValue(defaultValue), [defaultValue]);
+  useEffect(() => {
+    setValue(defaultValue);
+    setLoading(false);
+  }, [defaultValue]);
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
