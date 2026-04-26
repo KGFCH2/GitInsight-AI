@@ -57,7 +57,7 @@ const History = () => {
                 <div className="mt-1 flex items-center gap-3 text-[10px] uppercase tracking-wider text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <Clock className="h-2.5 w-2.5" />
-                    {new Date(item.timestamp).toLocaleDateString()}
+                    {new Date(item.timestamp).toLocaleDateString('en-GB')}
                   </span>
                   <span className="font-bold text-brand-1">Score: {item.score}</span>
                 </div>
