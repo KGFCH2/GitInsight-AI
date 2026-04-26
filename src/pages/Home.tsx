@@ -60,7 +60,7 @@ const Home = () => {
               <img src="/favicon.png" alt="Logo" className="h-4 w-4 object-contain" />
               <span>AI-powered • Gemini + Groq</span>
             </div>
-            <h1 className="font-display text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl">
+            <h1 className="hover-pop font-display text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl">
               Score your <span className="text-brand">GitHub</span>
               <br />
               like a recruiter would.
@@ -91,7 +91,7 @@ const Home = () => {
       <section className="container py-20">
         <div className="mb-12 text-center">
           <div className="text-xs font-semibold uppercase tracking-widest text-brand">Why GitInsight</div>
-          <h2 className="mt-2 font-display text-3xl font-bold sm:text-4xl">Everything you need to level up</h2>
+          <h2 className="hover-pop mt-2 font-display text-3xl font-bold sm:text-4xl">Everything you need to level up</h2>
         </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((f, i) => (
@@ -103,7 +103,7 @@ const Home = () => {
               transition={{ delay: i * 0.05, duration: 0.4 }}
               className="group rounded-2xl border border-border bg-card-grad p-6 transition-all hover:-translate-y-1 hover:border-brand-1/60 hover:shadow-glow"
             >
-              <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand text-primary-foreground">
+              <div className="icon-pop mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand text-primary-foreground">
                 <f.icon className="h-5 w-5" />
               </div>
               <h3 className="font-display text-lg font-semibold">{f.title}</h3>
@@ -116,8 +116,8 @@ const Home = () => {
       {/* CTA */}
       <section className="container pb-12">
         <div className="overflow-hidden rounded-3xl border border-border bg-card-grad p-10 text-center shadow-elev sm:p-16">
-          <Target className="mx-auto mb-4 h-10 w-10 text-brand-1" />
-          <h2 className="font-display text-3xl font-bold sm:text-4xl">
+          <Target className="icon-pop mx-auto mb-4 h-10 w-10 text-brand-1" />
+          <h2 className="hover-pop font-display text-3xl font-bold sm:text-4xl">
             Ready to see your score?
           </h2>
           <p className="mx-auto mt-3 max-w-md text-muted-foreground">
