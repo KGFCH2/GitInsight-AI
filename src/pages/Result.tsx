@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Building2,
@@ -18,6 +18,7 @@ import {
   Users,
   ChevronUp,
   RefreshCw,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -44,6 +45,8 @@ const Result = () => {
   const [filter, setFilter] = useState<"all" | RepoClassification>("all");
   const [showTop, setShowTop] = useState(false);
   const { username = "" } = useParams();
+  const location = useLocation();
+  const [modalType, setModalType] = useState<"stars" | "followers" | "langs" | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setShowTop(window.scrollY > 400);
@@ -78,7 +81,7 @@ const Result = () => {
 
   useEffect(() => {
     loadData(false);
-  }, [username]);
+  }, [username, location.search]);
 
   const share = async () => {
     const url = window.location.href;
@@ -200,10 +203,43 @@ const Result = () => {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-                <Stat label="Total Stars" value={data.score.stats.totalStars} icon={Star} />
-                <Stat label="Followers" value={data.user.followers} icon={Users} />
-                <Stat label="Public Repos" value={data.score.stats.originalRepoCount} icon={Sparkles} />
-                <Stat label="Top Languages" value={data.score.stats.languageCount} icon={TrendingUp} />
+                <Stat 
+                  label="Total Stars" 
+                  value={data.starredRepos?.length || 0} 
+                  icon={Star} 
+                  onClick={() => setModalType("stars")}
+                  subLabel="Starred by user"
+                />
+                <Stat 
+                  label="Followers" 
+                  value={data.user.followers} 
+                  icon={Users} 
+                  onClick={() => setModalType("followers")}
+                />
+                <Stat 
+                  label="Public Repos" 
+                  value={data.score.stats.originalRepoCount} 
+                  icon={Sparkles} 
+                  onClick={() => {
+                    const el = document.getElementById("repos-tab");
+                    el?.click();
+                    el?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                />
+                <Stat 
+                  label="Top Languages" 
+                  value={data.score.stats.languageCount} 
+                  icon={TrendingUp} 
+                  onClick={() => setModalType("langs")}
+                />
+              </div>
+
+              <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
+                <div className="flex h-5 items-center gap-1 rounded-md border border-brand/20 bg-brand/5 px-2 font-semibold text-brand">
+                  <Star className="h-3 w-3" /> {data.score.stats.totalStars} Stars Earned
+                </div>
+                <span>•</span>
+                <span>Click tiles for details</span>
               </div>
 
               <div className="mt-6 flex flex-wrap gap-2">
@@ -276,7 +312,7 @@ const Result = () => {
               <TabsList className="bg-muted">
                 <TabsTrigger value="ai">AI Insights</TabsTrigger>
                 <TabsTrigger value="recruiter">Recruiter View</TabsTrigger>
-                <TabsTrigger value="repos">Repositories</TabsTrigger>
+                <TabsTrigger id="repos-tab" value="repos">Repositories</TabsTrigger>
                 <TabsTrigger value="badges">Badges</TabsTrigger>
               </TabsList>
 
@@ -354,6 +390,92 @@ const Result = () => {
           </div>
         </div>
       )}
+
+      {/* Detail Modals */}
+      <AnimatePresence>
+        {modalType && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setModalType(null)}
+              className="absolute inset-0 bg-background/80 backdrop-blur-sm"
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-border bg-card shadow-2xl"
+            >
+              <div className="flex items-center justify-between border-b p-4">
+                <h3 className="font-display text-lg font-bold">
+                  {modalType === "stars" && "Starred Repositories"}
+                  {modalType === "followers" && "Followers List"}
+                  {modalType === "langs" && "Language Breakdown"}
+                </h3>
+                <Button variant="ghost" size="icon" onClick={() => setModalType(null)}>
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+              <div className="max-h-[60vh] overflow-y-auto p-4">
+                {modalType === "stars" && (
+                  <div className="space-y-3">
+                    {data?.starredRepos?.map((r, i) => (
+                      <a 
+                        key={i} 
+                        href={r.url} 
+                        target="_blank" 
+                        rel="noreferrer"
+                        className="flex items-center justify-between rounded-xl border p-3 transition-colors hover:bg-muted/50"
+                      >
+                        <span className="font-medium">{r.name}</span>
+                        <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                          <Star className="h-3 w-3" /> {r.stars}
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                )}
+                {modalType === "followers" && (
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                    {data?.followersList?.map((f, i) => (
+                      <a 
+                        key={i} 
+                        href={f.url} 
+                        target="_blank" 
+                        rel="noreferrer"
+                        className="flex flex-col items-center gap-2 rounded-xl border p-3 transition-colors hover:bg-muted/50"
+                      >
+                        <img src={f.avatar} alt={f.login} className="h-10 w-10 rounded-full border" />
+                        <span className="text-xs font-medium">@{f.login}</span>
+                      </a>
+                    ))}
+                  </div>
+                )}
+                {modalType === "langs" && (
+                  <div className="space-y-4">
+                    {data?.langDetails?.map((l, i) => (
+                      <div key={i} className="space-y-1.5">
+                        <div className="flex justify-between text-sm">
+                          <span className="font-semibold">{l.name}</span>
+                          <span className="text-muted-foreground">{l.percentage}%</span>
+                        </div>
+                        <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                          <div 
+                            className="h-full bg-brand" 
+                            style={{ width: `${l.percentage}%` }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -362,18 +484,27 @@ function Stat({
   label,
   value,
   icon: Icon,
+  onClick,
+  subLabel,
 }: {
   label: string;
   value: number;
   icon: React.ComponentType<{ className?: string }>;
+  onClick?: () => void;
+  subLabel?: string;
 }) {
   return (
-    <div className="rounded-xl border border-border bg-background/40 p-3">
+    <button 
+      onClick={onClick}
+      disabled={!onClick}
+      className={`group rounded-xl border border-border bg-background/40 p-3 text-left transition-all ${onClick ? "hover:border-brand/40 hover:bg-brand/5 active:scale-95" : ""}`}
+    >
       <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-        <Icon className="h-3 w-3" /> {label}
+        <Icon className={`h-3 w-3 transition-colors ${onClick ? "group-hover:text-brand" : ""}`} /> {label}
       </div>
       <div className="mt-1 font-display text-xl font-bold tabular-nums">{value.toLocaleString()}</div>
-    </div>
+      {subLabel && <div className="mt-0.5 text-[10px] text-muted-foreground/60">{subLabel}</div>}
+    </button>
   );
 }
 
