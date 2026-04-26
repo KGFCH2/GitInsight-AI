@@ -52,10 +52,10 @@ export function Navbar() {
             className="group flex items-center gap-2.5 transition-transform duration-200 hover:scale-[1.02]"
           >
             <div className="icon-pop relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl bg-background shadow-glow transition-transform duration-300 group-hover:rotate-6">
-              <img src="/favicon.png" alt="CampusConnect" className="h-full w-full object-cover" />
+              <img src="/favicon.png" alt="GitInsight AI" className="h-full w-full object-cover" />
             </div>
             <div className="hover-pop font-display text-lg font-bold leading-none">
-              CampusConnect
+              GitInsight<span className="text-brand"> AI</span>
             </div>
           </Link>
 
