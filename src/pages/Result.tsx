@@ -47,6 +47,7 @@ const Result = () => {
   const { username = "" } = useParams();
   const location = useLocation();
   const [modalType, setModalType] = useState<"stars" | "followers" | "langs" | null>(null);
+  const [activeTab, setActiveTab] = useState("ai");
 
   useEffect(() => {
     const handleScroll = () => setShowTop(window.scrollY > 400);
@@ -140,7 +141,12 @@ const Result = () => {
       </div>
 
       {loading && !data && <LoadingState simple />}
-      {loading && data && isRefreshing && <LoadingState />}
+      {loading && data && isRefreshing && (
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-card-grad p-12 shadow-sm">
+          <Loader2 className="h-10 w-10 animate-spin text-brand" />
+          <p className="mt-4 text-sm font-medium text-muted-foreground">Updating latest GitHub data...</p>
+        </div>
+      )}
       
       {error && !loading && !data && (
         <div className="rounded-2xl border border-destructive/40 bg-destructive/5 p-8 text-center">
@@ -223,9 +229,10 @@ const Result = () => {
                   value={data.repos.length} 
                   icon={Sparkles} 
                   onClick={() => {
-                    const el = document.getElementById("repos-tab");
-                    el?.click();
-                    el?.scrollIntoView({ behavior: "smooth" });
+                    setActiveTab("repos");
+                    setTimeout(() => {
+                      document.getElementById("repos-list")?.scrollIntoView({ behavior: "smooth" });
+                    }, 100);
                   }}
                   color="brand"
                 />
@@ -311,16 +318,16 @@ const Result = () => {
           )}
 
           {/* Tabs */}
-          <div className="mt-8">
-            <Tabs defaultValue="ai" className="w-full">
-              <TabsList className="bg-muted">
-                <TabsTrigger value="ai">AI Insights</TabsTrigger>
-                <TabsTrigger value="recruiter">Recruiter View</TabsTrigger>
-                <TabsTrigger id="repos-tab" value="repos">Repositories</TabsTrigger>
-                <TabsTrigger value="badges">Badges</TabsTrigger>
-              </TabsList>
+            <div className="mt-10">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="bg-muted">
+                  <TabsTrigger value="ai">AI Insights</TabsTrigger>
+                  <TabsTrigger value="recruiter">Recruiter View</TabsTrigger>
+                  <TabsTrigger value="repos">Repositories</TabsTrigger>
+                  <TabsTrigger value="badges">Badges</TabsTrigger>
+                </TabsList>
 
-              <TabsContent value="ai" className="mt-6 space-y-6">
+                <TabsContent value="ai" className="mt-6 space-y-6">
                 {data.ai.summary && (
                   <Card title="Summary" icon={Sparkles}>
                     <p className="text-sm leading-relaxed text-muted-foreground">{data.ai.summary}</p>
@@ -357,7 +364,7 @@ const Result = () => {
                 </Card>
               </TabsContent>
 
-              <TabsContent value="repos" className="mt-6">
+              <TabsContent value="repos" id="repos-list" className="mt-6">
                 <div className="mb-4 flex flex-wrap gap-2">
                   {(["all", "good", "improve", "archive"] as const).map((f) => (
                     <button
@@ -377,7 +384,6 @@ const Result = () => {
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {data.repos
                     .filter((r) => filter === "all" || r.classification === filter)
-                    .slice(0, 30)
                     .map((r, i) => (
                       <RepoCard key={r.name} repo={r} index={i} />
                     ))}
@@ -412,13 +418,17 @@ const Result = () => {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-border bg-card shadow-2xl"
             >
-              <div className="flex items-center justify-between border-b p-4">
-                <h3 className="font-display text-lg font-bold">
-                  {modalType === "stars" && "Starred Repositories"}
-                  {modalType === "followers" && "Followers List"}
-                  {modalType === "langs" && "Language Breakdown"}
+              <div className={`flex items-center justify-between border-b p-4 ${
+                modalType === "stars" ? "bg-amber/10 text-amber" : 
+                modalType === "followers" ? "bg-purple/10 text-purple" : 
+                "bg-blue/10 text-blue"
+              }`}>
+                <h3 className="flex items-center gap-2 font-display text-lg font-bold">
+                  {modalType === "stars" && <><Star className="h-5 w-5" /> Starred Repositories</>}
+                  {modalType === "followers" && <><Users className="h-5 w-5" /> Followers List</>}
+                  {modalType === "langs" && <><TrendingUp className="h-5 w-5" /> Language Breakdown</>}
                 </h3>
-                <Button variant="ghost" size="icon" onClick={() => setModalType(null)}>
+                <Button variant="ghost" size="icon" onClick={() => setModalType(null)} className="hover:bg-background/20">
                   <X className="h-4 w-4" />
                 </Button>
               </div>
