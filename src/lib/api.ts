@@ -78,9 +78,12 @@ function classifyRepo(r: GhRepo): RepoClassification {
 }
 
 function computeScore(user: GhUser, repos: GhRepo[]) {
+  // We'll count stars from ALL public repos (including forks) as per user's request for "all stars"
+  const allRepos = repos.filter((r) => !r.archived);
   const original = repos.filter((r) => !r.fork && !r.archived);
-  const stars = original.reduce((s, r) => s + r.stargazers_count, 0);
-  const forks = original.reduce((s, r) => s + r.forks_count, 0);
+  
+  const stars = allRepos.reduce((s, r) => s + r.stargazers_count, 0);
+  const forks = allRepos.reduce((s, r) => s + r.forks_count, 0);
   
   // Language frequency
   const langCounts: Record<string, number> = {};
