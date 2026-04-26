@@ -8,14 +8,14 @@ Enter a GitHub username, get a **0–100 profile score**, AI-generated strengths
 
 ## ✨ Features
 
-- **📊 0–100 Profile Score** with transparent 6-dimension breakdown.
-- **🤖 AI Insights** — summary, strengths, weaknesses, and action steps (powered by Gemini & Groq).
-- **💼 Recruiter View** — hireability paragraph from a professional recruiter's perspective.
-- **📁 Repo Quality Classifier** — every repository tagged as Good / Improve / Archive.
-- **🌟 Best Repo Highlight** — README improvement tips and project ideas.
-- **🏆 Gamified Badges** — Polyglot, Top Repo Builder, Elite Profile, and more.
-- **📄 PDF Export** — Download your results as a polished report.
-- **🌗 Dark / Light Mode** — Fully responsive and accessible design.
+1. **📊 0–100 Profile Score** with transparent 6-dimension breakdown.
+2. **🤖 AI Insights** — summary, strengths, weaknesses, and action steps (powered by Gemini & Groq).
+3. **💼 Recruiter View** — hireability paragraph from a professional recruiter's perspective.
+4. **📁 Repo Quality Classifier** — every repository tagged as Good / Improve / Archive.
+5. **🌟 Best Repo Highlight** — README improvement tips and project ideas.
+6. **🏆 Gamified Badges** — Polyglot, Top Repo Builder, Elite Profile, and more.
+7. **📄 PDF Export** — Download your results as a polished report.
+8. **🌗 Dark / Light Mode** — Fully responsive and accessible design.
 
 ---
 
