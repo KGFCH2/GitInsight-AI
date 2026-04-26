@@ -163,10 +163,7 @@
     box-shadow: 0 10px 28px -10px hsl(var(--brand-1) / 0.45);
   }
   .text-brand {
-    background: var(--gradient-brand);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    @apply bg-gradient-to-r from-brand-1 via-brand-2 to-brand-3 bg-clip-text text-transparent;
   }
   .shadow-glow { box-shadow: var(--shadow-glow); }
   .shadow-elev { box-shadow: var(--shadow-elev); }
