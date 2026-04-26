@@ -137,7 +137,7 @@ const Home = () => {
       {/* Features */}
       <section className="container py-20">
         <div className="mb-12 text-center">
-          <div className="text-xs font-semibold uppercase tracking-widest text-brand">Why CampusConnect</div>
+          <div className="text-xs font-semibold uppercase tracking-widest text-brand">Why GitInsight AI</div>
           <h2 className="hover-pop mt-2 font-display text-3xl font-bold sm:text-4xl">Everything you need to level up</h2>
         </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -178,7 +178,7 @@ const Home = () => {
                   Built for campus ambassador programs
                 </h2>
                 <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-                  CampusConnect is an AI-powered evaluation system that helps organizations identify, rank, and improve campus ambassadors using GitHub performance metrics. Track ambassadors on a single leaderboard, spot rising stars, and ship targeted improvement plans.
+                  GitInsight AI is an AI-powered evaluation system that helps organizations identify, rank, and improve campus ambassadors using GitHub performance metrics. Track ambassadors on a single leaderboard, spot rising stars, and ship targeted improvement plans.
                 </p>
               </div>
 
