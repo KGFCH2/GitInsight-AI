@@ -22,7 +22,7 @@ const History = () => {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="text-xs uppercase tracking-widest text-brand">Activity</div>
-            <h1 className="mt-2 font-display text-4xl font-bold sm:text-5xl">Search History</h1>
+            <h1 className="hover-pop mt-2 font-display text-4xl font-bold sm:text-5xl">Search History</h1>
             <p className="mt-3 text-muted-foreground">Your last 10 analyzed GitHub profiles.</p>
           </div>
           {history.length > 0 && (
@@ -67,10 +67,10 @@ const History = () => {
 
           {history.length === 0 && (
             <div className="col-span-full flex flex-col items-center justify-center rounded-3xl border border-dashed border-border py-20 text-center">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+              <div className="icon-pop flex h-16 w-16 items-center justify-center rounded-full bg-muted">
                 <User className="h-8 w-8 text-muted-foreground" />
               </div>
-              <h3 className="mt-4 font-display text-xl font-bold">No history yet</h3>
+              <h3 className="hover-pop mt-4 font-display text-xl font-bold">No history yet</h3>
               <p className="mt-2 text-sm text-muted-foreground">Profiles you analyze will appear here.</p>
               <Button asChild className="mt-6 bg-brand">
                 <Link to="/analyze">Analyze a Profile</Link>
