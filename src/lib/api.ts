@@ -247,12 +247,12 @@ export async function analyzeProfile(username: string, force = false): Promise<A
   }
 
   const user = await gh<GhUser>(`https://api.github.com/users/${cleaned}`, force);
-  const repos = await gh<GhRepo[]>(`https://api.github.com/users/${cleaned}/repos?per_page=100&sort=updated`, force);
+  const repos = await gh<GhRepo[]>(`https://api.github.com/users/${cleaned}/repos?per_page=100&sort=updated${force ? `&t=${Date.now()}` : ""}`, force);
 
   // Fetch Starred Repos (for the "Total Stars" click)
-  const starred = await gh<GhRepo[]>(`https://api.github.com/users/${cleaned}/starred?per_page=30`, force);
+  const starred = await gh<GhRepo[]>(`https://api.github.com/users/${cleaned}/starred?per_page=100${force ? `&t=${Date.now()}` : ""}`, force);
   // Fetch Followers (for the "Followers" click)
-  const followers = await gh<{ login: string; avatar_url: string; html_url: string }[]>(`https://api.github.com/users/${cleaned}/followers?per_page=30`, force);
+  const followers = await gh<{ login: string; avatar_url: string; html_url: string }[]>(`https://api.github.com/users/${cleaned}/followers?per_page=100${force ? `&t=${Date.now()}` : ""}`, force);
 
   const score = computeScore(user, repos);
   const badges = deriveBadges(user, repos, score.total);
