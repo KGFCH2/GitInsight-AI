@@ -4,9 +4,9 @@ import { Shield, Eye, Cpu, Cookie, Lock } from "lucide-react";
 export default function Privacy() {
   return (
     <div className="container max-w-3xl py-12">
-      <div className="flex items-center gap-3">
-        <div className="icon-pop flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-primary shadow-glow transition-transform duration-300">
-          <Shield className="h-6 w-6" />
+      <div className="group flex items-center gap-3">
+        <div className="icon-pop flex h-12 w-12 items-center justify-center text-brand-1">
+          <Shield className="h-7 w-7" />
         </div>
         <div>
           <h1 className="hover-pop font-display text-4xl font-bold">Privacy Policy</h1>
@@ -17,7 +17,7 @@ export default function Privacy() {
       <div className="mt-10 space-y-12">
         <section>
           <div className="flex items-center gap-2.5 mb-4">
-            <Lock className="h-5 w-5 text-primary" />
+            <Lock className="h-5 w-5 text-brand-1" />
             <h2 className="font-display text-2xl font-bold italic underline decoration-brand/30 decoration-2 underline-offset-4">1. Data Handling</h2>
           </div>
           <p className="text-muted-foreground leading-relaxed">
@@ -27,7 +27,7 @@ export default function Privacy() {
 
         <section>
           <div className="flex items-center gap-2.5 mb-4">
-            <Eye className="h-5 w-5 text-primary" />
+            <Eye className="h-5 w-5 text-brand-1" />
             <h2 className="font-display text-2xl font-bold italic underline decoration-brand/30 decoration-2 underline-offset-4">2. What we access</h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -44,7 +44,7 @@ export default function Privacy() {
 
         <section>
           <div className="flex items-center gap-2.5 mb-4">
-            <Cpu className="h-5 w-5 text-primary" />
+            <Cpu className="h-5 w-5 text-brand-1" />
             <h2 className="font-display text-2xl font-bold italic underline decoration-brand/30 decoration-2 underline-offset-4">3. AI processing</h2>
           </div>
           <p className="text-muted-foreground leading-relaxed">
@@ -54,7 +54,7 @@ export default function Privacy() {
 
         <section>
           <div className="flex items-center gap-2.5 mb-4">
-            <Cookie className="h-5 w-5 text-primary" />
+            <Cookie className="h-5 w-5 text-brand-1" />
             <h2 className="font-display text-2xl font-bold italic underline decoration-brand/30 decoration-2 underline-offset-4">4. Cookies</h2>
           </div>
           <div className="rounded-xl border border-dashed border-border p-5 text-sm text-muted-foreground">

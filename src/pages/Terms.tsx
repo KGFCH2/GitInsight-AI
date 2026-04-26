@@ -4,9 +4,9 @@ import { FileText, UserCheck, Scale, ShieldAlert } from "lucide-react";
 export default function Terms() {
   return (
     <div className="container max-w-3xl py-12">
-      <div className="flex items-center gap-3">
-        <div className="icon-pop flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-primary shadow-glow transition-transform duration-300">
-          <FileText className="h-6 w-6" />
+      <div className="group flex items-center gap-3">
+        <div className="icon-pop flex h-12 w-12 items-center justify-center text-brand-1">
+          <FileText className="h-7 w-7" />
         </div>
         <div>
           <h1 className="hover-pop font-display text-4xl font-bold">Terms of Service</h1>
@@ -17,7 +17,7 @@ export default function Terms() {
       <div className="mt-10 space-y-12">
         <section>
           <div className="flex items-center gap-2.5 mb-4">
-            <ShieldAlert className="h-5 w-5 text-primary" />
+            <ShieldAlert className="h-5 w-5 text-brand-1" />
             <h2 className="font-display text-2xl font-bold italic underline decoration-brand/30 decoration-2 underline-offset-4">1. Agreement</h2>
           </div>
           <p className="text-muted-foreground leading-relaxed">
@@ -27,7 +27,7 @@ export default function Terms() {
 
         <section>
           <div className="flex items-center gap-2.5 mb-4">
-            <UserCheck className="h-5 w-5 text-primary" />
+            <UserCheck className="h-5 w-5 text-brand-1" />
             <h2 className="font-display text-2xl font-bold italic underline decoration-brand/30 decoration-2 underline-offset-4">2. Acceptable use</h2>
           </div>
           <ul className="grid gap-3 sm:grid-cols-2">
@@ -47,7 +47,7 @@ export default function Terms() {
 
         <section>
           <div className="flex items-center gap-2.5 mb-4">
-            <Scale className="h-5 w-5 text-primary" />
+            <Scale className="h-5 w-5 text-brand-1" />
             <h2 className="font-display text-2xl font-bold italic underline decoration-brand/30 decoration-2 underline-offset-4">3. Liability</h2>
           </div>
           <p className="text-muted-foreground leading-relaxed bg-muted/30 rounded-xl p-5 border border-dashed border-border">
