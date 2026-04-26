@@ -77,7 +77,7 @@ export default function FAQs() {
               <AccordionItem key={i} value={`item-${i}`} className="border-b border-border last:border-0">
                 <AccordionTrigger className="hover-pop group px-5 text-left font-display text-base font-semibold hover:no-underline">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand text-primary-foreground shadow-sm">
+                    <div className="icon-pop flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand text-primary-foreground shadow-sm">
                       <f.icon className="h-4 w-4" />
                     </div>
                     <span>{f.q}</span>
