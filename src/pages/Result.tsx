@@ -16,6 +16,7 @@ import {
   Star,
   TrendingUp,
   Users,
+  ChevronUp,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -35,11 +36,18 @@ const SkeletonBlock = ({ className = "" }: { className?: string }) => (
 );
 
 const Result = () => {
-  const { username = "" } = useParams();
   const [data, setData] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | RepoClassification>("all");
+  const [showTop, setShowTop] = useState(false);
+  const { username = "" } = useParams();
+
+  useEffect(() => {
+    const handleScroll = () => setShowTop(window.scrollY > 400);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -80,6 +88,21 @@ const Result = () => {
 
   return (
     <div className="container py-10">
+      {/* Back to Top */}
+      <AnimatePresence>
+        {showTop && (
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="fixed bottom-8 right-8 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-brand text-primary-foreground shadow-glow shadow-brand/40 transition-transform hover:scale-110 active:scale-95"
+          >
+            <ChevronUp className="h-6 w-6" />
+          </motion.button>
+        )}
+      </AnimatePresence>
+
       {/* Header */}
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
