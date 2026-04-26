@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ArrowRight, Loader2, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,7 @@ interface Props {
 export function AnalyzeForm({ defaultValue = "", large = false }: Props) {
   const [value, setValue] = useState(defaultValue);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const { username: currentUsername } = useParams();
 
   useEffect(() => {
     setValue(defaultValue);
@@ -31,8 +31,17 @@ export function AnalyzeForm({ defaultValue = "", large = false }: Props) {
       toast.error("Invalid GitHub username");
       return;
     }
-    setLoading(true);
-    navigate(`/result/${encodeURIComponent(cleaned)}`);
+
+    if (cleaned.toLowerCase() === currentUsername?.toLowerCase()) {
+      // If same user, just trigger a refresh by navigating to the same path with a hash or just let Result handle it
+      // Actually, if I navigate to the same path, useEffect in Result won't trigger if it only depends on [username]
+      // I'll add a timestamp to the navigate or just call a window reload if necessary, 
+      // but better to navigate to /result/user?refresh=...
+      navigate(`/result/${encodeURIComponent(cleaned)}?t=${Date.now()}`);
+    } else {
+      setLoading(true);
+      navigate(`/result/${encodeURIComponent(cleaned)}`);
+    }
   };
 
   return (
