@@ -63,7 +63,7 @@ function Feature({ icon: Icon, title, children }: { icon: any; title: string; ch
   return (
     <div className="hover-pop group rounded-2xl border border-border bg-card-grad p-6 shadow-sm transition-all duration-300 hover:shadow-glow">
       <div className="flex items-center gap-4">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand transition-colors group-hover:bg-brand group-hover:text-primary-foreground">
+        <div className="icon-pop flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-primary transition-all duration-300 group-hover:bg-brand group-hover:text-primary-foreground">
           <Icon className="h-6 w-6" />
         </div>
         <div>
