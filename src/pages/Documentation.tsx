@@ -65,7 +65,7 @@ export default function Documentation() {
 function SectionHeading({ icon: Icon, title }: { icon: any; title: string }) {
   return (
     <div className="hover-pop flex items-center gap-3">
-      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand text-primary-foreground shadow-glow">
+      <div className="icon-pop flex h-10 w-10 items-center justify-center rounded-xl bg-brand text-primary-foreground shadow-glow">
         <Icon className="h-5 w-5" />
       </div>
       <h2 className="font-display text-2xl font-bold">{title}</h2>
@@ -76,7 +76,7 @@ function SectionHeading({ icon: Icon, title }: { icon: any; title: string }) {
 function Step({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
   return (
     <li className="hover-pop flex gap-4 rounded-2xl border border-border bg-card-grad p-5">
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand font-mono text-sm font-bold text-primary-foreground">
+      <span className="icon-pop flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand font-mono text-sm font-bold text-primary-foreground">
         {n}
       </span>
       <div>
