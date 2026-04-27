@@ -23,7 +23,7 @@ const classColor: Record<string, [number, number, number]> = {
   archive: C.muted,
 };
 
-export function exportPdf(data: AnalysisResult) {
+export function exportPdf(data: AnalysisResult, faviconB64?: string) {
   // Using 'times' as the closest built-in serif font for 'Cambria Math'
   const FONT = "times";
   const doc = new jsPDF({ unit: "pt", format: "a4" });
@@ -106,15 +106,19 @@ export function exportPdf(data: AnalysisResult) {
     doc.rect(0, i * (bandH/4), W, bandH/4, "F");
   });
   
-  // Favicon (Small stylized cube)
+  // Favicon
   const fx = margin;
   const fy = 40;
-  setFill(C.white);
-  doc.rect(fx, fy - 12, 12, 12, "F");
-  setFill(C.brand);
-  doc.rect(fx + 2, fy - 10, 3, 3, "F");
-  doc.rect(fx + 7, fy - 10, 3, 3, "F");
-  doc.rect(fx + 4.5, fy - 5, 3, 3, "F");
+  if (faviconB64) {
+    try {
+      doc.addImage(faviconB64, "PNG", fx, fy - 12, 12, 12);
+    } catch (e) {
+      console.warn("Favicon render error", e);
+      setFill(C.white); doc.rect(fx, fy - 12, 12, 12, "F");
+    }
+  } else {
+    setFill(C.white); doc.rect(fx, fy - 12, 12, 12, "F");
+  }
 
   // Title
   doc.setFont(FONT, "bolditalic");
@@ -208,6 +212,35 @@ export function exportPdf(data: AnalysisResult) {
   });
 
   y += 95;
+
+  // Achievements
+  if (data.realAchievements && data.realAchievements.length > 0) {
+    sectionHeader("OFFICIAL GITHUB ACHIEVEMENTS", C.brand);
+    y -= 10;
+    const achW = (cardW - 10) / 2;
+    data.realAchievements.forEach((ach, i) => {
+      const col = i % 2;
+      const row = Math.floor(i / 2);
+      const ax = margin + col * (achW + 10);
+      const ay = y + row * 28;
+      
+      if (ay > H - margin - 40) { addFooter(); doc.addPage(); y = margin + 25; }
+
+      setFill(C.soft);
+      doc.roundedRect(ax, ay, achW, 22, 11, 11, "F");
+      setFill(C.brand);
+      doc.circle(ax + 11, ay + 11, 8, "F");
+      setText(C.white);
+      doc.setFontSize(5);
+      doc.text("A", ax + 9.5, ay + 12.5);
+      
+      setText(C.body);
+      doc.setFont(FONT, "bold");
+      doc.setFontSize(7.5);
+      doc.text(ach.toUpperCase(), ax + 25, ay + 14);
+    });
+    y += Math.ceil(data.realAchievements.length / 2) * 28 + 15;
+  }
 
   // Audit
   sectionHeader("TECHNICAL DIMENSION AUDIT", C.brand);
