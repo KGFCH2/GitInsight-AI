@@ -343,8 +343,8 @@ export async function analyzeProfile(username: string, force = false): Promise<A
     gh<{ login: string; avatar_url: string; html_url: string }[]>(`https://api.github.com/users/${cleaned}/followers?per_page=100${force ? `&t=${Date.now()}` : ""}`, force),
   ]);
 
-  if (user.login !== cleaned) {
-    throw new Error(`Username casing mismatch. Expected exactly "${cleaned}", but found "${user.login}". Please use the correct case.`);
+  if (user.login.toLowerCase() !== cleaned.toLowerCase()) {
+    throw new Error(`Username mismatch. Found "${user.login}", but expected "${cleaned}".`);
   }
 
   const score = computeScore(user, repos);
