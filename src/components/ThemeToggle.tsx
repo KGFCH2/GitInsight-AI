@@ -26,50 +26,46 @@ export function ThemeToggle() {
 
   return (
     <motion.button
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.92 }}
       onClick={toggle}
       className={cn(
-        "relative flex h-10 w-10 items-center justify-center rounded-full border border-border transition-colors duration-500",
+        "relative flex h-10 w-20 items-center rounded-full p-1 transition-all duration-500 realistic-switch",
         dark 
-          ? "bg-zinc-900 shadow-[0_0_15px_-3px_rgba(168,85,247,0.4)]" 
-          : "bg-white shadow-[0_0_15px_-3px_rgba(234,179,8,0.4)]"
+          ? "bg-zinc-900 border-purple-500/30 hover:shadow-glow-intense" 
+          : "bg-zinc-100 border-yellow-500/30 hover:shadow-glow-intense"
       )}
       aria-label="Toggle theme"
     >
-      {/* Dynamic background glow */}
-      <div className={cn(
-        "absolute inset-0 rounded-full blur-md transition-opacity duration-500",
-        dark ? "bg-purple-500/10" : "bg-yellow-500/10"
-      )} />
-
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={dark ? "dark" : "light"}
-          initial={{ y: 10, opacity: 0, rotate: -90 }}
-          animate={{ y: 0, opacity: 1, rotate: 0 }}
-          exit={{ y: -10, opacity: 0, rotate: 90 }}
-          transition={{ 
-            type: "spring",
-            stiffness: 300,
-            damping: 20
-          }}
-          className="relative z-10"
-        >
-          {dark ? (
-            <Moon className="h-[1.1rem] w-[1.1rem] text-purple-400" />
-          ) : (
-            <Sun className="h-[1.1rem] w-[1.1rem] text-yellow-500" />
-          )}
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Futuristic ring animation */}
       <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-        className="absolute inset-0 rounded-full border border-dashed border-border/40"
-      />
+        layout
+        className={cn(
+          "z-10 flex h-8 w-8 items-center justify-center rounded-full shadow-lg transition-colors duration-500",
+          dark ? "bg-purple-600 ml-auto" : "bg-yellow-400 mr-auto"
+        )}
+      >
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={dark ? "dark" : "light"}
+            initial={{ scale: 0.5, opacity: 0, rotate: -45 }}
+            animate={{ scale: 1, opacity: 1, rotate: 0 }}
+            exit={{ scale: 0.5, opacity: 0, rotate: 45 }}
+            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+          >
+            {dark ? (
+              <Moon className="h-4 w-4 text-white" />
+            ) : (
+              <Sun className="h-4 w-4 text-white" />
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </motion.div>
+
+      {/* Internal Track Icons */}
+      <div className="absolute inset-0 flex items-center justify-between px-2.5 opacity-40">
+        <Sun className={cn("h-3.5 w-3.5", dark ? "text-muted-foreground" : "text-yellow-600")} />
+        <Moon className={cn("h-3.5 w-3.5", dark ? "text-purple-400" : "text-muted-foreground")} />
+      </div>
     </motion.button>
   );
 }

@@ -168,7 +168,7 @@ const Result = () => {
       </AnimatePresence>
 
       {/* Header */}
-      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-8 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-start">
         <div>
           <div className="text-xs uppercase tracking-widest text-muted-foreground">Public Profile Report</div>
           <h1 className="font-display text-3xl font-bold sm:text-4xl">
@@ -182,13 +182,13 @@ const Result = () => {
             </a>
           </h1>
         </div>
-        <div className="flex w-full max-w-lg flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
+        <div className="flex w-full max-w-md flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
           <AnalyzeForm defaultValue={username} />
           {data && (
             <Button
               variant="outline"
               size="icon"
-              className="group h-11 w-11 shrink-0 rounded-xl transition-all duration-500 hover:rotate-12 hover:scale-110 hover:border-brand/60 hover:bg-brand/10 hover:shadow-glow dark:border-border/60"
+              className="group h-11 w-11 shrink-0 rounded-xl transition-all duration-500 hover:rotate-12 hover:scale-110 hover:border-brand/60 hover:bg-brand/10 hover:shadow-glow-intense dark:border-border/60"
               onClick={() => loadData(true)}
               disabled={loading}
               title="Refresh latest data"
@@ -339,24 +339,48 @@ const Result = () => {
                 <span className="text-muted-foreground">•</span>
                 <span className="italic text-brand-1">Click tiles for deep analysis</span>
               </div>
+            </motion.div>
 
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Button 
-                  onClick={share} 
-                  size="sm" 
-                  className="gap-2 bg-blue-600 font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400"
-                >
-                  <Share2 className="h-4 w-4" /> Share
-                </Button>
-                <Button 
-                  onClick={handleExport} 
-                  size="sm" 
-                  className="gap-2 bg-emerald-600 font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-400"
-                >
-                  <Download className="h-4 w-4" /> Export PDF
-                </Button>
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="rounded-2xl border border-border bg-card-grad p-6 shadow-elev flex flex-col items-center justify-center"
+            >
+              <div className="flex flex-col items-center gap-6 w-full">
+                <ScoreRing value={data.score.total} />
+                <div className="w-full">
+                  <ScoreBreakdownChart
+                    data={[
+                      { label: "Popularity", value: data.score.breakdown.popularity, max: 25 },
+                      { label: "Activity", value: data.score.breakdown.activity, max: 20 },
+                      { label: "Breadth", value: data.score.breakdown.breadth, max: 15 },
+                      { label: "Quality", value: data.score.breakdown.quality, max: 20 },
+                      { label: "Community", value: data.score.breakdown.community, max: 10 },
+                      { label: "Tenure", value: data.score.breakdown.tenure, max: 10 },
+                    ]}
+                  />
+                </div>
               </div>
             </motion.div>
+          </div>
+
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Button 
+              onClick={share} 
+              size="sm" 
+              className="gap-2 bg-blue-600 font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400"
+            >
+              <Share2 className="h-4 w-4" /> Share
+            </Button>
+            <Button 
+              onClick={handleExport} 
+              size="sm" 
+              className="gap-2 bg-emerald-600 font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-400"
+            >
+              <Download className="h-4 w-4" /> Export PDF
+            </Button>
+          </div>
 
           </div>
 
@@ -400,12 +424,12 @@ const Result = () => {
           {/* Tabs */}
             <div className="mt-10">
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="mb-6 grid w-full grid-cols-2 lg:grid-cols-4">
-                  <TabsTrigger value="ai" className="gap-2"><TrendingUp className="h-4 w-4" /> Strategic View</TabsTrigger>
-                  <TabsTrigger value="repos" className="gap-2"><Sparkles className="h-4 w-4" /> Repositories</TabsTrigger>
-                  <TabsTrigger value="badges" className="gap-2"><Crown className="h-4 w-4" /> Achievements & Badges</TabsTrigger>
-                  <TabsTrigger value="audit" className="gap-2"><Lightbulb className="h-4 w-4" /> Technical Audit</TabsTrigger>
-                </TabsList>
+          <TabsList className="mb-6 grid w-full grid-cols-2 lg:grid-cols-4">
+            <TabsTrigger value="ai" className="gap-2"><TrendingUp className="h-4 w-4" /> Strategic View</TabsTrigger>
+            <TabsTrigger value="recruiter" className="gap-2"><Users className="h-4 w-4" /> Recruiter Perspective</TabsTrigger>
+            <TabsTrigger value="badges" className="gap-2"><Crown className="h-4 w-4" /> Achievements & Badges</TabsTrigger>
+            <TabsTrigger value="repos" className="gap-2"><Sparkles className="h-4 w-4" /> Public Repositories</TabsTrigger>
+          </TabsList>
 
                 <TabsContent value="ai" className="mt-6 space-y-6">
                 {data.ai.summary && (
@@ -421,25 +445,28 @@ const Result = () => {
                     <BulletList items={data.ai.weaknesses} iconType="warning" />
                   </Card>
                 </div>
-                <Card title="Action Steps" icon={Sparkles}>
-                  <BulletList items={data.ai.actionSteps} numbered iconType="step" />
-                </Card>
-                {data.bestRepo && data.ai.readmeTips?.length > 0 && (
-                  <Card title={`README tips for ${data.bestRepo.name}`} icon={Lightbulb}>
-                    <BulletList items={data.ai.readmeTips} iconType="tip" />
+                  <Card title="Action Steps" icon={Sparkles}>
+                    <BulletList items={data.ai.actionSteps} numbered iconType="step" />
                   </Card>
-                )}
-                {data.ai.projectIdeas?.length > 0 && (
-                  <Card title="Project Ideas" icon={Sparkles}>
-                    <BulletList items={data.ai.projectIdeas} iconType="idea" />
+                  {data.bestRepo && data.ai.readmeTips?.length > 0 && (
+                    <Card title={`README tips for ${data.bestRepo.name}`} icon={Lightbulb}>
+                      <BulletList items={data.ai.readmeTips} iconType="tip" />
+                    </Card>
+                  )}
+                  {data.ai.projectIdeas?.length > 0 && (
+                    <Card title="Project Ideas" icon={Sparkles}>
+                      <BulletList items={data.ai.projectIdeas} iconType="idea" />
+                    </Card>
+                  )}
+                </TabsContent>
+
+                <TabsContent value="recruiter" className="mt-6">
+                  <Card title="Recruiter View" icon={Users}>
+                    <p className="leading-relaxed text-muted-foreground italic">
+                      {data.ai.recruiterInsights || "No recruiter insights generated."}
+                    </p>
                   </Card>
-                )}
-                <Card title="Recruiter Perspective" icon={Users}>
-                  <p className="leading-relaxed text-muted-foreground italic">
-                    {data.ai.recruiterInsights || "No recruiter insights generated."}
-                  </p>
-                </Card>
-              </TabsContent>
+                </TabsContent>
 
 
               <TabsContent value="repos" id="repos-list" className="mt-6">
@@ -742,22 +769,27 @@ function BulletList({
   
   const getIcon = (i: number) => {
     if (numbered) return <span className="text-xs font-black">{i + 1}</span>;
-    if (iconType === "success") return <TrendingUp className="h-3 w-3 text-success" />;
-    if (iconType === "warning") return <Lightbulb className="h-3 w-3 text-warning" />;
-    if (iconType === "step") return <Sparkles className="h-3 w-3 text-brand-1" />;
-    if (iconType === "tip") return <Lightbulb className="h-3 w-3 text-amber" />;
-    if (iconType === "idea") return <Sparkles className="h-3 w-3 text-blue" />;
+    
+    // Diverse icons for variety
+    const icons = [Sparkles, Zap, Target, Award, ShieldCheck, Gauge, Lightbulb];
+    const IconComp = icons[i % icons.length];
+
+    if (iconType === "success") return <IconComp className="h-3 w-3 text-success" />;
+    if (iconType === "warning") return <IconComp className="h-3 w-3 text-warning" />;
+    if (iconType === "step") return <IconComp className="h-3 w-3 text-brand-1" />;
+    if (iconType === "tip") return <IconComp className="h-3 w-3 text-amber" />;
+    if (iconType === "idea") return <IconComp className="h-3 w-3 text-blue" />;
     return <div className="h-1.5 w-1.5 rounded-full bg-brand-1" />;
   };
 
   return (
-    <ol className="space-y-3">
+    <ol className="space-y-4">
       {items.map((it, i) => (
-        <li key={i} className="flex gap-3 text-sm leading-relaxed group">
-          <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-muted/50 group-hover:bg-brand/10 group-hover:text-brand transition-colors">
+        <li key={i} className="flex gap-4 text-sm leading-relaxed group">
+          <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-xl bg-muted/40 shadow-sm border border-border/40 group-hover:bg-brand/10 group-hover:text-brand group-hover:shadow-glow-intense group-hover:scale-110 transition-all duration-300">
             {getIcon(i)}
           </div>
-          <span className="text-foreground/80 group-hover:text-foreground transition-colors">{it}</span>
+          <span className="flex-1 text-foreground/80 group-hover:text-foreground group-hover:translate-x-1 transition-all duration-300">{it}</span>
         </li>
       ))}
     </ol>

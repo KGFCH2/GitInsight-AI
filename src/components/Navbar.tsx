@@ -54,7 +54,7 @@ export function Navbar() {
         className={cn(
           "transition-all duration-500",
           scrolled 
-            ? "mx-4 flex w-full max-w-4xl items-center rounded-full border border-border/50 bg-background/60 py-2 shadow-glow backdrop-blur-xl" 
+            ? "mx-4 flex w-full max-w-5xl items-center rounded-full border border-border/40 bg-background/40 py-2 shadow-glow-intense backdrop-blur-2xl" 
             : "w-full border-b border-border/0 bg-transparent py-2"
         )}
       >
@@ -85,7 +85,7 @@ export function Navbar() {
                   onClick={isHome ? handleHomeClick : undefined}
                   className={({ isActive }) =>
                     cn(
-                      "rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-200 hover:-translate-y-0.5 hover:bg-muted hover:text-foreground hover:shadow-sm",
+                      "rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-200 hover:-translate-y-0.5 hover:bg-muted/40 hover:text-foreground hover:shadow-sm",
                       (isActive || (l.to === "/analyze" && loc.pathname.startsWith("/result"))) &&
                         "bg-muted text-foreground shadow-sm",
                     )
@@ -103,7 +103,7 @@ export function Navbar() {
               href="https://github.com/KGFCH2/GitInsight-AI"
               target="_blank"
               rel="noreferrer"
-              className="icon-pop hidden h-9 w-9 items-center justify-center rounded-full border border-border bg-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-1/60 hover:bg-muted hover:shadow-glow sm:inline-flex"
+              className="icon-pop flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-1/80 hover:bg-muted hover:shadow-glow-intense"
               aria-label="GitHub"
             >
               <Github className="h-4 w-4" />

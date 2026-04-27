@@ -36,8 +36,8 @@ export function Footer() {
         </div>
 
         <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
-          <div>© {new Date().getFullYear()} GitInsight AI · Built for AICore Connect Hackathon by UnsaidTalks Education</div>
-          <div className="font-mono">v1.0.0</div>
+          <div>© {new Date().getFullYear()} GitInsight AI · A Professional Developer Analytics Platform</div>
+          <div className="font-mono">v1.2.0</div>
         </div>
       </div>
     </footer>

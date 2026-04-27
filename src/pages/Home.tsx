@@ -105,7 +105,7 @@ const Home = () => {
                 <span>AI-powered • Gemini + Groq</span>
               </div>
               <div className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand/10 px-3 py-1 text-xs font-bold text-brand backdrop-blur">
-                <span>AICore Connect Hackathon • UnsaidTalks</span>
+                <span>Enterprise-Ready • Scalable Analytics</span>
               </div>
             </div>
             <h1 className="hover-pop font-display text-5xl font-bold leading-[1.05] tracking-tight text-foreground dark:text-white drop-shadow-lg sm:text-6xl md:text-7xl">
