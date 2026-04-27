@@ -146,10 +146,10 @@ export function exportPdf(data: AnalysisResult) {
     setText(C.muted);
     const valStr = `${m.v}/${m.m}`;
     doc.text(valStr, W - margin - doc.getTextWidth(valStr), y + 9);
-    y += 18;
+    y += 22;
   });
 
-  y += 15;
+  y += 20;
 
   // Stack Specialization
   if (data.score.stats.langDetails?.length) {
@@ -160,7 +160,7 @@ export function exportPdf(data: AnalysisResult) {
       doc.setFont("courier", "normal");
       doc.setFontSize(8.5);
       const lw = doc.getTextWidth(label) + 18;
-      if (lx + lw > W - margin) { lx = margin; y += 22; }
+      if (lx + lw > W - margin) { lx = margin; y += 28; }
       roundedRect(lx, y, lw, 16, 4, C.soft);
       setFill(C.accent);
       doc.rect(lx + 3, y + 3, 2, 10, "F");
@@ -168,7 +168,7 @@ export function exportPdf(data: AnalysisResult) {
       doc.text(label, lx + 9, y + 11);
       lx += lw + 6;
     });
-    y += 30;
+    y += 35;
   }
 
   // Executive Overview
@@ -185,7 +185,7 @@ export function exportPdf(data: AnalysisResult) {
       doc.setFont("helvetica", "bold");
       doc.setFontSize(8);
       const tw = doc.getTextWidth(b) + 14;
-      if (bx + tw > W - margin) { bx = margin; y += 22; }
+      if (bx + tw > W - margin) { bx = margin; y += 28; }
       roundedRect(bx, y, tw, 16, 8, C.success);
       setText(C.white);
       doc.text(b, bx + 7, y + 10.5);
@@ -202,11 +202,11 @@ export function exportPdf(data: AnalysisResult) {
   doc.rect(0, 0, W, 4, "F");
 
   bulletSection("✅ KEY STRENGTHS", data.ai.strengths, C.success, ">>");
-  y += 20; // Increased gap
+  y += 25;
   bulletSection("⚠️ IMPROVEMENT VECTORS", data.ai.weaknesses, C.danger, "!!");
-  y += 20; // Increased gap
+  y += 25;
   bulletSection("🚀 GROWTH STRATEGY", data.ai.actionSteps, C.warning, "->");
-  y += 30; // Increased gap
+  y += 35;
 
   if (data.ai.recruiterInsights) {
     sectionHeader("💼 TECHNICAL RECRUITER'S PERSPECTIVE", C.accent);
@@ -259,7 +259,7 @@ export function exportPdf(data: AnalysisResult) {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9.5);
       setText(C.body);
-      doc.text(lines.slice(0, 3), margin + 15, metaY + 16);
+      doc.text(lines.slice(0, 3), margin + 15, metaY + 16, { lineHeightFactor: 1.5 });
     }
 
     if (r.improvementNote) {
@@ -267,7 +267,7 @@ export function exportPdf(data: AnalysisResult) {
       doc.setFont("helvetica", "bolditalic");
       doc.setFontSize(8.5);
       setText(C.warning);
-      doc.text(tipLines, margin + 20, tipY);
+      doc.text(tipLines, margin + 20, tipY, { lineHeightFactor: 1.5 });
     }
 
     y += h + 18;
@@ -289,21 +289,21 @@ export function exportPdf(data: AnalysisResult) {
     doc.setFontSize(11);
     setText(C.ink);
     doc.text(title, margin + 12, y + 11);
-    y += 25;
+    y += 32;
   }
 
   function calloutBox(text: string, color: [number, number, number], font: "helvetica" | "times" | "courier" = "helvetica", maxH?: number) {
     doc.setFont(font, font === "times" ? "italic" : "normal");
     doc.setFontSize(10);
     const lines = doc.splitTextToSize(text, cardW - 30);
-    let h = lines.length * 14 + 18;
+    let h = lines.length * 15 + 18;
     if (maxH && h > maxH) h = maxH;
     roundedRect(margin, y, cardW, h, 8, C.soft);
     setDraw(color);
     doc.setLineWidth(0.5);
     doc.roundedRect(margin, y, cardW, h, 8, 8, "S");
     setText(C.body);
-    doc.text(lines, margin + 15, y + 16, { maxWidth: cardW - 30, lineHeightFactor: 1.45 });
+    doc.text(lines, margin + 15, y + 16, { maxWidth: cardW - 30, lineHeightFactor: 1.5 });
     y += h + 22;
   }
 
@@ -313,13 +313,13 @@ export function exportPdf(data: AnalysisResult) {
     items.forEach(it => {
       doc.setFont("helvetica", "normal");
       const lines = doc.splitTextToSize(it, cardW - 35);
-      const h = lines.length * 15 + 4;
+      const h = lines.length * 16 + 4;
       setText(color);
       doc.setFont("courier", "bold");
       doc.text(sym, margin + 5, y + 10);
       setText(C.body);
       doc.setFont("helvetica", "normal");
-      doc.text(lines, margin + 28, y + 10, { lineHeightFactor: 1.4 });
+      doc.text(lines, margin + 28, y + 10, { lineHeightFactor: 1.5 });
       y += h;
     });
     y += 12;
