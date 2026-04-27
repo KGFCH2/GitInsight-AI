@@ -93,95 +93,56 @@ export function exportPdf(data: AnalysisResult) {
     doc.roundedRect(x, yy, w, h, r, r, style);
   };
 
-  // BOLD HEADER OVERHAUL
-  const bandH = 120;
-  
-  // Layer 1: Base
+  // ELEGANT MINIMALIST HEADER
+  const bandH = 100;
   setFill(C.brandDark);
   doc.rect(0, 0, W, bandH, "F");
   
-  // Layer 2: Gradient Slash (Drawn with triangles as polygon is not in base types)
+  // Subtle Accent line
   setFill(C.brand);
-  doc.triangle(W*0.3, 0, W, 0, W, bandH, "F");
-  doc.triangle(W*0.3, 0, W, bandH, W*0.1, bandH, "F");
+  doc.rect(0, bandH - 2, W, 2, "F");
   
-  // Layer 3: Tech Scan Lines
-  doc.setLineWidth(0.5);
-  doc.setGState(new (doc as any).GState({ opacity: 0.15 }));
-  setDraw(C.white);
-  for(let i=0; i<W+bandH; i+=8) {
-    doc.line(i, 0, i - bandH, bandH);
-  }
-  
-  // Technical DNA (Network nodes)
-  const nodes = [
-    {x: W-80, y: 30}, {x: W-120, y: 70}, {x: W-40, y: 80}, {x: W-100, y: 110}, {x: W-60, y: 40}
-  ];
-  nodes.forEach((n, i) => {
-    doc.circle(n.x, n.y, 1.5, "S");
-    nodes.slice(i+1).forEach(m => {
-      if (Math.hypot(n.x-m.x, n.y-m.y) < 80) doc.line(n.x, n.y, m.x, m.y);
-    });
-  });
-
-  // Subtle Code Symbol background
-  doc.setFontSize(70);
-  doc.text("</>", W - 140, 95);
-  doc.setGState(new (doc as any).GState({ opacity: 1.0 }));
-
-  // Large Insight Icon (Magnifying Glass)
-  const iconX = W - margin - 40;
-  const iconY = 35;
-  setDraw(C.white);
-  doc.setLineWidth(2);
-  doc.circle(iconX, iconY, 12, "S");
-  doc.line(iconX + 8, iconY + 8, iconX + 16, iconY + 16);
-  doc.setLineWidth(1);
-  doc.line(iconX - 4, iconY - 2, iconX + 4, iconY - 2);
-  doc.line(iconX - 4, iconY + 2, iconX + 4, iconY + 2);
-
-  // Sidebar Segments
+  // Continuous sidebar
   setFill(C.brand);
-  for(let i=0; i<H; i+=40) { doc.rect(0, i, 4, 20, "F"); }
-  
+  doc.rect(0, 0, 6, H, "F");
+
   // Title
   doc.setFont(FONT, "bolditalic");
-  doc.setFontSize(32);
+  doc.setFontSize(30);
   setText(C.white);
-  doc.text("GITINSIGHT AI", margin + 12, 50);
+  doc.text("GITINSIGHT AI", margin + 15, 45);
   
   doc.setFont(FONT, "normal");
-  doc.setFontSize(11);
-  doc.text("Professional Developer Profile Audit Report", margin + 12, 68);
+  doc.setFontSize(10);
+  doc.text("Professional Developer Profile Audit Report", margin + 15, 60);
 
-  // Decorative Premium Seal
-  const sealX = W - margin - 85;
-  const sealY = 75;
+  // Minimalist Audit Seal
+  const sealX = W - margin - 40;
+  const sealY = 35;
   setDraw(C.white);
-  doc.setLineWidth(1);
-  doc.circle(sealX + 35, sealY + 15, 25, "S");
-  doc.setFontSize(6);
+  doc.setLineWidth(0.5);
+  doc.circle(sealX, sealY, 15, "S");
+  doc.setFontSize(5);
   setText(C.white);
-  doc.text("PREMIUM", sealX + 22, sealY + 13);
-  doc.text("AUDIT", sealX + 26, sealY + 21);
+  doc.text("AUDIT", sealX - 8, sealY - 1);
+  doc.text("VERIFIED", sealX - 11, sealY + 5);
 
   const handle = `@${data.user.login}${data.user.name ? ` • ${data.user.name}` : ""}`;
   doc.setFont(FONT, "bold");
-  doc.setFontSize(11);
-  const pillW = doc.getTextWidth(handle) + 24;
-  roundedRect(margin + 12, 85, pillW, 22, 11, [255, 255, 255]);
+  doc.setFontSize(10);
+  const pillW = doc.getTextWidth(handle) + 20;
+  roundedRect(margin + 15, 72, pillW, 18, 9, [255, 255, 255]);
   setText(C.brand);
-  doc.text(handle, margin + 24, 100);
+  doc.text(handle, margin + 25, 84);
 
   y = bandH + 25;
 
-  // Score Summary Card with Elevation
+  // Score Summary Card
   const cardW = W - margin * 2;
-  roundedRect(margin + 2, y + 2, cardW, 80, 8, [230, 235, 255]); // Shadow
-  roundedRect(margin, y, cardW, 80, 8, C.soft);
+  roundedRect(margin + 15, y, cardW - 15, 75, 8, C.soft);
   setDraw(C.border);
   doc.setLineWidth(0.5);
-  doc.roundedRect(margin, y, cardW, 80, 8, 8, "S");
+  doc.roundedRect(margin + 15, y, cardW - 15, 75, 8, 8, "S");
 
   const cx = margin + 45;
   const cy = y + 37;
