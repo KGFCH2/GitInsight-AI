@@ -15,10 +15,15 @@ import {
   Sparkles,
   Star,
   TrendingUp,
+  Target,
   Users,
   ChevronUp,
   RefreshCw,
   X,
+  Zap,
+  Award,
+  ShieldCheck,
+  Gauge,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -382,8 +387,6 @@ const Result = () => {
             </Button>
           </div>
 
-          </div>
-
           {/* Best Repo */}
           {data.bestRepo && (
             <div className="mt-6 overflow-hidden rounded-2xl border border-brand-1/40 bg-card-grad p-6 shadow-glow">
@@ -445,8 +448,18 @@ const Result = () => {
                     <BulletList items={data.ai.weaknesses} iconType="warning" />
                   </Card>
                 </div>
-                  <Card title="Action Steps" icon={Sparkles}>
-                    <BulletList items={data.ai.actionSteps} numbered iconType="step" />
+                  </Card>
+                  <Card title="Dimension Analysis" icon={Lightbulb}>
+                    <div className="grid gap-6 sm:grid-cols-2">
+                      <div className="space-y-1">
+                        <div className="text-xs font-bold uppercase text-success">Popularity & Reach</div>
+                        <p className="text-sm text-muted-foreground">Measures star count, forks, and follower velocity across all public contributions.</p>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="text-xs font-bold uppercase text-warning">Quality & Documentation</div>
+                        <p className="text-sm text-muted-foreground">Evaluates README depth, repository topics, licensing, and homepage availability.</p>
+                      </div>
+                    </div>
                   </Card>
                   {data.bestRepo && data.ai.readmeTips?.length > 0 && (
                     <Card title={`README tips for ${data.bestRepo.name}`} icon={Lightbulb}>
@@ -529,44 +542,6 @@ const Result = () => {
                   </h3>
                   <BadgeGrid badges={data.badges} />
                 </div>
-              </TabsContent>
-              <TabsContent value="audit" className="mt-6 space-y-6">
-                <div className="rounded-2xl border border-border bg-card-grad p-8 shadow-elev">
-                  <div className="flex flex-col items-center gap-10 lg:flex-row lg:justify-around">
-                    <div className="flex flex-col items-center gap-4">
-                      <ScoreRing value={data.score.total} />
-                      <div className="text-center">
-                        <div className="text-sm font-black uppercase tracking-tighter text-muted-foreground">Overall Reliability</div>
-                        <div className="font-display text-2xl font-black text-brand-1">{data.score.total}/100</div>
-                      </div>
-                    </div>
-                    <div className="w-full max-w-md">
-                      <ScoreBreakdownChart
-                        data={[
-                          { label: "Popularity", value: data.score.breakdown.popularity, max: 25 },
-                          { label: "Activity", value: data.score.breakdown.activity, max: 20 },
-                          { label: "Breadth", value: data.score.breakdown.breadth, max: 15 },
-                          { label: "Quality", value: data.score.breakdown.quality, max: 20 },
-                          { label: "Community", value: data.score.breakdown.community, max: 10 },
-                          { label: "Tenure", value: data.score.breakdown.tenure, max: 10 },
-                        ]}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <Card title="Dimension Analysis" icon={Lightbulb}>
-                  <div className="grid gap-6 sm:grid-cols-2">
-                    <div className="space-y-1">
-                      <div className="text-xs font-bold uppercase text-success">Popularity & Reach</div>
-                      <p className="text-sm text-muted-foreground">Measures star count, forks, and follower velocity across all public contributions.</p>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="text-xs font-bold uppercase text-warning">Quality & Documentation</div>
-                      <p className="text-sm text-muted-foreground">Evaluates README depth, repository topics, licensing, and homepage availability.</p>
-                    </div>
-                  </div>
-                </Card>
               </TabsContent>
             </Tabs>
           </div>
