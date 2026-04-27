@@ -56,14 +56,19 @@ const Result = () => {
   }, []);
 
   const loadData = (isRefresh = false) => {
+    const params = new URLSearchParams(location.search);
+    const fromHistory = params.get("from") === "history";
+    
     setLoading(true);
     setError(null);
-    if (!isRefresh) {
+    if (!isRefresh && !fromHistory) {
       setData(null);
       setIsRefreshing(false);
     } else {
       setIsRefreshing(true);
     }
+
+    // Task 1: analyzeProfile will skip AI re-analysis if force is false and cache exists
     analyzeProfile(username, isRefresh)
       .then((r) => {
         setData(r);
@@ -96,6 +101,23 @@ const Result = () => {
       }
     } catch {
       // user cancelled
+    }
+  };
+
+  // Task 3: Load actual favicon for PDF export
+  const handleExport = async () => {
+    if (!data) return;
+    try {
+      const resp = await fetch("/favicon.png");
+      const blob = await resp.blob();
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        exportPdf(data, reader.result as string);
+      };
+      reader.readAsDataURL(blob);
+    } catch (e) {
+      console.warn("Failed to load favicon for PDF", e);
+      exportPdf(data);
     }
   };
 
@@ -291,7 +313,7 @@ const Result = () => {
                   <Share2 className="h-4 w-4" /> Share
                 </Button>
                 <Button 
-                  onClick={() => exportPdf(data)} 
+                  onClick={handleExport} 
                   size="sm" 
                   className="gap-2 bg-emerald-600 font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-400"
                 >
@@ -437,8 +459,37 @@ const Result = () => {
                 )}
               </TabsContent>
 
-              <TabsContent value="badges" className="mt-6">
-                <BadgeGrid badges={data.badges} />
+              <TabsContent value="badges" className="mt-6 space-y-10">
+                <div className="space-y-4">
+                  <h3 className="font-display text-xl font-bold flex items-center gap-2">
+                    <Crown className="h-5 w-5 text-brand-1" /> GitHub Achievements
+                  </h3>
+                  <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                    {data.realAchievements?.map(a => (
+                      <div key={a} className="group relative flex flex-col items-center justify-center rounded-2xl border border-border bg-muted/30 p-6 text-center transition-all hover:-translate-y-1 hover:border-brand-1/40 hover:bg-card">
+                        <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-brand/10 p-2 shadow-inner group-hover:scale-110 transition-transform">
+                          {a.includes("Vault") && <img src="https://github.githubassets.com/images/modules/profile/achievements/arctic-code-vault-contributor-default.png" className="h-10 w-10" />}
+                          {a.includes("Shark") && <img src="https://github.githubassets.com/images/modules/profile/achievements/pull-shark-default.png" className="h-10 w-10" />}
+                          {a.includes("YOLO") && <img src="https://github.githubassets.com/images/modules/profile/achievements/yolo-default.png" className="h-10 w-10" />}
+                          {a.includes("Pair") && <img src="https://github.githubassets.com/images/modules/profile/achievements/pair-extraordinaire-default.png" className="h-10 w-10" />}
+                          {a.includes("Starstruck") && <img src="https://github.githubassets.com/images/modules/profile/achievements/starstruck-default.png" className="h-10 w-10" />}
+                          {a.includes("Galaxy") && <img src="https://github.githubassets.com/images/modules/profile/achievements/galaxy-brain-default.png" className="h-10 w-10" />}
+                        </div>
+                        <div className="text-xs font-black tracking-tight uppercase group-hover:text-brand-1">{a}</div>
+                      </div>
+                    ))}
+                    {(!data.realAchievements || data.realAchievements.length === 0) && (
+                      <p className="col-span-full py-10 text-center text-sm text-muted-foreground">Keep coding to unlock more achievements!</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <h3 className="font-display text-xl font-bold flex items-center gap-2">
+                    <Sparkles className="h-5 w-5 text-brand-1" /> AI Badges
+                  </h3>
+                  <BadgeGrid badges={data.badges} />
+                </div>
               </TabsContent>
             </Tabs>
           </div>
