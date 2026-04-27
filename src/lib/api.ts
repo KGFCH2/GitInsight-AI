@@ -155,9 +155,10 @@ function deriveBadges(user: GhUser, repos: GhRepo[], score: number): string[] {
 async function callGemini(prompt: string): Promise<string | null> {
   if (GEMINI_KEYS.length === 0) return null;
 
-  // Use stable models and endpoints. 1.5-flash is most available.
+  // Optimized model list with fallbacks to avoid 404/429
   const modelConfigs = [
     { name: "gemini-1.5-flash", version: "v1" },
+    { name: "gemini-1.5-flash-8b", version: "v1" },
     { name: "gemini-1.5-flash", version: "v1beta" },
     { name: "gemini-1.5-pro", version: "v1" },
     { name: "gemini-2.0-flash-exp", version: "v1beta" }
@@ -187,8 +188,7 @@ async function callGemini(prompt: string): Promise<string | null> {
         } else {
           const err = await r.json().catch(() => ({ error: { message: "Unknown error" } }));
           console.warn(`Gemini ${config.name} (${config.version}) error:`, err.error?.message || "Unknown error");
-          // If it's a 429 (quota), try the next KEY immediately rather than the next model on the same key
-          if (r.status === 429) break; 
+          if (r.status === 429) break; // Next key
         }
       } catch (e) {
         console.error(`Gemini fetch error with key ${key.substring(0, 6)}...`, e);
@@ -217,30 +217,80 @@ async function callGroq(prompt: string): Promise<string | null> {
         temperature: 0.7,
       }),
     });
-    if (!r.ok) return null;
+    if (!r.ok) {
+      const err = await r.text();
+      console.warn("Groq error:", err);
+      return null;
+    }
     const j = await r.json();
     return j.choices?.[0]?.message?.content ?? null;
-  } catch {
+  } catch (e) {
+    console.error("Groq error:", e);
     return null;
   }
 }
 
-function buildAiPrompt(payload: unknown): string {
-  return `You are a senior tech recruiter and engineering mentor analyzing a GitHub profile.
-Return ONLY a JSON object with this exact shape (no markdown, no commentary):
-{
-  "summary": "2-3 sentence profile summary, confident and specific",
-  "strengths": ["3-5 short bullet points"],
-  "weaknesses": ["3-5 short bullet points"],
-  "recruiterInsights": "1 paragraph from a recruiter's perspective on hireability and fit",
-  "actionSteps": ["4-6 concrete improvement actions"],
-  "readmeTips": ["3-4 specific README improvement tips for the best repo"],
-  "projectIdeas": ["3 portfolio project ideas tailored to their stack"],
-  "repoSuggestions": { "RepoName": "1 specific tip to improve this repo" }
+/**
+ * Heuristic fallback for when all AI models fail due to quota/network.
+ * Generates a professional, contextual report based on GitHub metrics.
+ */
+function generateHeuristicAi(data: any): AiInsights {
+  const isHigh = data.score >= 70;
+  const isMedium = data.score >= 40;
+  const login = data.user.login;
+
+  return {
+    summary: `${data.user.name || login} is a ${isHigh ? "highly skilled" : isMedium ? "dedicated" : "growing"} developer with a strong foundation in their tech stack. Their GitHub profile reflects a ${isHigh ? "top-tier" : "consistent"} commitment to building and scaling software projects.`,
+    strengths: [
+      isHigh ? "Exceptional project complexity and architecture" : "Consistent repository contributions",
+      "Demonstrated ability to work across multiple technologies",
+      "Clean profile organization and repository management",
+      "Established history of version control best practices"
+    ],
+    weaknesses: [
+      "README documentation could be more detailed",
+      "Could benefit from more social engagement (stars/forks)",
+      "Project tagging (topics) could be more comprehensive",
+      "Repository activity spikes suggest occasional breaks"
+    ],
+    recruiterInsights: `As a recruiter, @${login} stands out as a ${isHigh ? "high-potential" : "reliable"} engineer. Their ${data.user.publicRepos} public repositories show a history of experimentation and delivery. Focus on their work in ${data.bestRepo?.name || "their latest repo"} to evaluate specific code quality.`,
+    actionSteps: [
+      "Standardize README.md files with install and usage guides",
+      "Add 'topics' to all repositories to improve searchability",
+      "Contribute to trending open-source projects in your field",
+      "Deploy live demos for your best frontend projects",
+      "Ensure all major projects have an appropriate LICENSE"
+    ],
+    readmeTips: [
+      "Include a clear 'Features' checklist",
+      "Add high-quality screenshots or demo GIFs",
+      "Write a 'Tech Stack' section explaining your choices"
+    ],
+    projectIdeas: [
+      "Build a real-time collaborative tool in your primary language",
+      "Develop a developer utility CLI published to a package manager",
+      "Create a full-stack dashboard with advanced data visualization"
+    ],
+    repoSuggestions: {}
+  };
 }
 
-Profile data:
-${JSON.stringify(payload, null, 2)}`;
+function buildAiPrompt(payload: unknown): string {
+  return `You are a senior tech recruiter and engineering mentor.
+Return ONLY a JSON object:
+{
+  "summary": "2-3 sentence profile summary",
+  "strengths": ["3-5 bullets"],
+  "weaknesses": ["3-5 bullets"],
+  "recruiterInsights": "1 paragraph",
+  "actionSteps": ["4-6 actions"],
+  "readmeTips": ["3 tips"],
+  "projectIdeas": ["3 ideas"],
+  "repoSuggestions": { "RepoName": "1 tip" }
+}
+
+Data:
+${JSON.stringify(payload)}`;
 }
 
 function safeParseJson(text: string): Record<string, unknown> | null {
@@ -265,7 +315,6 @@ export async function analyzeProfile(username: string, force = false): Promise<A
     throw new Error("Invalid GitHub username format");
   }
 
-  // Parallelize GitHub data fetching for faster load balancing performance
   const [user, repos, starred, followers] = await Promise.all([
     gh<GhUser>(`https://api.github.com/users/${cleaned}`, force),
     gh<GhRepo[]>(`https://api.github.com/users/${cleaned}/repos?per_page=100&sort=updated${force ? `&t=${Date.now()}` : ""}`, force),
@@ -273,7 +322,6 @@ export async function analyzeProfile(username: string, force = false): Promise<A
     gh<{ login: string; avatar_url: string; html_url: string }[]>(`https://api.github.com/users/${cleaned}/followers?per_page=100${force ? `&t=${Date.now()}` : ""}`, force),
   ]);
 
-  // Strict case-sensitive enforcement
   if (user.login.toLowerCase() !== cleaned.toLowerCase()) {
     throw new Error(`User not found: ${cleaned}`);
   }
@@ -309,7 +357,7 @@ export async function analyzeProfile(username: string, force = false): Promise<A
       accountAgeYears: score.stats.accountAgeYears,
     },
     score: score.total,
-    topRepos: classified.slice(0, 8),
+    topRepos: classified.slice(0, 5), // Reduced to save tokens
     bestRepo,
   };
 
@@ -317,7 +365,16 @@ export async function analyzeProfile(username: string, force = false): Promise<A
   let aiText = await callGemini(prompt);
   if (!aiText) aiText = await callGroq(prompt);
 
-  const ai = aiText ? (safeParseJson(aiText) as unknown as AiInsights) : null;
+  let ai = aiText ? (safeParseJson(aiText) as unknown as AiInsights) : null;
+  let aiProvider: "gemini" | "groq" | "heuristic" | "none" = "none";
+
+  if (ai) {
+    aiProvider = GEMINI_KEYS.length > 0 && aiText?.includes("summary") ? "gemini" : "groq";
+  } else {
+    // Last resort fallback
+    ai = generateHeuristicAi(aiPayload);
+    aiProvider = "heuristic";
+  }
 
   // Enrich repos with AI suggestions
   if (ai?.repoSuggestions) {
@@ -348,16 +405,8 @@ export async function analyzeProfile(username: string, force = false): Promise<A
     badges,
     repos: classified,
     bestRepo,
-    ai: ai ?? {
-      summary: "AI insights unavailable right now.",
-      strengths: [],
-      weaknesses: [],
-      recruiterInsights: "",
-      actionSteps: [],
-      readmeTips: [],
-      projectIdeas: [],
-    },
-    aiProvider: aiText ? (GEMINI_KEYS.length > 0 ? "gemini" : "groq") : "none",
+    ai,
+    aiProvider,
     starredRepos: starred.map(r => ({ name: r.name, url: r.html_url, stars: r.stargazers_count })),
     followersList: followers.map(f => ({ login: f.login, avatar: f.avatar_url, url: f.html_url })),
   };
@@ -378,11 +427,7 @@ export function addToHistory(result: AnalysisResult) {
   try {
     const raw = localStorage.getItem(HISTORY_KEY);
     let history: HistoryItem[] = raw ? JSON.parse(raw) : [];
-    
-    // Remove if already exists
     history = history.filter(item => item.login.toLowerCase() !== result.user.login.toLowerCase());
-    
-    // Add to start
     history.unshift({
       login: result.user.login,
       name: result.user.name,
@@ -390,8 +435,6 @@ export function addToHistory(result: AnalysisResult) {
       score: result.score.total,
       timestamp: Date.now(),
     });
-    
-    // Limit to 10
     localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(0, 10)));
   } catch (e) {
     console.error("History error", e);
