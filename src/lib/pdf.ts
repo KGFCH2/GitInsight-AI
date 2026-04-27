@@ -132,11 +132,22 @@ export function exportPdf(data: AnalysisResult) {
   setFill(C.white);
   doc.circle(cx, cy, 27, "F");
   
+  // Proper Score Display
   doc.setFont(FONT, "bold");
-  doc.setFontSize(20);
+  doc.setFontSize(18);
   setText(C.ink);
-  const scoreStr = `${data.score.total}/100`;
-  doc.text(scoreStr, cx - doc.getTextWidth(scoreStr)/2, cy + 8);
+  const scoreVal = String(data.score.total);
+  const scoreTotal = "/100";
+  const valW = doc.getTextWidth(scoreVal);
+  doc.setFontSize(9);
+  const totalW = doc.getTextWidth(scoreTotal);
+  const scoreX = cx - (valW + totalW) / 2;
+  
+  doc.setFontSize(18);
+  doc.text(scoreVal, scoreX, cy + 6);
+  doc.setFontSize(9);
+  setText(C.muted);
+  doc.text(scoreTotal, scoreX + valW, cy + 6);
   
   const gridX = cx + 55;
   const stats = [
@@ -154,14 +165,14 @@ export function exportPdf(data: AnalysisResult) {
     drawIcon(blockCenter, y + 14, st.i);
     
     doc.setFont(FONT, "bold");
-    doc.setFontSize(14);
+    doc.setFontSize(13);
     setText(st.c);
     const valStr = String(st.v);
     doc.text(valStr, blockCenter + 5 - doc.getTextWidth(valStr)/2, y + 37);
     
-    doc.setFontSize(7.5);
+    doc.setFontSize(7);
     setText(C.muted);
-    doc.text(st.l, blockCenter + 5 - doc.getTextWidth(st.l)/2, y + 50);
+    doc.text(st.l, blockCenter + 5 - doc.getTextWidth(st.l)/2, y + 49);
   });
 
   y += 95;
