@@ -379,6 +379,18 @@ export function getHistory(): HistoryItem[] {
   }
 }
 
+export function removeFromHistory(login: string) {
+  try {
+    const raw = localStorage.getItem(HISTORY_KEY);
+    if (!raw) return;
+    let history: HistoryItem[] = JSON.parse(raw);
+    history = history.filter(item => item.login !== login);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  } catch (e) {
+    console.error("Remove history error", e);
+  }
+}
+
 export function cacheResult(result: AnalysisResult) {
   try {
     sessionStorage.setItem(RESULT_KEY, JSON.stringify(result));
