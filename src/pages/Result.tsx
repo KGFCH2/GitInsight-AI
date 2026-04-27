@@ -625,10 +625,10 @@ function Stat({
   color?: "brand" | "amber" | "purple" | "blue";
 }) {
   const themes = {
-    brand: "hover:border-brand/40 hover:bg-brand/5 text-brand-1",
-    amber: "hover:border-amber/40 hover:bg-amber/5 text-amber",
-    purple: "hover:border-purple/40 hover:bg-purple/5 text-purple",
-    blue: "hover:border-blue/40 hover:bg-blue/5 text-blue",
+    brand: "hover:border-brand/40 hover:bg-brand/5 text-brand-1 hover:shadow-glow hover:shadow-brand/20",
+    amber: "hover:border-amber/40 hover:bg-amber/5 text-amber hover:shadow-glow hover:shadow-warning/20",
+    purple: "hover:border-purple/40 hover:bg-purple/5 text-purple hover:shadow-glow hover:shadow-purple/20",
+    blue: "hover:border-blue/40 hover:bg-blue/5 text-blue hover:shadow-glow hover:shadow-blue/20",
   };
 
   return (
