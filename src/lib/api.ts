@@ -217,7 +217,8 @@ Return ONLY a JSON object with this exact shape (no markdown, no commentary):
   "recruiterInsights": "1 paragraph from a recruiter's perspective on hireability and fit",
   "actionSteps": ["4-6 concrete improvement actions"],
   "readmeTips": ["3-4 specific README improvement tips for the best repo"],
-  "projectIdeas": ["3 portfolio project ideas tailored to their stack"]
+  "projectIdeas": ["3 portfolio project ideas tailored to their stack"],
+  "repoSuggestions": { "RepoName": "1 specific tip to improve this repo" }
 }
 
 Profile data:
@@ -300,6 +301,16 @@ export async function analyzeProfile(username: string, force = false): Promise<A
   if (!aiText) aiText = await callGroq(prompt);
 
   const ai = aiText ? (safeParseJson(aiText) as unknown as AiInsights) : null;
+
+  // Enrich repos with AI suggestions
+  if (ai?.repoSuggestions) {
+    const suggestions = ai.repoSuggestions;
+    classified.forEach(r => {
+      if (r.classification === "improve" && suggestions[r.name]) {
+        r.improvementNote = suggestions[r.name];
+      }
+    });
+  }
 
   return {
     user: {
