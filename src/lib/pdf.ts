@@ -50,24 +50,40 @@ export function exportPdf(data: AnalysisResult) {
   };
 
   const drawIcon = (x: number, yy: number, type: "star" | "fork" | "code" | "box") => {
-    doc.setLineWidth(1);
+    doc.setLineWidth(0.8);
     if (type === "star") {
-      setDraw(C.warning);
-      doc.circle(x + 5, yy + 5, 4, "S");
+      setFill(C.warning);
+      // 5-pointed star
+      const points = [];
+      for (let i = 0; i < 10; i++) {
+        const r = i % 2 === 0 ? 5 : 2;
+        const angle = (Math.PI * i) / 5 - Math.PI / 2;
+        points.push({ x: x + 5 + r * Math.cos(angle), y: yy + 5 + r * Math.sin(angle) });
+      }
+      doc.lines(points.map((p, i) => {
+        const next = points[(i + 1) % 10];
+        return [next.x - p.x, next.y - p.y];
+      }), x + 5, yy + 5 - 5, [1, 1], "F");
     } else if (type === "fork") {
       setDraw(C.brand);
-      doc.line(x + 5, yy + 2, x + 5, yy + 8);
-      doc.line(x + 2, yy + 2, x + 5, yy + 5);
-      doc.line(x + 8, yy + 2, x + 5, yy + 5);
+      doc.line(x + 5, yy + 5, x + 5, yy + 9);
+      doc.line(x + 5, yy + 5, x + 2, yy + 2);
+      doc.line(x + 5, yy + 5, x + 8, yy + 2);
+      doc.circle(x + 2, yy + 2, 0.8, "S");
+      doc.circle(x + 8, yy + 2, 0.8, "S");
+      doc.circle(x + 5, yy + 9, 0.8, "S");
     } else if (type === "code") {
       setDraw(C.accent);
-      doc.line(x + 2, yy + 5, x + 5, yy + 2);
-      doc.line(x + 2, yy + 5, x + 5, yy + 8);
-      doc.line(x + 8, yy + 5, x + 5, yy + 2);
-      doc.line(x + 8, yy + 5, x + 5, yy + 8);
+      doc.line(x + 2, yy + 3, x + 0, yy + 5);
+      doc.line(x + 0, yy + 5, x + 2, yy + 7);
+      doc.line(x + 8, yy + 3, x + 10, yy + 5);
+      doc.line(x + 10, yy + 5, x + 8, yy + 7);
+      doc.line(x + 6, yy + 2, x + 4, yy + 8);
     } else {
       setDraw(C.success);
-      doc.rect(x + 2, yy + 2, 6, 6, "S");
+      doc.rect(x + 2, yy + 2, 6, 7, "S");
+      doc.line(x + 2, yy + 4, x + 8, yy + 4);
+      doc.line(x + 4, yy + 6, x + 6, yy + 6);
     }
   };
 
@@ -132,15 +148,16 @@ export function exportPdf(data: AnalysisResult) {
   const sw = (cardW - 110) / 4;
   stats.forEach((st, i) => {
     const sx = gridX + i * sw;
-    drawIcon(sx + sw/2 - 20, y + 25, st.i);
+    const center = sx + sw/2 - 8;
+    drawIcon(center - 5, y + 14, st.i);
     doc.setFont(FONT, "bold");
-    doc.setFontSize(13);
+    doc.setFontSize(14);
     setText(st.c);
     const valStr = String(st.v);
-    doc.text(valStr, sx + (sw/2 - doc.getTextWidth(valStr)/2) - 5, y + 37);
+    doc.text(valStr, center - doc.getTextWidth(valStr)/2 + 5, y + 37);
     doc.setFontSize(7.5);
     setText(C.muted);
-    doc.text(st.l, sx + (sw/2 - doc.getTextWidth(st.l)/2) - 5, y + 50);
+    doc.text(st.l, center - doc.getTextWidth(st.l)/2 + 5, y + 50);
   });
 
   y += 95;
