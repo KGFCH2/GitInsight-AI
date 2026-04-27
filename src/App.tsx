@@ -57,20 +57,22 @@ const App = () => {
             >
               <BrowserRouter>
                 <ScrollToTop />
-                <Routes>
-                  <Route element={<Layout />}>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/analyze" element={<Analyze />} />
-                    <Route path="/result/:username" element={<Result />} />
-                    <Route path="/history" element={<History />} />
-                    <Route path="/documentation" element={<Documentation />} />
-                    <Route path="/faqs" element={<FAQs />} />
-                    <Route path="/api" element={<APIReference />} />
-                    <Route path="/privacy" element={<Privacy />} />
-                    <Route path="/terms" element={<Terms />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Route>
-                </Routes>
+                <AnimatePresence mode="wait">
+                  <Routes>
+                    <Route element={<Layout />}>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/analyze" element={<Analyze />} />
+                      <Route path="/result/:username" element={<Result />} />
+                      <Route path="/history" element={<History />} />
+                      <Route path="/documentation" element={<Documentation />} />
+                      <Route path="/faqs" element={<FAQs />} />
+                      <Route path="/api" element={<APIReference />} />
+                      <Route path="/privacy" element={<Privacy />} />
+                      <Route path="/terms" element={<Terms />} />
+                      <Route path="*" element={<NotFound />} />
+                    </Route>
+                  </Routes>
+                </AnimatePresence>
               </BrowserRouter>
             </motion.div>
           )}
