@@ -448,7 +448,6 @@ const Result = () => {
                     <BulletList items={data.ai.weaknesses} iconType="warning" />
                   </Card>
                 </div>
-                  </Card>
                   <Card title="Dimension Analysis" icon={Lightbulb}>
                     <div className="grid gap-6 sm:grid-cols-2">
                       <div className="space-y-1">
