@@ -135,7 +135,7 @@ const Result = () => {
               disabled={loading}
               title="Refresh latest data"
             >
-              <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
+              <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : "text-brand-1 dark:text-brand"}`} />
             </Button>
           )}
         </div>
@@ -580,7 +580,7 @@ function Card({
   const accentClass =
     accent === "success" ? "text-success" : accent === "warning" ? "text-warning" : "text-brand-1";
   return (
-    <div className="rounded-2xl border border-border bg-card-grad p-6">
+    <div className="rounded-2xl border border-border bg-card-grad p-6 transition-all duration-300 hover:border-brand-1/30 hover:bg-muted/10 hover:shadow-sm">
       <div className="mb-4 flex items-center gap-2">
         <Icon className={`h-4 w-4 ${accentClass}`} />
         <h3 className="font-display text-base font-semibold">{title}</h3>
