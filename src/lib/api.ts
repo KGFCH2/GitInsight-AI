@@ -155,19 +155,28 @@ function deriveBadges(user: GhUser, repos: GhRepo[], score: number): string[] {
 async function callGemini(prompt: string): Promise<string | null> {
   if (GEMINI_KEYS.length === 0) return null;
 
-  const models = ["gemini-1.5-flash", "gemini-2.0-flash"];
+  // Use stable models and endpoints. 1.5-flash is most available.
+  const modelConfigs = [
+    { name: "gemini-1.5-flash", version: "v1" },
+    { name: "gemini-1.5-flash", version: "v1beta" },
+    { name: "gemini-1.5-pro", version: "v1" },
+    { name: "gemini-2.0-flash-exp", version: "v1beta" }
+  ];
 
   for (const key of GEMINI_KEYS) {
-    for (const model of models) {
+    for (const config of modelConfigs) {
       try {
         const r = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
+          `https://generativelanguage.googleapis.com/${config.version}/models/${config.name}:generateContent?key=${key}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               contents: [{ parts: [{ text: prompt }] }],
-              generationConfig: { temperature: 0.7, responseMimeType: "application/json" },
+              generationConfig: { 
+                temperature: 0.7, 
+                responseMimeType: "application/json" 
+              },
             }),
           },
         );
@@ -176,11 +185,13 @@ async function callGemini(prompt: string): Promise<string | null> {
           const text = j.candidates?.[0]?.content?.parts?.[0]?.text;
           if (text) return text;
         } else {
-          const err = await r.text();
-          console.warn(`Gemini ${model} error:`, err);
+          const err = await r.json().catch(() => ({ error: { message: "Unknown error" } }));
+          console.warn(`Gemini ${config.name} (${config.version}) error:`, err.error?.message || "Unknown error");
+          // If it's a 429 (quota), try the next KEY immediately rather than the next model on the same key
+          if (r.status === 429) break; 
         }
       } catch (e) {
-        console.error(`Gemini error with key ${key.substring(0, 6)}... on model ${model}`, e);
+        console.error(`Gemini fetch error with key ${key.substring(0, 6)}...`, e);
       }
     }
   }
@@ -254,19 +265,18 @@ export async function analyzeProfile(username: string, force = false): Promise<A
     throw new Error("Invalid GitHub username format");
   }
 
-  const user = await gh<GhUser>(`https://api.github.com/users/${cleaned}`, force);
-  
+  // Parallelize GitHub data fetching for faster load balancing performance
+  const [user, repos, starred, followers] = await Promise.all([
+    gh<GhUser>(`https://api.github.com/users/${cleaned}`, force),
+    gh<GhRepo[]>(`https://api.github.com/users/${cleaned}/repos?per_page=100&sort=updated${force ? `&t=${Date.now()}` : ""}`, force),
+    gh<GhRepo[]>(`https://api.github.com/users/${cleaned}/starred?per_page=100${force ? `&t=${Date.now()}` : ""}`, force),
+    gh<{ login: string; avatar_url: string; html_url: string }[]>(`https://api.github.com/users/${cleaned}/followers?per_page=100${force ? `&t=${Date.now()}` : ""}`, force),
+  ]);
+
   // Strict case-sensitive enforcement
-  if (user.login !== cleaned) {
-    throw new Error(`Username casing mismatch. Expected exactly "${cleaned}", but found "${user.login}". Please use the correct case.`);
+  if (user.login.toLowerCase() !== cleaned.toLowerCase()) {
+    throw new Error(`User not found: ${cleaned}`);
   }
-
-  const repos = await gh<GhRepo[]>(`https://api.github.com/users/${cleaned}/repos?per_page=100&sort=updated${force ? `&t=${Date.now()}` : ""}`, force);
-
-  // Fetch Starred Repos (for the "Total Stars" click)
-  const starred = await gh<GhRepo[]>(`https://api.github.com/users/${cleaned}/starred?per_page=100${force ? `&t=${Date.now()}` : ""}`, force);
-  // Fetch Followers (for the "Followers" click)
-  const followers = await gh<{ login: string; avatar_url: string; html_url: string }[]>(`https://api.github.com/users/${cleaned}/followers?per_page=100${force ? `&t=${Date.now()}` : ""}`, force);
 
   const score = computeScore(user, repos);
   const badges = deriveBadges(user, repos, score.total);
