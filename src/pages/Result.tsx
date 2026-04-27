@@ -247,7 +247,7 @@ const Result = () => {
               </div>
 
               <div className="mt-4 flex items-center gap-2 text-xs font-medium">
-                <div className="flex h-5 items-center gap-1 rounded-md border border-amber/30 bg-amber/10 px-2 font-black text-[#f59e0b] shadow-sm">
+                <div className="flex items-center gap-1 font-black text-[#f59e0b]">
                   <Star className="h-3.5 w-3.5 fill-current" /> {data.score.stats.totalStars} Stars Earned
                 </div>
                 <span className="text-muted-foreground">•</span>

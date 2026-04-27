@@ -155,26 +155,33 @@ function deriveBadges(user: GhUser, repos: GhRepo[], score: number): string[] {
 async function callGemini(prompt: string): Promise<string | null> {
   if (GEMINI_KEYS.length === 0) return null;
 
+  const models = ["gemini-1.5-flash", "gemini-2.0-flash"];
+
   for (const key of GEMINI_KEYS) {
-    try {
-      const r = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: { temperature: 0.7, responseMimeType: "application/json" },
-          }),
-        },
-      );
-      if (r.ok) {
-        const j = await r.json();
-        const text = j.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (text) return text;
+    for (const model of models) {
+      try {
+        const r = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }],
+              generationConfig: { temperature: 0.7, responseMimeType: "application/json" },
+            }),
+          },
+        );
+        if (r.ok) {
+          const j = await r.json();
+          const text = j.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (text) return text;
+        } else {
+          const err = await r.text();
+          console.warn(`Gemini ${model} error:`, err);
+        }
+      } catch (e) {
+        console.error(`Gemini error with key ${key.substring(0, 6)}... on model ${model}`, e);
       }
-    } catch (e) {
-      console.error("Gemini error with key", key.substring(0, 6) + "...", e);
     }
   }
   return null;
