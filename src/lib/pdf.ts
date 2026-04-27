@@ -93,61 +93,79 @@ export function exportPdf(data: AnalysisResult) {
     doc.roundedRect(x, yy, w, h, r, r, style);
   };
 
-  // ============ PAGE 1: FULL SUMMARY ============
-  const bandH = 110;
-  setFill(C.brand);
-  doc.rect(0, 0, W, bandH, "F");
-
-  // Header Mesh Pattern
+  // BOLD HEADER OVERHAUL
+  const bandH = 120;
+  
+  // Layer 1: Base
   setFill(C.brandDark);
-  for(let i=0; i<W; i+=25) {
-    for(let j=0; j<bandH; j+=25) {
-      doc.circle(i + (j%50===0?12:0), j, 0.6, "F");
-    }
+  doc.rect(0, 0, W, bandH, "F");
+  
+  // Layer 2: Gradient Slash
+  setFill(C.brand);
+  doc.polygon([{x: W*0.3, y: 0}, {x: W, y: 0}, {x: W, y: bandH}, {x: W*0.1, y: bandH}], "F");
+  
+  // Layer 3: Tech Scan Lines
+  doc.setLineWidth(0.5);
+  doc.setGState(new (doc as any).GState({ opacity: 0.15 }));
+  setDraw(C.white);
+  for(let i=0; i<W+bandH; i+=8) {
+    doc.line(i, 0, i - bandH, bandH);
   }
-
-  // Abstract Accent Shape
-  setFill([255, 255, 255]);
-  doc.setGState(new (doc as any).GState({ opacity: 0.1 }));
-  doc.circle(W - 20, 20, 100, "F");
   doc.setGState(new (doc as any).GState({ opacity: 1.0 }));
+
+  // Large Insight Icon (Magnifying Glass)
+  const iconX = W - margin - 40;
+  const iconY = 35;
+  setDraw(C.white);
+  doc.setLineWidth(2);
+  doc.circle(iconX, iconY, 12, "S");
+  doc.line(iconX + 8, iconY + 8, iconX + 16, iconY + 16);
+  doc.setLineWidth(1);
+  doc.line(iconX - 4, iconY - 2, iconX + 4, iconY - 2);
+  doc.line(iconX - 4, iconY + 2, iconX + 4, iconY + 2);
+
+  // Sidebar Segments
+  setFill(C.brand);
+  for(let i=0; i<H; i+=40) { doc.rect(0, i, 4, 20, "F"); }
   
   // Title
   doc.setFont(FONT, "bolditalic");
-  doc.setFontSize(28);
+  doc.setFontSize(32);
   setText(C.white);
-  doc.text("GITINSIGHT AI", margin, 45);
+  doc.text("GITINSIGHT AI", margin + 12, 50);
   
   doc.setFont(FONT, "normal");
-  doc.setFontSize(10);
-  doc.text("Professional Developer Profile Audit Report", margin, 60);
+  doc.setFontSize(11);
+  doc.text("Professional Developer Profile Audit Report", margin + 12, 68);
 
-  // Decorative Badge
-  const badgeX = W - margin - 50;
+  // Decorative Premium Seal
+  const sealX = W - margin - 85;
+  const sealY = 75;
   setDraw(C.white);
-  doc.setLineWidth(0.5);
-  doc.circle(badgeX + 25, 45, 22, "S");
-  doc.setFontSize(5);
+  doc.setLineWidth(1);
+  doc.circle(sealX + 35, sealY + 15, 25, "S");
+  doc.setFontSize(6);
   setText(C.white);
-  doc.text("CERTIFIED", badgeX + 13, 43);
-  doc.text("AUDIT", badgeX + 18, 51);
+  doc.text("PREMIUM", sealX + 22, sealY + 13);
+  doc.text("AUDIT", sealX + 26, sealY + 21);
 
   const handle = `@${data.user.login}${data.user.name ? ` • ${data.user.name}` : ""}`;
   doc.setFont(FONT, "bold");
-  doc.setFontSize(10);
-  const pillW = doc.getTextWidth(handle) + 20;
-  roundedRect(margin, 75, pillW, 20, 10, [255, 255, 255]);
+  doc.setFontSize(11);
+  const pillW = doc.getTextWidth(handle) + 24;
+  roundedRect(margin + 12, 85, pillW, 22, 11, [255, 255, 255]);
   setText(C.brand);
-  doc.text(handle, margin + 10, 88);
+  doc.text(handle, margin + 24, 100);
 
   y = bandH + 25;
 
-  // Score Summary Card
+  // Score Summary Card with Elevation
   const cardW = W - margin * 2;
-  roundedRect(margin, y, cardW, 75, 8, C.soft);
+  roundedRect(margin + 2, y + 2, cardW, 80, 8, [230, 235, 255]); // Shadow
+  roundedRect(margin, y, cardW, 80, 8, C.soft);
   setDraw(C.border);
   doc.setLineWidth(0.5);
-  doc.roundedRect(margin, y, cardW, 75, 8, 8, "S");
+  doc.roundedRect(margin, y, cardW, 80, 8, 8, "S");
 
   const cx = margin + 45;
   const cy = y + 37;
