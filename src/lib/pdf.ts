@@ -220,10 +220,10 @@ export function exportPdf(data: AnalysisResult) {
 
   sectionHeader("KEY REPOSITORY HIGHLIGHTS", C.brand);
   const repos = data.repos.slice(0, 8);
-  repos.forEach(r => {
+  repos.forEach((r, i) => {
     const lines = r.description ? doc.splitTextToSize(r.description, cardW - 30) : [];
-    const tipLines = r.improvementNote ? doc.splitTextToSize(`💡 Tip: ${r.improvementNote}`, cardW - 40) : [];
-    const h = 45 + (lines.length * 12) + (tipLines.length * 11) + (r.improvementNote ? 12 : 0);
+    const tipLines = r.improvementNote ? doc.splitTextToSize(`💡 Improvement Tip: ${r.improvementNote}`, cardW - 40) : [];
+    const h = 50 + (lines.length * 12) + (tipLines.length * 11) + (r.improvementNote ? 14 : 0);
     
     if (y + h > H - margin - 40) { addFooter(); doc.addPage(); y = margin + 20; setFill(C.brand); doc.rect(0, 0, W, 4, "F"); }
     
@@ -231,13 +231,14 @@ export function exportPdf(data: AnalysisResult) {
     setFill(classColor[r.classification] || C.muted);
     doc.rect(margin, y, 4, h, "F");
     
+    // Project Name
     doc.setFont("times", "bold");
-    doc.setFontSize(11);
+    doc.setFontSize(11.5);
     setText(C.ink);
-    // Wrap name if too long to avoid badge overlap
-    const nameLines = doc.splitTextToSize(r.name.toUpperCase(), cardW - 80);
+    const nameLines = doc.splitTextToSize(r.name.toUpperCase(), cardW - 90);
     doc.text(nameLines, margin + 15, y + 18);
     
+    // Status Badge
     const tag = r.classification.toUpperCase();
     doc.setFont("courier", "bold");
     doc.setFontSize(8);
@@ -246,25 +247,38 @@ export function exportPdf(data: AnalysisResult) {
     setText(C.white);
     doc.text(tag, W - margin - tw - 4, y + 19);
     
+    // Technical Metadata
     setText(C.muted);
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(9);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8.5);
     const metaY = y + 32 + (nameLines.length > 1 ? (nameLines.length - 1) * 12 : 0);
-    doc.text(`[★ ${r.stars} | ⚡ ${r.forks} | ${r.language || "N/A"}]`, margin + 15, metaY);
+    const meta = `STARS: ${r.stars}  |  FORKS: ${r.forks}  |  LANGUAGE: ${r.language || "N/A"}`;
+    doc.text(meta, margin + 15, metaY);
     
+    // Description
     if (lines.length) {
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9.5);
       setText(C.body);
       doc.text(lines.slice(0, 3), margin + 15, metaY + 14);
     }
 
+    // Improvement Tip Callout
     if (r.improvementNote) {
-      const tipY = metaY + 14 + (lines.length > 0 ? (lines.length * 12) : 0);
+      const tipY = metaY + 14 + (lines.length > 0 ? (lines.length * 12) : 0) + 4;
       doc.setFont("helvetica", "bolditalic");
       doc.setFontSize(8.5);
       setText(C.warning);
       doc.text(tipLines, margin + 20, tipY);
     }
-    y += h + 12;
+
+    y += h + 15;
+    // Subtle separator if not last
+    if (i < repos.length - 1 && y < H - 80) {
+      setDraw(C.border);
+      doc.setLineWidth(0.5);
+      doc.line(margin + 20, y - 7, W - margin - 20, y - 7);
+    }
   });
 
   addFooter();
