@@ -202,11 +202,11 @@ export function exportPdf(data: AnalysisResult) {
   doc.rect(0, 0, W, 4, "F");
 
   bulletSection("✅ KEY STRENGTHS", data.ai.strengths, C.success, ">>");
-  y += 15; // Extra gap
+  y += 20; // Increased gap
   bulletSection("⚠️ IMPROVEMENT VECTORS", data.ai.weaknesses, C.danger, "!!");
-  y += 15; // Extra gap
+  y += 20; // Increased gap
   bulletSection("🚀 GROWTH STRATEGY", data.ai.actionSteps, C.warning, "->");
-  y += 20; // Extra gap
+  y += 30; // Increased gap
 
   if (data.ai.recruiterInsights) {
     sectionHeader("💼 TECHNICAL RECRUITER'S PERSPECTIVE", C.accent);
