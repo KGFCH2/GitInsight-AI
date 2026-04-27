@@ -18,7 +18,7 @@ export default function Terms() {
         <section>
           <div className="flex items-center gap-2.5 mb-4">
             <ShieldAlert className="h-5 w-5 text-brand-1" />
-            <h2 className="font-display text-2xl font-bold italic underline decoration-brand/30 decoration-2 underline-offset-4">1. Agreement</h2>
+            <h2 className="font-display text-2xl font-bold italic underline decoration-brand/30 decoration-2 underline-offset-4 transition-transform hover:translate-x-1 hover:text-brand-1 cursor-default">1. Agreement</h2>
           </div>
           <p className="text-muted-foreground leading-relaxed">
             GitInsight AI is provided as-is, without warranties of any kind. By using the service, you agree to use it responsibly and only with public GitHub usernames.
@@ -28,7 +28,7 @@ export default function Terms() {
         <section>
           <div className="flex items-center gap-2.5 mb-4">
             <UserCheck className="h-5 w-5 text-brand-1" />
-            <h2 className="font-display text-2xl font-bold italic underline decoration-brand/30 decoration-2 underline-offset-4">2. Acceptable use</h2>
+            <h2 className="font-display text-2xl font-bold italic underline decoration-brand/30 decoration-2 underline-offset-4 transition-transform hover:translate-x-1 hover:text-brand-1 cursor-default">2. Acceptable use</h2>
           </div>
           <ul className="grid gap-3 sm:grid-cols-2">
             {[
@@ -48,7 +48,7 @@ export default function Terms() {
         <section>
           <div className="flex items-center gap-2.5 mb-4">
             <Scale className="h-5 w-5 text-brand-1" />
-            <h2 className="font-display text-2xl font-bold italic underline decoration-brand/30 decoration-2 underline-offset-4">3. Liability</h2>
+            <h2 className="font-display text-2xl font-bold italic underline decoration-brand/30 decoration-2 underline-offset-4 transition-transform hover:translate-x-1 hover:text-brand-1 cursor-default">3. Liability</h2>
           </div>
           <p className="text-muted-foreground leading-relaxed bg-muted/30 rounded-xl p-5 border border-dashed border-border">
             We are not responsible for decisions made based on the analysis. Always corroborate with direct review. AI-generated insights are subjective and should not be the sole basis for hiring decisions.
