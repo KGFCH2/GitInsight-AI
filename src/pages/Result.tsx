@@ -135,7 +135,7 @@ const Result = () => {
               disabled={loading}
               title="Refresh latest data"
             >
-              <RefreshCw className={`h-4 w-4 transition-all duration-500 group-hover:rotate-180 group-hover:scale-125 group-hover:text-brand-1 dark:group-hover:text-brand ${loading ? "animate-spin text-brand" : "text-foreground/70 dark:text-foreground/90"}`} />
+              <RefreshCw className={`h-4 w-4 transition-all duration-500 group-hover:rotate-180 group-hover:scale-125 group-hover:text-brand-1 dark:group-hover:text-success ${loading ? "animate-spin text-brand" : "text-foreground/70 dark:text-foreground/90"}`} />
             </Button>
           )}
         </div>
@@ -313,7 +313,14 @@ const Result = () => {
                     {data.bestRepo.name}
                   </a>
                   {data.bestRepo.description && (
-                    <p className="mt-1 max-w-prose text-sm text-muted-foreground">{data.bestRepo.description}</p>
+                    <p className="mb-4 line-clamp-2 text-sm text-muted-foreground">
+                      {data.bestRepo.description ?? "No description."}
+                    </p>
+                  )}
+                  {data.bestRepo.improvementNote && (
+                    <div className="mb-4 rounded-lg border border-warning/20 bg-warning/5 p-2.5 text-[11px] leading-relaxed text-warning/90">
+                      <span className="font-bold uppercase tracking-wider italic">💡 Tip:</span> {data.bestRepo.improvementNote}
+                    </div>
                   )}
                 </div>
                 <div className="flex items-center gap-4 text-sm">

@@ -37,6 +37,11 @@ export function RepoCard({ repo, index = 0 }: { repo: AnalyzedRepo; index?: numb
       <p className="mb-4 line-clamp-2 text-sm text-muted-foreground">
         {repo.description ?? "No description."}
       </p>
+      {repo.improvementNote && (
+        <div className="mb-4 rounded-lg border border-warning/20 bg-warning/5 p-2.5 text-[11px] leading-relaxed text-warning/90">
+          <span className="font-bold uppercase tracking-wider italic">💡 Tip:</span> {repo.improvementNote}
+        </div>
+      )}
       <div className="mt-auto flex flex-wrap items-center gap-2 text-xs">
         {repo.language && (
           <span className="rounded-full bg-muted px-2.5 py-1 font-medium">{repo.language}</span>
