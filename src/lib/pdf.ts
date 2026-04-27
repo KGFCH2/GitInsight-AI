@@ -112,6 +112,21 @@ export function exportPdf(data: AnalysisResult) {
   for(let i=0; i<W+bandH; i+=8) {
     doc.line(i, 0, i - bandH, bandH);
   }
+  
+  // Technical DNA (Network nodes)
+  const nodes = [
+    {x: W-80, y: 30}, {x: W-120, y: 70}, {x: W-40, y: 80}, {x: W-100, y: 110}, {x: W-60, y: 40}
+  ];
+  nodes.forEach((n, i) => {
+    doc.circle(n.x, n.y, 1.5, "S");
+    nodes.slice(i+1).forEach(m => {
+      if (Math.hypot(n.x-m.x, n.y-m.y) < 80) doc.line(n.x, n.y, m.x, m.y);
+    });
+  });
+
+  // Subtle Code Symbol background
+  doc.setFontSize(70);
+  doc.text("</>", W - 140, 95);
   doc.setGState(new (doc as any).GState({ opacity: 1.0 }));
 
   // Large Insight Icon (Magnifying Glass)
@@ -418,12 +433,40 @@ export function exportPdf(data: AnalysisResult) {
         doc.rect(0, 0, W, 4, "F");
         sectionHeader(title + " (CONT.)", color);
       }
-      setText(color);
-      doc.setFont(FONT, "bold");
-      doc.text(sym, margin + 5, y + 10);
+      
+      // Draw actual vector icon based on symbol
+      const iconSize = 8;
+      const ix = margin + 8;
+      const iy = y + 1;
+      
+      if (sym === ">>") {
+        // Double Arrow
+        setDraw(color);
+        doc.setLineWidth(1);
+        doc.line(ix, iy, ix + 4, iy + 4);
+        doc.line(ix + 4, iy + 4, ix, iy + 8);
+        doc.line(ix + 3, iy, ix + 7, iy + 4);
+        doc.line(ix + 7, iy + 4, ix + 3, iy + 8);
+      } else if (sym === "!!") {
+        // Warning Sign
+        setFill(color);
+        doc.circle(ix + 4, iy + 4, 4.5, "F");
+        setText(C.white);
+        doc.setFontSize(6);
+        doc.text("!", ix + 3, iy + 6.5);
+      } else {
+        // Growth Arrow
+        setDraw(color);
+        doc.setLineWidth(1.2);
+        doc.line(ix, iy + 4, ix + 8, iy + 4);
+        doc.line(ix + 5, iy + 1, ix + 8, iy + 4);
+        doc.line(ix + 5, iy + 7, ix + 8, iy + 4);
+      }
+
       setText(C.body);
       doc.setFont(FONT, "normal");
-      doc.text(lines, margin + 28, y + 10, { lineHeightFactor: 1.4 });
+      doc.setFontSize(10);
+      doc.text(lines, margin + 28, y + 8, { lineHeightFactor: 1.4 });
       y += h;
     });
     y += 8;
