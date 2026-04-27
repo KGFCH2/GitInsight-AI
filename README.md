@@ -10,25 +10,28 @@ Enter a GitHub username, get a **0–100 profile score**, AI-generated strengths
 
 ## ✨ Features
 
-1. **📊 0–100 Profile Score** with transparent 6-dimension breakdown.
-2. **🤖 AI Insights** — summary, strengths, weaknesses, and action steps (powered by Gemini & Groq).
-3. **💼 Recruiter View** — hireability paragraph from a professional recruiter's perspective.
-4. **📁 Repo Quality Classifier** — every repository tagged as Good / Improve / Archive.
-5. **🌟 Best Repo Highlight** — README improvement tips and project ideas.
-6. **🏆 Gamified Badges** — Polyglot, Top Repo Builder, Elite Profile, and more.
-7. **📄 PDF Export** — Download your results as a polished report.
-8. **🌗 Dark / Light Mode** — Fully responsive and accessible design.
+1. **📊 0–100 Profile Score** — Transparent 6-dimension breakdown of popularity, activity, breadth, quality, community, and tenure.
+2. **🤖 AI Insights** — Summary, strengths, weaknesses, and action steps (powered by Gemini & Groq).
+3. **💼 Recruiter View** — Hireability paragraph from a professional recruiter's perspective.
+4. **📁 Repo Quality Classifier** — Every repository tagged as Good / Improve / Archive with visual badges.
+5. **🌟 Best Repo Highlight** — Detailed README improvement tips and innovative project ideas.
+6. **🏆 Interactive Dashboards** — Clickable stat tiles for deep dives into starred repos, followers, and languages.
+7. **📄 PDF Export** — Download your results as a polished, color-themed report.
+8. **🌗 Dark / Light Mode** — Premium, responsive design with theme-aware colors and smooth animations.
+9. **🔄 Real-time Refresh** — Fetch the latest GitHub data with a single click to bypass cache.
+10. **💾 Persistence** — Remembers your last analyzed profile even when browsing documentation.
 
 ---
 
 ## 🛠️ Tech Stack
 
 - **Frontend:** React 18 + TypeScript
-- **Styling:** Tailwind CSS + ShadCN UI
+- **Styling:** Tailwind CSS + ShadCN UI + Vanilla CSS
 - **Animations:** Framer Motion
 - **APIs:** GitHub REST API · Google Gemini · Groq
 - **PDF Generation:** jsPDF
 - **State Management:** React Query
+- **Tooling:** Vite
 
 ---
 
@@ -45,7 +48,7 @@ Enter a GitHub username, get a **0–100 profile score**, AI-generated strengths
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/gitinsight-ai.git
+git clone https://github.com/KGFCH2/GitInsight-AI.git
 cd gitinsight-ai
 ```
 
@@ -60,9 +63,9 @@ npm install
 Create a `.env` file in the root directory and add your API keys:
 
 ```env
-APP_GITHUB_TOKEN=your_github_token
-APP_GROQ_API_KEY=your_groq_api_key
-APP_GEMINI_API_KEY=your_gemini_api_key
+VITE_GITHUB_TOKEN=your_github_token
+VITE_GROQ_API_KEY=your_groq_api_key
+VITE_GEMINI_API_KEY=your_gemini_api_key
 ```
 
 ### 4. Run the development server
@@ -99,6 +102,7 @@ This project was developed for the **AICore Connect Hackathon**.
 
 - **Organization:** UnsaidTalks Education
 - **Project Name:** GitInsight AI
+- **Developer:** Babin Bid
 - **Focus:** AI-powered evaluation for Campus Ambassador programs and developer profiles.
 
 ---
