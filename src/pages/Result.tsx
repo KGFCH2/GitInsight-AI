@@ -79,10 +79,6 @@ const Result = () => {
         setData(r);
         cacheResult(r);
         addToHistory(r);
-        // Canonical case correction
-        if (r.user.login !== username) {
-          navigate(`/result/${r.user.login}`, { replace: true });
-        }
         localStorage.setItem("lastAnalyzedUser", r.user.login);
       })
       .catch((e: Error) => {
@@ -489,20 +485,20 @@ const Result = () => {
 
               <TabsContent value="repos" id="repos-list" className="mt-6">
                 <div className="mb-4 flex flex-wrap gap-2">
-                      {(["all", "strong", "improve", "archive"] as const).map((f) => (
-                        <button
-                          key={f}
-                          onClick={() => setFilter(f)}
-                          className={
-                            "rounded-full border px-3 py-1 text-xs font-semibold capitalize transition-colors " +
-                            (filter === f
-                              ? "border-brand-1 bg-brand text-primary-foreground"
-                              : "border-border bg-card text-muted-foreground hover:text-foreground")
-                          }
-                        >
-                          {f}
-                        </button>
-                      ))}
+                  {(["all", "good", "improve", "archive"] as const).map((f) => (
+                    <button
+                      key={f}
+                      onClick={() => setFilter(f)}
+                      className={
+                        "rounded-full border px-3 py-1 text-xs font-semibold capitalize transition-colors " +
+                        (filter === f
+                          ? "border-brand-1 bg-brand text-primary-foreground"
+                          : "border-border bg-card text-muted-foreground hover:text-foreground")
+                      }
+                    >
+                      {f}
+                    </button>
+                  ))}
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {data.repos
@@ -682,10 +678,10 @@ function Stat({
   color?: "brand" | "amber" | "purple" | "blue";
 }) {
   const themes = {
-    brand: "hover:border-brand/40 hover:bg-brand/5 text-brand-1 hover:shadow-glow-intense hover:shadow-brand/20",
-    amber: "hover:border-amber/40 hover:bg-amber/5 text-amber hover:shadow-glow-intense hover:shadow-warning/20",
-    purple: "hover:border-purple/40 hover:bg-purple/5 text-purple hover:shadow-glow-intense hover:shadow-purple/20",
-    blue: "hover:border-blue/40 hover:bg-blue/5 text-blue hover:shadow-glow-intense hover:shadow-blue/20",
+    brand: "hover:border-brand/40 hover:bg-brand/5 text-brand-1 hover:shadow-[0_0_25px_-5px_rgba(20,184,166,0.5)] dark:hover:shadow-[0_0_30px_-5px_rgba(20,184,166,0.4)]",
+    amber: "hover:border-amber/40 hover:bg-amber/5 text-amber hover:shadow-[0_0_25px_-5px_rgba(245,158,11,0.5)] dark:hover:shadow-[0_0_30px_-5px_rgba(245,158,11,0.4)]",
+    purple: "hover:border-purple/40 hover:bg-purple/5 text-purple hover:shadow-[0_0_25px_-5px_rgba(168,85,247,0.5)] dark:hover:shadow-[0_0_30px_-5px_rgba(168,85,247,0.4)]",
+    blue: "hover:border-blue/40 hover:bg-blue/5 text-blue hover:shadow-[0_0_25px_-5px_rgba(37,99,235,0.5)] dark:hover:shadow-[0_0_30px_-5px_rgba(37,99,235,0.4)]",
   };
 
   return (
@@ -724,12 +720,12 @@ function Card({
   const accentClass =
     accent === "success" ? "text-success" : accent === "warning" ? "text-warning" : "text-brand-1";
   return (
-    <div className="rounded-2xl border border-border bg-card-grad p-6 transition-all duration-300 hover:border-brand-1/30 hover:bg-muted/10 hover:shadow-sm">
+    <div className="group rounded-2xl border border-border bg-card-grad p-6 transition-all duration-300 hover:border-brand-1/30 hover:bg-muted/10 hover:shadow-glow">
       <div className="mb-4 flex items-center gap-2">
-        <div className="icon-glow-pop rounded-lg bg-brand/10 p-2">
-          <Icon className={`h-4 w-4 ${accentClass}`} />
+        <div className="icon-glow-pop rounded-lg bg-brand/10 p-2 group-hover:scale-110 group-hover:bg-brand/20 group-hover:shadow-glow-intense transition-all duration-300">
+          <Icon className={`h-4 w-4 ${accentClass} group-hover:scale-110 transition-transform`} />
         </div>
-        <h3 className="font-display text-base font-semibold">{title}</h3>
+        <h3 className="font-display text-base font-semibold transition-colors group-hover:text-brand-1">{title}</h3>
       </div>
       {children}
     </div>
@@ -754,11 +750,11 @@ function BulletList({
     const icons = [Sparkles, Zap, Target, Award, ShieldCheck, Gauge, Lightbulb];
     const IconComp = icons[i % icons.length];
 
-    if (iconType === "success") return <IconComp className="h-3 w-3 text-success" />;
-    if (iconType === "warning") return <IconComp className="h-3 w-3 text-warning" />;
-    if (iconType === "step") return <IconComp className="h-3 w-3 text-brand-1" />;
-    if (iconType === "tip") return <IconComp className="h-3 w-3 text-amber" />;
-    if (iconType === "idea") return <IconComp className="h-3 w-3 text-blue" />;
+    if (iconType === "success") return <IconComp className="h-3.5 w-3.5 text-success" />;
+    if (iconType === "warning") return <IconComp className="h-3.5 w-3.5 text-warning" />;
+    if (iconType === "step") return <IconComp className="h-3.5 w-3.5 text-brand-1" />;
+    if (iconType === "tip") return <IconComp className="h-3.5 w-3.5 text-amber drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" />;
+    if (iconType === "idea") return <IconComp className="h-3.5 w-3.5 text-blue drop-shadow-[0_0_5px_rgba(37,99,235,0.5)]" />;
     return <div className="h-1.5 w-1.5 rounded-full bg-brand-1" />;
   };
 

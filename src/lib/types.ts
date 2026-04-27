@@ -1,4 +1,4 @@
-export type RepoClassification = "strong" | "improve" | "archive";
+export type RepoClassification = "good" | "improve" | "archive";
 
 export interface AnalyzedRepo {
   name: string;
