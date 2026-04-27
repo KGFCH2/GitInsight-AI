@@ -48,7 +48,7 @@ const History = () => {
           {history.map((item) => (
             <div key={item.login + item.timestamp} className="group relative">
               <Link
-                to={`/result/${item.login}`}
+                to={`/result/${item.login}?from=history`}
                 className="flex items-center gap-4 rounded-2xl border border-border bg-card-grad p-4 transition-all hover:-translate-y-1 hover:border-brand-1/40 hover:shadow-glow"
               >
                 <img
