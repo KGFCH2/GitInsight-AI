@@ -70,7 +70,7 @@ const Home = () => {
       <section className="relative h-[85vh] min-h-[600px] w-full overflow-hidden">
         {/* Carousel Background */}
         <div className="absolute inset-0 z-0">
-          <AnimatePresence mode="wait">
+          <AnimatePresence>
             <motion.div
               key={imgIndex}
               initial={{ opacity: 0, scale: 1.1 }}
