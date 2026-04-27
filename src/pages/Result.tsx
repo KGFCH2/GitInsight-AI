@@ -69,6 +69,7 @@ const Result = () => {
         setData(r);
         cacheResult(r);
         addToHistory(r);
+        localStorage.setItem("lastAnalyzedUser", username);
       })
       .catch((e: Error) => {
         setError(e.message || "Failed to analyze");
