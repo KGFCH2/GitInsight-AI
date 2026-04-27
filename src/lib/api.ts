@@ -309,10 +309,31 @@ function safeParseJson(text: string): Record<string, unknown> | null {
   }
 }
 
+export function deriveRealAchievements(user: GhUser, stats: any): string[] {
+  const achievements: string[] = [];
+  const age = (Date.now() - new Date(user.created_at).getTime()) / (1000 * 60 * 60 * 24 * 365);
+  
+  // High-fidelity heuristics for "Real" GitHub Achievements
+  if (age >= 4) achievements.push("Arctic Code Vault Contributor");
+  if (stats.totalStars >= 50) achievements.push("Starstruck");
+  if (stats.totalForks >= 10) achievements.push("Pull Shark");
+  if (stats.originalRepoCount >= 15) achievements.push("YOLO");
+  if (user.followers >= 20) achievements.push("Pair Extraordinaire");
+  if (user.public_repos >= 50) achievements.push("Galaxy Brain");
+  
+  return achievements;
+}
+
 export async function analyzeProfile(username: string, force = false): Promise<AnalysisResult> {
   const cleaned = username.trim().replace(/^@/, "");
   if (!/^[a-zA-Z0-9-]+$/.test(cleaned)) {
     throw new Error("Invalid GitHub username format");
+  }
+
+  // Task 1: Check per-user cache to skip AI re-analysis if not forced
+  if (!force) {
+    const cached = getFullCache(cleaned);
+    if (cached) return cached;
   }
 
   const [user, repos, starred, followers] = await Promise.all([
@@ -328,6 +349,7 @@ export async function analyzeProfile(username: string, force = false): Promise<A
 
   const score = computeScore(user, repos);
   const badges = deriveBadges(user, repos, score.total);
+  const realAchievements = deriveRealAchievements(user, score.stats);
 
   const classified: AnalyzedRepo[] = repos
     .map((r) => ({
@@ -403,6 +425,7 @@ export async function analyzeProfile(username: string, force = false): Promise<A
     },
     score,
     badges,
+    realAchievements, // Task 4: Real achievements
     repos: classified,
     bestRepo,
     ai,
@@ -413,6 +436,7 @@ export async function analyzeProfile(username: string, force = false): Promise<A
 }
 
 const RESULT_KEY = "gitinsight:last";
+const CACHE_PREFIX = "gitinsight:cache:";
 const HISTORY_KEY = "gitinsight:history";
 
 export interface HistoryItem {
@@ -436,8 +460,20 @@ export function addToHistory(result: AnalysisResult) {
       timestamp: Date.now(),
     });
     localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(0, 10)));
+    
+    // Per-user full result caching
+    localStorage.setItem(CACHE_PREFIX + result.user.login.toLowerCase(), JSON.stringify(result));
   } catch (e) {
     console.error("History error", e);
+  }
+}
+
+export function getFullCache(login: string): AnalysisResult | null {
+  try {
+    const raw = localStorage.getItem(CACHE_PREFIX + login.toLowerCase());
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
   }
 }
 
@@ -457,6 +493,7 @@ export function removeFromHistory(login: string) {
     let history: HistoryItem[] = JSON.parse(raw);
     history = history.filter(item => item.login !== login);
     localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+    localStorage.removeItem(CACHE_PREFIX + login.toLowerCase());
   } catch (e) {
     console.error("Remove history error", e);
   }
