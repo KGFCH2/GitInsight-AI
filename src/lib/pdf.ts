@@ -93,28 +93,38 @@ export function exportPdf(data: AnalysisResult) {
     doc.roundedRect(x, yy, w, h, r, r, style);
   };
 
-  // ELEGANT MINIMALIST HEADER
+  // GRADIENT HEADER (Pseudo-gradient with 4 strips)
   const bandH = 100;
-  setFill(C.brandDark);
-  doc.rect(0, 0, W, bandH, "F");
+  const gradientColors = [
+    [67, 56, 202] as [number, number, number], // brandDark
+    [79, 70, 229] as [number, number, number],
+    [99, 102, 241] as [number, number, number], // brand
+    [129, 140, 248] as [number, number, number]
+  ];
+  gradientColors.forEach((color, i) => {
+    setFill(color);
+    doc.rect(0, i * (bandH/4), W, bandH/4, "F");
+  });
   
-  // Subtle Accent line
+  // Favicon (Small stylized cube)
+  const fx = margin;
+  const fy = 40;
+  setFill(C.white);
+  doc.rect(fx, fy - 12, 12, 12, "F");
   setFill(C.brand);
-  doc.rect(0, bandH - 2, W, 2, "F");
-  
-  // Continuous sidebar
-  setFill(C.brand);
-  doc.rect(0, 0, 6, H, "F");
+  doc.rect(fx + 2, fy - 10, 3, 3, "F");
+  doc.rect(fx + 7, fy - 10, 3, 3, "F");
+  doc.rect(fx + 4.5, fy - 5, 3, 3, "F");
 
   // Title
   doc.setFont(FONT, "bolditalic");
   doc.setFontSize(30);
   setText(C.white);
-  doc.text("GITINSIGHT AI", margin + 15, 45);
+  doc.text("GITINSIGHT AI", margin + 25, 45);
   
   doc.setFont(FONT, "normal");
   doc.setFontSize(10);
-  doc.text("Professional Developer Profile Audit Report", margin + 15, 60);
+  doc.text("Professional Developer Profile Audit Report", margin + 25, 60);
 
   // Minimalist Audit Seal
   const sealX = W - margin - 40;
@@ -131,18 +141,21 @@ export function exportPdf(data: AnalysisResult) {
   doc.setFont(FONT, "bold");
   doc.setFontSize(10);
   const pillW = doc.getTextWidth(handle) + 20;
-  roundedRect(margin + 15, 72, pillW, 18, 9, [255, 255, 255]);
+  roundedRect(margin + 25, 72, pillW, 18, 9, [255, 255, 255]);
   setText(C.brand);
-  doc.text(handle, margin + 25, 84);
+  doc.text(handle, margin + 35, 84);
+
+  // Direct GitHub Redirect Link
+  doc.link(margin + 25, 72, pillW, 18, { url: `https://github.com/${data.user.login}` });
 
   y = bandH + 25;
 
   // Score Summary Card
   const cardW = W - margin * 2;
-  roundedRect(margin + 15, y, cardW - 15, 75, 8, C.soft);
+  roundedRect(margin, y, cardW, 75, 8, C.soft);
   setDraw(C.border);
   doc.setLineWidth(0.5);
-  doc.roundedRect(margin + 15, y, cardW - 15, 75, 8, 8, "S");
+  doc.roundedRect(margin, y, cardW, 75, 8, 8, "S");
 
   const cx = margin + 45;
   const cy = y + 37;
