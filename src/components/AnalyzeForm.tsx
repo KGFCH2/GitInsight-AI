@@ -45,20 +45,21 @@ export function AnalyzeForm({ defaultValue = "", large = false }: Props) {
   };
 
   return (
-    <form onSubmit={submit} className="w-full">
+    <form onSubmit={submit} className="flex-1">
       <div
         className={
-          "group relative flex flex-col gap-2 rounded-2xl border border-border bg-card p-2 shadow-elev transition-all focus-within:ring-brand sm:flex-row " +
-          (large ? "sm:p-3" : "")
+          "group relative flex flex-col gap-2 rounded-2xl border border-border bg-card p-1.5 shadow-elev transition-all focus-within:ring-brand sm:flex-row sm:flex-nowrap sm:items-center sm:gap-1 " +
+          (large ? "sm:p-2" : "")
         }
       >
-        <div className="flex flex-1 items-center gap-3 px-3">
-          <Search className="h-5 w-5 shrink-0 text-muted-foreground" />
+        <div className="flex flex-1 items-center gap-2 px-3">
+          <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
           <input
             value={value}
             onChange={(e) => setValue(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && submit(e)}
             placeholder="GitHub username (e.g. KGFCH2)"
-            className="flex-1 h-12 border-none bg-transparent text-base outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 shadow-none"
+            className="flex-1 h-10 min-w-0 border-none bg-transparent text-sm outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 shadow-none"
             spellCheck={false}
             autoComplete="off"
           />
@@ -67,10 +68,10 @@ export function AnalyzeForm({ defaultValue = "", large = false }: Props) {
           type="submit"
           disabled={loading}
           size={large ? "lg" : "default"}
-          className="h-12 gap-2 rounded-xl bg-brand font-semibold text-primary-foreground hover:opacity-90"
+          className="h-10 shrink-0 gap-2 rounded-xl bg-brand font-bold text-primary-foreground transition-all hover:opacity-90 active:scale-95"
         >
-          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ArrowRight className="h-4 w-4" />}
-          Analyze Profile
+          {loading ? <Loader2 className="h-3 w-3 animate-spin" /> : <ArrowRight className="h-3 w-3" />}
+          <span className="whitespace-nowrap">Analyze Profile</span>
         </Button>
       </div>
     </form>

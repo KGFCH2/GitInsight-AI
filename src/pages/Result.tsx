@@ -105,19 +105,47 @@ const Result = () => {
     }
   };
 
-  // Task 3: Load actual favicon for PDF export
+  // Task 3: Load actual favicon and achievement icons for PDF export
   const handleExport = async () => {
     if (!data) return;
     try {
-      const resp = await fetch("/favicon.png");
-      const blob = await resp.blob();
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        exportPdf(data, reader.result as string);
+      const fetchB64 = async (url: string): Promise<string | null> => {
+        try {
+          const resp = await fetch(url);
+          const blob = await resp.blob();
+          return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result as string);
+            reader.readAsDataURL(blob);
+          });
+        } catch { return null; }
       };
-      reader.readAsDataURL(blob);
+
+      const faviconB64 = await fetchB64("/favicon.png");
+      
+      const achievementMap: Record<string, string> = {
+        "Arctic Code Vault Contributor": "https://github.githubassets.com/images/modules/profile/achievements/arctic-code-vault-contributor-default.png",
+        "Pull Shark": "https://github.githubassets.com/images/modules/profile/achievements/pull-shark-default.png",
+        "Starstruck": "https://github.githubassets.com/images/modules/profile/achievements/starstruck-default.png",
+        "YOLO": "https://github.githubassets.com/images/modules/profile/achievements/yolo-default.png",
+        "Pair Extraordinaire": "https://github.githubassets.com/images/modules/profile/achievements/pair-extraordinaire-default.png",
+        "Galaxy Brain": "https://github.githubassets.com/images/modules/profile/achievements/galaxy-brain-default.png"
+      };
+
+      const iconPromises = (data.realAchievements || []).map(async (ach) => {
+        const url = achievementMap[ach];
+        if (!url) return null;
+        const b64 = await fetchB64(url);
+        return { ach, b64 };
+      });
+
+      const icons = await Promise.all(iconPromises);
+      const iconData: Record<string, string> = {};
+      icons.forEach(i => { if (i?.b64) iconData[i.ach] = i.b64; });
+
+      exportPdf(data, faviconB64 || undefined, iconData);
     } catch (e) {
-      console.warn("Failed to load favicon for PDF", e);
+      console.warn("Failed to load assets for PDF", e);
       exportPdf(data);
     }
   };
@@ -144,16 +172,23 @@ const Result = () => {
         <div>
           <div className="text-xs uppercase tracking-widest text-muted-foreground">Public Profile Report</div>
           <h1 className="font-display text-3xl font-bold sm:text-4xl">
-            @{username}
+            <a 
+              href={`https://github.com/${username}`} 
+              target="_blank" 
+              rel="noreferrer"
+              className="hover:text-brand-1 hover:underline transition-colors"
+            >
+              @{username}
+            </a>
           </h1>
         </div>
-        <div className="flex w-full max-w-md flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
+        <div className="flex w-full max-w-lg flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
           <AnalyzeForm defaultValue={username} />
           {data && (
             <Button
               variant="outline"
               size="icon"
-              className="group h-12 w-12 shrink-0 rounded-xl transition-all duration-500 hover:rotate-12 hover:scale-110 hover:border-brand/60 hover:bg-brand/10 hover:shadow-glow dark:border-border/60"
+              className="group h-11 w-11 shrink-0 rounded-xl transition-all duration-500 hover:rotate-12 hover:scale-110 hover:border-brand/60 hover:bg-brand/10 hover:shadow-glow dark:border-border/60"
               onClick={() => loadData(true)}
               disabled={loading}
               title="Refresh latest data"
@@ -323,28 +358,6 @@ const Result = () => {
               </div>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="rounded-2xl border border-border bg-card-grad p-6 shadow-elev"
-            >
-              <div className="flex flex-col items-center gap-6 sm:flex-row">
-                <ScoreRing value={data.score.total} />
-                <div className="flex-1 self-stretch">
-                  <ScoreBreakdownChart
-                    data={[
-                      { label: "Popularity", value: data.score.breakdown.popularity, max: 25 },
-                      { label: "Activity", value: data.score.breakdown.activity, max: 20 },
-                      { label: "Breadth", value: data.score.breakdown.breadth, max: 15 },
-                      { label: "Quality", value: data.score.breakdown.quality, max: 20 },
-                      { label: "Community", value: data.score.breakdown.community, max: 10 },
-                      { label: "Tenure", value: data.score.breakdown.tenure, max: 10 },
-                    ]}
-                  />
-                </div>
-              </div>
-            </motion.div>
           </div>
 
           {/* Best Repo */}
@@ -387,11 +400,11 @@ const Result = () => {
           {/* Tabs */}
             <div className="mt-10">
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="bg-muted">
-                  <TabsTrigger value="ai">AI Insights</TabsTrigger>
-                  <TabsTrigger value="recruiter">Recruiter View</TabsTrigger>
-                  <TabsTrigger value="repos">Repositories</TabsTrigger>
-                  <TabsTrigger value="badges">Badges</TabsTrigger>
+                <TabsList className="mb-6 grid w-full grid-cols-2 lg:grid-cols-4">
+                  <TabsTrigger value="ai" className="gap-2"><TrendingUp className="h-4 w-4" /> Strategic View</TabsTrigger>
+                  <TabsTrigger value="repos" className="gap-2"><Sparkles className="h-4 w-4" /> Repositories</TabsTrigger>
+                  <TabsTrigger value="badges" className="gap-2"><Crown className="h-4 w-4" /> Achievements & Badges</TabsTrigger>
+                  <TabsTrigger value="audit" className="gap-2"><Lightbulb className="h-4 w-4" /> Technical Audit</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="ai" className="mt-6 space-y-6">
@@ -402,34 +415,32 @@ const Result = () => {
                 )}
                 <div className="grid gap-6 md:grid-cols-2">
                   <Card title="Strengths" icon={TrendingUp} accent="success">
-                    <BulletList items={data.ai.strengths} />
+                    <BulletList items={data.ai.strengths} iconType="success" />
                   </Card>
                   <Card title="Weaknesses" icon={Lightbulb} accent="warning">
-                    <BulletList items={data.ai.weaknesses} />
+                    <BulletList items={data.ai.weaknesses} iconType="warning" />
                   </Card>
                 </div>
                 <Card title="Action Steps" icon={Sparkles}>
-                  <BulletList items={data.ai.actionSteps} numbered />
+                  <BulletList items={data.ai.actionSteps} numbered iconType="step" />
                 </Card>
                 {data.bestRepo && data.ai.readmeTips?.length > 0 && (
                   <Card title={`README tips for ${data.bestRepo.name}`} icon={Lightbulb}>
-                    <BulletList items={data.ai.readmeTips} />
+                    <BulletList items={data.ai.readmeTips} iconType="tip" />
                   </Card>
                 )}
                 {data.ai.projectIdeas?.length > 0 && (
                   <Card title="Project Ideas" icon={Sparkles}>
-                    <BulletList items={data.ai.projectIdeas} />
+                    <BulletList items={data.ai.projectIdeas} iconType="idea" />
                   </Card>
                 )}
-              </TabsContent>
-
-              <TabsContent value="recruiter" className="mt-6">
                 <Card title="Recruiter Perspective" icon={Users}>
-                  <p className="leading-relaxed text-muted-foreground">
+                  <p className="leading-relaxed text-muted-foreground italic">
                     {data.ai.recruiterInsights || "No recruiter insights generated."}
                   </p>
                 </Card>
               </TabsContent>
+
 
               <TabsContent value="repos" id="repos-list" className="mt-6">
                 <div className="mb-4 flex flex-wrap gap-2">
@@ -491,6 +502,44 @@ const Result = () => {
                   </h3>
                   <BadgeGrid badges={data.badges} />
                 </div>
+              </TabsContent>
+              <TabsContent value="audit" className="mt-6 space-y-6">
+                <div className="rounded-2xl border border-border bg-card-grad p-8 shadow-elev">
+                  <div className="flex flex-col items-center gap-10 lg:flex-row lg:justify-around">
+                    <div className="flex flex-col items-center gap-4">
+                      <ScoreRing value={data.score.total} />
+                      <div className="text-center">
+                        <div className="text-sm font-black uppercase tracking-tighter text-muted-foreground">Overall Reliability</div>
+                        <div className="font-display text-2xl font-black text-brand-1">{data.score.total}/100</div>
+                      </div>
+                    </div>
+                    <div className="w-full max-w-md">
+                      <ScoreBreakdownChart
+                        data={[
+                          { label: "Popularity", value: data.score.breakdown.popularity, max: 25 },
+                          { label: "Activity", value: data.score.breakdown.activity, max: 20 },
+                          { label: "Breadth", value: data.score.breakdown.breadth, max: 15 },
+                          { label: "Quality", value: data.score.breakdown.quality, max: 20 },
+                          { label: "Community", value: data.score.breakdown.community, max: 10 },
+                          { label: "Tenure", value: data.score.breakdown.tenure, max: 10 },
+                        ]}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <Card title="Dimension Analysis" icon={Lightbulb}>
+                  <div className="grid gap-6 sm:grid-cols-2">
+                    <div className="space-y-1">
+                      <div className="text-xs font-bold uppercase text-success">Popularity & Reach</div>
+                      <p className="text-sm text-muted-foreground">Measures star count, forks, and follower velocity across all public contributions.</p>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="text-xs font-bold uppercase text-warning">Quality & Documentation</div>
+                      <p className="text-sm text-muted-foreground">Evaluates README depth, repository topics, licensing, and homepage availability.</p>
+                    </div>
+                  </div>
+                </Card>
               </TabsContent>
             </Tabs>
           </div>
@@ -626,10 +675,10 @@ function Stat({
   color?: "brand" | "amber" | "purple" | "blue";
 }) {
   const themes = {
-    brand: "hover:border-brand/40 hover:bg-brand/5 text-brand-1 hover:shadow-glow hover:shadow-brand/20",
-    amber: "hover:border-amber/40 hover:bg-amber/5 text-amber hover:shadow-glow hover:shadow-warning/20",
-    purple: "hover:border-purple/40 hover:bg-purple/5 text-purple hover:shadow-glow hover:shadow-purple/20",
-    blue: "hover:border-blue/40 hover:bg-blue/5 text-blue hover:shadow-glow hover:shadow-blue/20",
+    brand: "hover:border-brand/40 hover:bg-brand/5 text-brand-1 hover:shadow-lg hover:shadow-brand/20",
+    amber: "hover:border-amber/40 hover:bg-amber/5 text-amber hover:shadow-lg hover:shadow-warning/20",
+    purple: "hover:border-purple/40 hover:bg-purple/5 text-purple hover:shadow-lg hover:shadow-purple/20",
+    blue: "hover:border-blue/40 hover:bg-blue/5 text-blue hover:shadow-lg hover:shadow-blue/20",
   };
 
   return (
@@ -670,7 +719,9 @@ function Card({
   return (
     <div className="rounded-2xl border border-border bg-card-grad p-6 transition-all duration-300 hover:border-brand-1/30 hover:bg-muted/10 hover:shadow-sm">
       <div className="mb-4 flex items-center gap-2">
-        <Icon className={`h-4 w-4 ${accentClass}`} />
+        <div className="icon-glow-pop rounded-lg bg-brand/10 p-2">
+          <Icon className={`h-4 w-4 ${accentClass}`} />
+        </div>
         <h3 className="font-display text-base font-semibold">{title}</h3>
       </div>
       {children}
@@ -678,16 +729,35 @@ function Card({
   );
 }
 
-function BulletList({ items, numbered = false }: { items: string[]; numbered?: boolean }) {
+function BulletList({ 
+  items, 
+  numbered = false,
+  iconType = "dot"
+}: { 
+  items: string[]; 
+  numbered?: boolean;
+  iconType?: "dot" | "success" | "warning" | "step" | "tip" | "idea"
+}) {
   if (!items?.length) return <p className="text-sm text-muted-foreground">—</p>;
+  
+  const getIcon = (i: number) => {
+    if (numbered) return <span className="text-xs font-black">{i + 1}</span>;
+    if (iconType === "success") return <TrendingUp className="h-3 w-3 text-success" />;
+    if (iconType === "warning") return <Lightbulb className="h-3 w-3 text-warning" />;
+    if (iconType === "step") return <Sparkles className="h-3 w-3 text-brand-1" />;
+    if (iconType === "tip") return <Lightbulb className="h-3 w-3 text-amber" />;
+    if (iconType === "idea") return <Sparkles className="h-3 w-3 text-blue" />;
+    return <div className="h-1.5 w-1.5 rounded-full bg-brand-1" />;
+  };
+
   return (
-    <ol className="space-y-2.5">
+    <ol className="space-y-3">
       {items.map((it, i) => (
-        <li key={i} className="flex gap-3 text-sm leading-relaxed">
-          <span className="mt-0.5 inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-muted px-1.5 text-xs font-mono font-semibold">
-            {numbered ? i + 1 : "•"}
-          </span>
-          <span className="text-foreground/90">{it}</span>
+        <li key={i} className="flex gap-3 text-sm leading-relaxed group">
+          <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-muted/50 group-hover:bg-brand/10 group-hover:text-brand transition-colors">
+            {getIcon(i)}
+          </div>
+          <span className="text-foreground/80 group-hover:text-foreground transition-colors">{it}</span>
         </li>
       ))}
     </ol>

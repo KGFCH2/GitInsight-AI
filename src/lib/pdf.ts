@@ -23,7 +23,7 @@ const classColor: Record<string, [number, number, number]> = {
   archive: C.muted,
 };
 
-export function exportPdf(data: AnalysisResult, faviconB64?: string) {
+export function exportPdf(data: AnalysisResult, faviconB64?: string, achievementIcons?: Record<string, string>) {
   // Using 'times' as the closest built-in serif font for 'Cambria Math'
   const FONT = "times";
   const doc = new jsPDF({ unit: "pt", format: "a4" });
@@ -228,11 +228,26 @@ export function exportPdf(data: AnalysisResult, faviconB64?: string) {
 
       setFill(C.soft);
       doc.roundedRect(ax, ay, achW, 22, 11, 11, "F");
-      setFill(C.brand);
-      doc.circle(ax + 11, ay + 11, 8, "F");
-      setText(C.white);
-      doc.setFontSize(5);
-      doc.text("A", ax + 9.5, ay + 12.5);
+
+      const iconB64 = achievementIcons ? achievementIcons[ach] : null;
+      if (iconB64) {
+        try {
+          doc.addImage(iconB64, "PNG", ax + 3, ay + 3, 16, 16);
+        } catch {
+          // Fallback if image corrupted
+          setFill(C.brand);
+          doc.circle(ax + 11, ay + 11, 8, "F");
+          setText(C.white);
+          doc.setFontSize(5);
+          doc.text("A", ax + 9.5, ay + 12.5);
+        }
+      } else {
+        setFill(C.brand);
+        doc.circle(ax + 11, ay + 11, 8, "F");
+        setText(C.white);
+        doc.setFontSize(5);
+        doc.text("A", ax + 9.5, ay + 12.5);
+      }
       
       setText(C.body);
       doc.setFont(FONT, "bold");
