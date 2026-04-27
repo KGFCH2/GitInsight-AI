@@ -23,7 +23,7 @@ export function RepoCard({ repo, index = 0 }: { repo: AnalyzedRepo; index?: numb
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: Math.min(index, 8) * 0.04 }}
-      className="group flex h-full flex-col rounded-xl border border-border bg-card-grad p-5 transition-all hover:-translate-y-0.5 hover:border-brand-1/60 hover:shadow-glow"
+      className="group flex h-full flex-col rounded-xl border border-border bg-card-grad p-5 transition-all hover:-translate-y-0.5 hover:border-brand-1/60 hover:shadow-glow-intense"
     >
       <div className="mb-2 flex items-start justify-between gap-3">
         <div className="flex items-center gap-2 font-display text-base font-semibold leading-tight">

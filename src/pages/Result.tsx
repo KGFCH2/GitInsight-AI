@@ -188,7 +188,7 @@ const Result = () => {
           </h1>
         </div>
         <div className="flex w-full max-w-lg flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
-          <AnalyzeForm defaultValue={username} />
+          <AnalyzeForm defaultValue={data?.user.login || username} />
           {data && (
             <Button
               variant="outline"
@@ -450,15 +450,21 @@ const Result = () => {
                     <BulletList items={data.ai.weaknesses} iconType="warning" />
                   </Card>
                 </div>
-                  <Card title="Dimension Analysis" icon={Lightbulb}>
+                  <Card title="Dimension Analysis" icon={Gauge}>
                     <div className="grid gap-6 sm:grid-cols-2">
-                      <div className="space-y-1">
-                        <div className="text-xs font-bold uppercase text-success">Popularity & Reach</div>
-                        <p className="text-sm text-muted-foreground">Measures star count, forks, and follower velocity across all public contributions.</p>
+                      <div className="space-y-1 group/item">
+                        <div className="flex items-center gap-2 text-xs font-black uppercase text-success">
+                          <div className="h-1.5 w-1.5 rounded-full bg-success shadow-glow" />
+                          Popularity & Reach
+                        </div>
+                        <p className="text-sm text-muted-foreground leading-relaxed">Measures star count, forks, and follower velocity across all public contributions.</p>
                       </div>
-                      <div className="space-y-1">
-                        <div className="text-xs font-bold uppercase text-warning">Quality & Documentation</div>
-                        <p className="text-sm text-muted-foreground">Evaluates README depth, repository topics, licensing, and homepage availability.</p>
+                      <div className="space-y-1 group/item">
+                        <div className="flex items-center gap-2 text-xs font-black uppercase text-warning">
+                          <div className="h-1.5 w-1.5 rounded-full bg-warning shadow-glow" />
+                          Quality & Documentation
+                        </div>
+                        <p className="text-sm text-muted-foreground leading-relaxed">Evaluates README depth, repository topics, licensing, and homepage availability.</p>
                       </div>
                     </div>
                   </Card>
@@ -507,20 +513,13 @@ const Result = () => {
                       <RepoCard key={r.name} repo={r} index={i} />
                     ))}
                 </div>
-                {data.repos.length === 0 && (
-                  <p className="text-center text-sm text-muted-foreground">No public repositories found.</p>
-                )}
               </TabsContent>
-
-              <TabsContent value="badges" className="mt-6 space-y-10">
-                <div className="space-y-4">
-                  <h3 className="font-display text-xl font-bold flex items-center gap-2">
-                    <Crown className="h-5 w-5 text-brand-1" /> GitHub Achievements
-                  </h3>
+              <TabsContent value="badges" className="mt-6 space-y-6">
+                <Card title="GitHub Achievements" icon={Award}>
                   <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                     {data.realAchievements?.map(a => (
-                      <div key={a} className="group relative flex flex-col items-center justify-center rounded-2xl border border-border bg-muted/30 p-6 text-center transition-all hover:-translate-y-1 hover:border-brand-1/40 hover:bg-card">
-                        <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-brand/10 p-2 shadow-inner group-hover:scale-110 transition-transform">
+                      <div key={a} className="group relative flex flex-col items-center justify-center rounded-2xl border border-border bg-muted/20 p-6 text-center transition-all hover:-translate-y-1 hover:border-brand-1/40 hover:bg-card hover:shadow-glow">
+                        <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-brand/10 p-2 shadow-inner group-hover:scale-110 group-hover:bg-brand/20 transition-all">
                           {a.includes("Vault") && <img src="https://github.githubassets.com/images/modules/profile/achievements/arctic-code-vault-contributor-default.png" className="h-10 w-10" />}
                           {a.includes("Shark") && <img src="https://github.githubassets.com/images/modules/profile/achievements/pull-shark-default.png" className="h-10 w-10" />}
                           {a.includes("YOLO") && <img src="https://github.githubassets.com/images/modules/profile/achievements/yolo-default.png" className="h-10 w-10" />}
@@ -528,21 +527,18 @@ const Result = () => {
                           {a.includes("Starstruck") && <img src="https://github.githubassets.com/images/modules/profile/achievements/starstruck-default.png" className="h-10 w-10" />}
                           {a.includes("Galaxy") && <img src="https://github.githubassets.com/images/modules/profile/achievements/galaxy-brain-default.png" className="h-10 w-10" />}
                         </div>
-                        <div className="text-xs font-black tracking-tight uppercase group-hover:text-brand-1">{a}</div>
+                        <div className="text-[10px] font-black tracking-tight uppercase group-hover:text-brand-1">{a}</div>
                       </div>
                     ))}
                     {(!data.realAchievements || data.realAchievements.length === 0) && (
                       <p className="col-span-full py-10 text-center text-sm text-muted-foreground">Keep coding to unlock more achievements!</p>
                     )}
                   </div>
-                </div>
+                </Card>
 
-                <div className="space-y-4">
-                  <h3 className="font-display text-xl font-bold flex items-center gap-2">
-                    <Sparkles className="h-5 w-5 text-brand-1" /> AI Badges
-                  </h3>
+                <Card title="AI Badges" icon={Sparkles}>
                   <BadgeGrid badges={data.badges} />
-                </div>
+                </Card>
               </TabsContent>
             </Tabs>
           </div>
