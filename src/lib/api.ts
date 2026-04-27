@@ -247,6 +247,12 @@ export async function analyzeProfile(username: string, force = false): Promise<A
   }
 
   const user = await gh<GhUser>(`https://api.github.com/users/${cleaned}`, force);
+  
+  // Strict case-sensitive enforcement
+  if (user.login !== cleaned) {
+    throw new Error(`Username casing mismatch. Expected exactly "${cleaned}", but found "${user.login}". Please use the correct case.`);
+  }
+
   const repos = await gh<GhRepo[]>(`https://api.github.com/users/${cleaned}/repos?per_page=100&sort=updated${force ? `&t=${Date.now()}` : ""}`, force);
 
   // Fetch Starred Repos (for the "Total Stars" click)
