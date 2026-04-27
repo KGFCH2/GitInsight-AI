@@ -26,10 +26,10 @@ npm install
 
 ```env
 APP_GITHUB_TOKEN=your_github_token
-APP_GEMINI_API_KEY=your_gemini_key
+APP_GROQ_API_KEY=your_groq_key
+APP_GEMINI_API_KEY=your_gemini_key_1
 APP_GEMINI_API_KEY_2=optional_second_gemini_key
 APP_GEMINI_API_KEY_3=optional_third_gemini_key
-APP_GROQ_API_KEY=your_groq_key
 ```
 
 4. Start development server.
@@ -44,30 +44,29 @@ npm run dev
 
 1. Open Home and read feature summary.
 2. Go to Analyze and enter a valid GitHub username without URL.
-3. Wait for profile, repos, score, and AI insights to load.
-4. Review score breakdown and repository labels (good, improve, archive).
-5. Export report using PDF download action on Result page.
-6. Reopen previous analyses from History page.
-7. Use Docs page for scoring method and FAQ.
-8. Toggle theme using the navbar icon as needed.
+3. **Note on Casing**: The analyzer enforces **Strict Case Matching**. If a user's GitHub username is `KGFCH2`, entering `kgfch2` will result in a casing mismatch error. Always use the exact casing found on GitHub.
+4. Wait for profile, repos, score, and AI insights to load.
+5. Review score breakdown and repository labels (good, improve, archive).
+6. Export report using PDF download action on Result page.
+7. Reopen previous analyses from History page.
+8. Use Docs page for scoring method and FAQ.
+9. Toggle theme using the navbar icon as needed.
 
 ## 🛠️ Troubleshooting
 
-1. If analysis fails with API errors, verify keys in `.env` and restart dev server.
-2. If GitHub requests fail, check token validity and public rate limit.
-3. If AI insights fail, the app should still render deterministic score and repo analysis.
-4. If favicon or static assets do not update, hard refresh browser cache.
-5. If styles look broken, ensure Tailwind build is running through Vite.
+1. **Casing Mismatch**: If you see an error about username mismatch, double check the exact casing of the GitHub login.
+2. **API Keys**: If AI insights fail, ensure you have at least one valid Gemini API key. The system will rotate through up to 3 keys if provided.
+3. **GitHub Requests**: If requests fail, check your GitHub token. No scopes are required for public data.
+4. **Deterministic Mode**: If all AI providers fail (rate limits/keys), the app will still render a complete report using deterministic score and repo analytics.
+5. **Static Assets**: If images or icons do not update, hard refresh your browser.
 
 ## 🧪 Scripts
 
 1. `npm run dev` starts development server.
 2. `npm run build` creates production build.
-3. `npm run build:dev` creates development mode build.
-4. `npm run preview` previews built output.
-5. `npm run lint` runs ESLint.
-6. `npm run test` runs Vitest once.
-7. `npm run test:watch` runs Vitest in watch mode.
+3. `npm run preview` previews built output.
+4. `npm run lint` runs ESLint.
+5. `npm run test` runs Vitest.
 
 ## 🗂️ Working Principle Of Every File
 
@@ -79,95 +78,32 @@ npm run dev
 4. `INSTRUCTIONS.md` provides setup guidance and per-file behavior notes.
 5. `LICENSE.md` contains project license terms.
 6. `README.md` presents project overview, features, and quick start information.
-7. `components.json` configures ShadCN component generator aliases and style options.
-8. `eslint.config.js` configures lint rules for TypeScript and React files.
-9. `index.html` is the single HTML shell used by Vite and React runtime.
-10. `package.json` defines scripts and dependency metadata for npm workflows.
-11. `package-lock.json` locks dependency versions for reproducible installations.
-12. `postcss.config.js` enables Tailwind and Autoprefixer in CSS pipeline.
-13. `tailwind.config.ts` defines Tailwind theme tokens and scanned file globs.
-14. `tsconfig.json` sets shared TypeScript compiler configuration.
-15. `tsconfig.app.json` sets TypeScript rules for browser app source files.
-16. `tsconfig.node.json` sets TypeScript rules for Node-side config files.
-17. `vite.config.ts` configures dev server, alias resolution, and build behavior.
-18. `vitest.config.ts` configures test environment and setup files for Vitest.
-
-### 🖼️ Public Asset
-
-1. `public/favicon.png` provides browser tab favicon and in-app logo image source.
-
-### 🏁 Runtime Entry And Global Styling
-
-1. `src/main.tsx` mounts React app into root DOM element.
-2. `src/App.tsx` defines providers and full route tree.
-3. `src/index.css` defines global CSS variables, theme tokens, and utility classes.
-4. `src/vite-env.d.ts` types `import.meta.env` keys used in client code.
+7. `vite.config.ts` configures dev server with the custom `APP_` environment prefix.
 
 ### 🧠 Core Logic In src/lib
 
-1. `src/lib/api.ts` fetches GitHub data, computes score, calls AI models, and stores history helpers.
+1. `src/lib/api.ts` handles:
+   - **Strict Case Validation**: Verifies input matches GitHub login casing.
+   - **Multi-Key Gemini Integration**: Rotates through API keys to handle volume.
+   - **Groq Fallback**: Ensures insights generate even if Gemini is unavailable.
+   - **Deterministic Scoring**: Calculates the 0–100 profile score.
 2. `src/lib/pdf.ts` generates downloadable PDF report using jsPDF.
-3. `src/lib/types.ts` defines domain types for results, repos, user, and AI payloads.
-4. `src/lib/utils.ts` provides shared utility helpers such as class name merging.
 
 ### 🧱 Feature Components In src/components
 
-1. `src/components/Layout.tsx` composes page shell with navbar, footer, and outlet.
-2. `src/components/Navbar.tsx` renders top navigation, theme toggle, and brand identity.
-3. `src/components/Footer.tsx` renders footer links, branding, and legal navigation.
-4. `src/components/AnalyzeForm.tsx` captures username input and triggers navigation.
-5. `src/components/BadgeGrid.tsx` renders earned badge list with icon mapping.
-6. `src/components/RepoCard.tsx` renders single repository metrics and classification state.
-7. `src/components/ScoreBreakdownChart.tsx` visualizes score dimension bars.
-8. `src/components/ScoreRing.tsx` renders circular score visualization with gradient stroke.
-9. `src/components/ScrollToTop.tsx` resets scroll position on route transitions.
-10. `src/components/ThemeToggle.tsx` switches between light and dark themes.
-11. `src/components/NavLink.tsx` provides reusable styled navigation link behavior.
-
-### 🎛️ UI Primitives In src/components/ui
-
-1. `src/components/ui/accordion.tsx` exports accordion primitives and styles.
-2. `src/components/ui/button.tsx` exports variant-based button primitive.
-3. `src/components/ui/input.tsx` exports styled input primitive.
-4. `src/components/ui/sonner.tsx` exports toast container wrapper.
-5. `src/components/ui/tabs.tsx` exports tab primitives and styles.
-6. `src/components/ui/toast.tsx` exports toast components and action helpers.
-7. `src/components/ui/tooltip.tsx` exports tooltip primitives.
-
-### 🪝 Custom Hook
-
-1. `src/hooks/use-mobile.tsx` detects mobile viewport state for responsive logic.
+1. `src/components/Navbar.tsx` implements analysis persistence logic (remembers results until Home is clicked).
+2. `src/components/AnalyzeForm.tsx` captures username and handles initial navigation.
 
 ### 📄 Pages In src/pages
 
-1. `src/pages/Home.tsx` renders landing page, value proposition, and entry actions.
-2. `src/pages/Analyze.tsx` renders analyze workflow wrapper and form context.
-3. `src/pages/Result.tsx` orchestrates analysis fetch, displays result panels, and export actions.
-4. `src/pages/History.tsx` reads and renders locally stored analysis history.
-5. `src/pages/Docs.tsx` shows user-facing scoring and usage documentation.
-6. `src/pages/Privacy.tsx` displays privacy policy content.
-7. `src/pages/Terms.tsx` displays terms of use content.
-8. `src/pages/NotFound.tsx` renders fallback for unknown routes.
-
-### ✅ Test Files In src/test
-
-1. `src/test/example.test.ts` contains baseline unit test example.
-2. `src/test/setup.ts` configures test environment and shared test utilities.
+1. `src/pages/Result.tsx` orchestrates the analysis fetch, displays the report, handles real-time refreshes, and renders themed detail modals for stars, followers, and languages.
+2. `src/pages/Documentation.tsx` explains the scoring methodology and provides user FAQs.
 
 ## 🔁 Development Workflow Guidance
 
-1. Create features in small commits by page or module.
-2. Keep secrets only in `.env` and never hardcode keys.
-3. Add or update types in `src/lib/types.ts` first when API shape changes.
-4. Keep UI primitives in `src/components/ui` and feature composition in `src/components`.
-5. Run lint and tests before pushing.
-
-## 📦 Production Build And Preview
-
-1. Run `npm run build` to create a production build.
-2. Run `npm run preview` to preview the built output.
-
-Build output is generated in `dist`.
+1. Keep secrets only in `.env` and never hardcode keys.
+2. Add or update types in `src/lib/types.ts` first when API shape changes.
+3. Keep UI primitives in `src/components/ui` and feature composition in `src/components`.
 
 ## ⚖️ License
 

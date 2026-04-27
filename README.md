@@ -11,15 +11,16 @@ Enter a GitHub username, get a **0–100 profile score**, AI-generated strengths
 ## ✨ Features
 
 1. **📊 0–100 Profile Score** — Transparent 6-dimension breakdown of popularity, activity, breadth, quality, community, and tenure.
-2. **🤖 AI Insights** — Summary, strengths, weaknesses, and action steps (powered by Gemini & Groq).
+2. **🤖 AI Insights** — Summary, strengths, weaknesses, and action steps (powered by **Multi-Key Gemini** & Groq fallback).
 3. **💼 Recruiter View** — Hireability paragraph from a professional recruiter's perspective.
 4. **📁 Repo Quality Classifier** — Every repository tagged as Good / Improve / Archive with visual badges.
 5. **🌟 Best Repo Highlight** — Detailed README improvement tips and innovative project ideas.
 6. **🏆 Interactive Dashboards** — Clickable stat tiles for deep dives into starred repos, followers, and languages.
 7. **📄 PDF Export** — Download your results as a polished, color-themed report.
-8. **🌗 Dark / Light Mode** — Premium, responsive design with theme-aware colors and smooth animations.
-9. **🔄 Real-time Refresh** — Fetch the latest GitHub data with a single click to bypass cache.
-10. **💾 Persistence** — Remembers your last analyzed profile even when browsing documentation.
+8. **🌓 Strict Case Matching** — Enforces exact username casing for professional profile accuracy.
+9. **🌗 Dark / Light Mode** — Premium, responsive design with theme-aware colors and smooth animations.
+10. **🔄 Real-time Refresh** — Fetch the latest GitHub data with a single click to bypass cache.
+11. **💾 Persistence** — Remembers your last analyzed profile even when browsing documentation.
 
 ---
 
@@ -28,7 +29,7 @@ Enter a GitHub username, get a **0–100 profile score**, AI-generated strengths
 - **Frontend:** React 18 + TypeScript
 - **Styling:** Tailwind CSS + ShadCN UI + Vanilla CSS
 - **Animations:** Framer Motion
-- **APIs:** GitHub REST API · Google Gemini · Groq
+- **APIs:** GitHub REST API · Google Gemini (Multi-Key) · Groq
 - **PDF Generation:** jsPDF
 - **State Management:** React Query
 - **Tooling:** Vite
@@ -60,12 +61,16 @@ npm install
 
 ### 3. Set up environment variables
 
-Create a `.env` file in the root directory and add your API keys:
+Create a `.env` file in the root directory and add your API keys. **This project supports multiple Gemini keys for high-volume analysis.**
 
 ```env
 APP_GITHUB_TOKEN=your_github_token
 APP_GROQ_API_KEY=your_groq_api_key
-APP_GEMINI_API_KEY=your_gemini_api_key
+
+# Primary Gemini Keys (Rotation supported)
+APP_GEMINI_API_KEY=your_gemini_key_1
+APP_GEMINI_API_KEY_2=your_gemini_key_2
+APP_GEMINI_API_KEY_3=your_gemini_key_3
 ```
 
 ### 4. Run the development server
@@ -80,7 +85,7 @@ Open [http://localhost:8080](http://localhost:8080) to see the app.
 
 ## 🔑 API Keys Setup
 
-- **Gemini:** Get your API key from [Google AI Studio](https://aistudio.google.com/apikey).
+- **Gemini:** Get your API keys from [Google AI Studio](https://aistudio.google.com/apikey). You can provide up to 3 keys for rotation.
 - **Groq:** Get your API key from [Groq Console](https://console.groq.com/keys).
 - **GitHub Token:** Generate a token at [GitHub Settings](https://github.com/settings/tokens) (no scopes needed for public data).
 
