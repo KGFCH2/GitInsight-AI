@@ -79,7 +79,11 @@ const Result = () => {
         setData(r);
         cacheResult(r);
         addToHistory(r);
-        localStorage.setItem("lastAnalyzedUser", username);
+        // Canonical case correction
+        if (r.user.login !== username) {
+          navigate(`/result/${r.user.login}`, { replace: true });
+        }
+        localStorage.setItem("lastAnalyzedUser", r.user.login);
       })
       .catch((e: Error) => {
         console.error("Analysis Error:", e);
@@ -173,21 +177,21 @@ const Result = () => {
       </AnimatePresence>
 
       {/* Header */}
-      <div className="mb-8 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-start">
-        <div>
+      <div className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div className="flex-1">
           <div className="text-xs uppercase tracking-widest text-muted-foreground">Public Profile Report</div>
-          <h1 className="font-display text-3xl font-bold sm:text-4xl">
+          <h1 className="font-display text-4xl font-black italic tracking-tighter sm:text-6xl">
             <a 
-              href={`https://github.com/${username}`} 
+              href={`https://github.com/${data?.user.login || username}`} 
               target="_blank" 
               rel="noreferrer"
               className="hover:text-brand-1 hover:underline transition-colors"
             >
-              @{username}
+              @{data?.user.login || username}
             </a>
           </h1>
         </div>
-        <div className="flex w-full max-w-md flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
+        <div className="flex w-full max-w-lg flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
           <AnalyzeForm defaultValue={username} />
           {data && (
             <Button
@@ -250,94 +254,96 @@ const Result = () => {
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
           {/* Top profile + score */}
-          <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
+          <div className="grid gap-6 lg:grid-cols-2 lg:items-stretch">
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              className="rounded-2xl border border-border bg-card-grad p-6 shadow-elev"
+              className="flex flex-col rounded-2xl border border-border bg-card-grad p-6 shadow-elev h-full"
             >
-              <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
-                <img
-                  src={data.user.avatar}
-                  alt={data.user.login}
-                  className="h-20 w-20 rounded-2xl border border-border object-cover"
-                  loading="lazy"
-                />
-                <div className="flex-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h2 className="font-display text-2xl font-bold">
-                      {data.user.name || data.user.login}
-                    </h2>
-                    <a
-                      href={data.user.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-brand-1"
-                    >
-                      @{data.user.login}
-                      <ExternalLink className="h-3 w-3" />
-                    </a>
-                  </div>
-                  {data.user.bio && (
-                    <p className="mt-2 max-w-prose text-sm text-muted-foreground">{data.user.bio}</p>
-                  )}
-                  <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted-foreground">
-                    {data.user.location && (
-                      <span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3" /> {data.user.location}</span>
-                    )}
-                    {data.user.company && (
-                      <span className="inline-flex items-center gap-1"><Building2 className="h-3 w-3" /> {data.user.company}</span>
-                    )}
-                    {data.user.blog && (
-                      <a href={data.user.blog} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:text-brand-1">
-                        <Globe className="h-3 w-3" /> Website
+              <div className="flex-1">
+                <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
+                  <img
+                    src={data.user.avatar}
+                    alt={data.user.login}
+                    className="h-20 w-20 rounded-2xl border border-border object-cover"
+                    loading="lazy"
+                  />
+                  <div className="flex-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h2 className="font-display text-2xl font-bold">
+                        {data.user.name || data.user.login}
+                      </h2>
+                      <a
+                        href={data.user.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-brand-1"
+                      >
+                        @{data.user.login}
+                        <ExternalLink className="h-3 w-3" />
                       </a>
+                    </div>
+                    {data.user.bio && (
+                      <p className="mt-2 max-w-prose text-sm text-muted-foreground leading-relaxed">{data.user.bio}</p>
                     )}
-                    <span className="inline-flex items-center gap-1">
-                      <Calendar className="h-3 w-3" /> {data.score.stats.accountAgeYears}y on GitHub
-                    </span>
+                    <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted-foreground">
+                      {data.user.location && (
+                        <span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3" /> {data.user.location}</span>
+                      )}
+                      {data.user.company && (
+                        <span className="inline-flex items-center gap-1"><Building2 className="h-3 w-3" /> {data.user.company}</span>
+                      )}
+                      {data.user.blog && (
+                        <a href={data.user.blog} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:text-brand-1">
+                          <Globe className="h-3 w-3" /> Website
+                        </a>
+                      )}
+                      <span className="inline-flex items-center gap-1">
+                        <Calendar className="h-3 w-3" /> {data.score.stats.accountAgeYears}y on GitHub
+                      </span>
+                    </div>
                   </div>
+                </div>
+
+                <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  <Stat 
+                    label="Total Stars" 
+                    value={data.starredRepos?.length || 0} 
+                    icon={Star} 
+                    onClick={() => setModalType("stars")}
+                    subLabel="Starred by user"
+                    color="amber"
+                  />
+                  <Stat 
+                    label="Followers" 
+                    value={data.user.followers} 
+                    icon={Users} 
+                    onClick={() => setModalType("followers")}
+                    color="purple"
+                  />
+                  <Stat 
+                    label="Public Repos" 
+                    value={data.repos.length} 
+                    icon={Sparkles} 
+                    onClick={() => {
+                      setActiveTab("repos");
+                      setTimeout(() => {
+                        document.getElementById("repos-list")?.scrollIntoView({ behavior: "smooth" });
+                      }, 100);
+                    }}
+                    color="brand"
+                  />
+                  <Stat 
+                    label="Top Languages" 
+                    value={data.score.stats.languageCount} 
+                    icon={TrendingUp} 
+                    onClick={() => setModalType("langs")}
+                    color="blue"
+                  />
                 </div>
               </div>
 
-              <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-                <Stat 
-                  label="Total Stars" 
-                  value={data.starredRepos?.length || 0} 
-                  icon={Star} 
-                  onClick={() => setModalType("stars")}
-                  subLabel="Starred by user"
-                  color="amber"
-                />
-                <Stat 
-                  label="Followers" 
-                  value={data.user.followers} 
-                  icon={Users} 
-                  onClick={() => setModalType("followers")}
-                  color="purple"
-                />
-                <Stat 
-                  label="Public Repos" 
-                  value={data.repos.length} 
-                  icon={Sparkles} 
-                  onClick={() => {
-                    setActiveTab("repos");
-                    setTimeout(() => {
-                      document.getElementById("repos-list")?.scrollIntoView({ behavior: "smooth" });
-                    }, 100);
-                  }}
-                  color="brand"
-                />
-                <Stat 
-                  label="Top Languages" 
-                  value={data.score.stats.languageCount} 
-                  icon={TrendingUp} 
-                  onClick={() => setModalType("langs")}
-                  color="blue"
-                />
-              </div>
-
-              <div className="mt-4 flex items-center gap-2 text-xs font-medium">
+              <div className="mt-8 flex items-center gap-2 border-t border-border/40 pt-4 text-xs font-medium">
                 <div className="flex items-center gap-1 font-black text-[#f59e0b]">
                   <Star className="h-3.5 w-3.5 fill-current" /> {data.score.stats.totalStars} Stars Earned
                 </div>
@@ -350,9 +356,9 @@ const Result = () => {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="rounded-2xl border border-border bg-card-grad p-6 shadow-elev flex flex-col items-center justify-center"
+              className="flex flex-col items-center justify-center rounded-2xl border border-border bg-card-grad p-6 shadow-elev h-full"
             >
-              <div className="flex flex-col items-center gap-6 w-full">
+              <div className="flex flex-col items-center gap-10 w-full">
                 <ScoreRing value={data.score.total} />
                 <div className="w-full">
                   <ScoreBreakdownChart
@@ -676,10 +682,10 @@ function Stat({
   color?: "brand" | "amber" | "purple" | "blue";
 }) {
   const themes = {
-    brand: "hover:border-brand/40 hover:bg-brand/5 text-brand-1 hover:shadow-lg hover:shadow-brand/20",
-    amber: "hover:border-amber/40 hover:bg-amber/5 text-amber hover:shadow-lg hover:shadow-warning/20",
-    purple: "hover:border-purple/40 hover:bg-purple/5 text-purple hover:shadow-lg hover:shadow-purple/20",
-    blue: "hover:border-blue/40 hover:bg-blue/5 text-blue hover:shadow-lg hover:shadow-blue/20",
+    brand: "hover:border-brand/40 hover:bg-brand/5 text-brand-1 hover:shadow-glow-intense hover:shadow-brand/20",
+    amber: "hover:border-amber/40 hover:bg-amber/5 text-amber hover:shadow-glow-intense hover:shadow-warning/20",
+    purple: "hover:border-purple/40 hover:bg-purple/5 text-purple hover:shadow-glow-intense hover:shadow-purple/20",
+    blue: "hover:border-blue/40 hover:bg-blue/5 text-blue hover:shadow-glow-intense hover:shadow-blue/20",
   };
 
   return (
