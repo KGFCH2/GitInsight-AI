@@ -718,7 +718,7 @@ function Card({
   return (
     <div className="group rounded-2xl border border-border bg-card-grad p-6 transition-all duration-300 hover:border-brand-1/30 hover:bg-muted/10 hover:shadow-glow">
       <div className="mb-4 flex items-center gap-2">
-        <div className="icon-glow-pop rounded-lg bg-brand/10 p-2 group-hover:scale-110 group-hover:bg-brand/20 group-hover:shadow-glow-intense transition-all duration-300">
+        <div className="rounded-lg bg-brand/10 p-2 group-hover:scale-110 group-hover:bg-brand/20 group-hover:shadow-md transition-all duration-300">
           <Icon className={`h-4 w-4 ${accentClass} group-hover:scale-110 transition-transform`} />
         </div>
         <h3 className="font-display text-base font-semibold transition-colors group-hover:text-brand-1">{title}</h3>
@@ -746,11 +746,11 @@ function BulletList({
     const icons = [Sparkles, Zap, Target, Award, ShieldCheck, Gauge, Lightbulb];
     const IconComp = icons[i % icons.length];
 
-    if (iconType === "success") return <IconComp className="h-3.5 w-3.5 text-success" />;
-    if (iconType === "warning") return <IconComp className="h-3.5 w-3.5 text-warning" />;
-    if (iconType === "step") return <IconComp className="h-3.5 w-3.5 text-brand-1" />;
-    if (iconType === "tip") return <IconComp className="h-3.5 w-3.5 text-amber drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" />;
-    if (iconType === "idea") return <IconComp className="h-3.5 w-3.5 text-blue drop-shadow-[0_0_5px_rgba(37,99,235,0.5)]" />;
+    if (iconType === "success") return <IconComp className="h-3.5 w-3.5 text-success brightness-125" />;
+    if (iconType === "warning") return <IconComp className="h-3.5 w-3.5 text-warning brightness-125" />;
+    if (iconType === "step") return <IconComp className="h-3.5 w-3.5 text-brand-1 brightness-125" />;
+    if (iconType === "tip") return <IconComp className="h-3.5 w-3.5 text-amber brightness-125" />;
+    if (iconType === "idea") return <IconComp className="h-3.5 w-3.5 text-blue-400 brightness-125" />;
     return <div className="h-1.5 w-1.5 rounded-full bg-brand-1" />;
   };
 
@@ -758,7 +758,7 @@ function BulletList({
     <ol className="space-y-4">
       {items.map((it, i) => (
         <li key={i} className="flex gap-4 text-sm leading-relaxed group">
-          <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-xl bg-muted/40 shadow-sm border border-border/40 group-hover:bg-brand/10 group-hover:text-brand group-hover:shadow-glow-intense group-hover:scale-110 transition-all duration-300">
+          <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-xl bg-card shadow-sm border border-border group-hover:border-brand-1/40 group-hover:bg-brand/10 group-hover:scale-110 group-hover:shadow-md transition-all duration-300">
             {getIcon(i)}
           </div>
           <span className="flex-1 text-foreground/80 group-hover:text-foreground group-hover:translate-x-1 transition-all duration-300">{it}</span>
