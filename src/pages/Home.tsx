@@ -108,12 +108,12 @@ const Home = () => {
                 <span>AICore Connect Hackathon • UnsaidTalks</span>
               </div>
             </div>
-            <h1 className="hover-pop font-display text-5xl font-bold leading-[1.05] tracking-tight text-white drop-shadow-lg sm:text-6xl md:text-7xl">
+            <h1 className="hover-pop font-display text-5xl font-bold leading-[1.05] tracking-tight text-foreground dark:text-white drop-shadow-lg sm:text-6xl md:text-7xl">
               Score your <span className="text-brand">Ambassadors</span>
               <br />
               like a recruiter would.
             </h1>
-            <p className="mx-auto mt-6 max-w-xl text-lg font-medium text-white/90 drop-shadow-md">
+            <p className="mx-auto mt-6 max-w-xl text-lg font-medium text-foreground/90 dark:text-white/90 drop-shadow-md">
               Get a profile score, AI feedback, repo-level analysis, and a clear improvement plan in under 2 minutes.
             </p>
 
@@ -123,7 +123,7 @@ const Home = () => {
                 {heroImages.map((_, i) => (
                   <div 
                     key={i} 
-                    className={`h-1 rounded-full transition-all duration-500 ${i === imgIndex ? "w-8 bg-brand" : "w-2 bg-white/30"}`}
+                    className={`h-1 rounded-full transition-all duration-500 ${i === imgIndex ? "w-8 bg-brand" : "w-2 bg-foreground/20 dark:bg-white/30"}`}
                   />
                 ))}
               </div>
@@ -132,7 +132,7 @@ const Home = () => {
                 {["KGFCH2"].map((u, i) => (
                   <span key={u}>
                     {i > 0 && " · "}
-                    <Link to={`/result/${u}`} className="font-mono text-foreground/80 hover:text-brand-1">
+                    <Link to={`/result/${u}`} className="font-bold text-foreground hover:text-brand dark:text-white/80 dark:hover:text-brand-1">
                       @{u}
                     </Link>
                   </span>
