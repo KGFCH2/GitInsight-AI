@@ -21,19 +21,24 @@ export function Loader({ text, duration = 2500, onComplete }: Props) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const step = 100 / (duration / 30);
+    // 60fps update rate for smoother "load balancing" visual
+    const fps = 60;
+    const intervalMs = 1000 / fps;
+    const step = 100 / (duration / intervalMs);
+    
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(progressInterval);
           if (onComplete) {
-            setTimeout(onComplete, 300);
+            // Balanced delay before completing
+            setTimeout(onComplete, 400);
           }
           return 100;
         }
         return Math.min(100, prev + step);
       });
-    }, 30);
+    }, intervalMs);
 
     return () => clearInterval(progressInterval);
   }, [duration, onComplete]);
@@ -64,7 +69,7 @@ export function Loader({ text, duration = 2500, onComplete }: Props) {
         <div className="space-y-3 px-1">
           {statusMessages.map((msg, i) => {
             const stepThreshold = (i / statusMessages.length) * 100;
-            const isCompleted = progress > stepThreshold + (100 / statusMessages.length);
+            const isCompleted = progress > stepThreshold + (100 / statusMessages.length) || (i === statusMessages.length - 1 && progress >= 100);
             const isActive = progress > stepThreshold && !isCompleted;
             
             return (

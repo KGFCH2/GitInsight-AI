@@ -68,7 +68,7 @@ export interface AnalysisResult {
   repos: AnalyzedRepo[];
   bestRepo: AnalyzedRepo | null;
   ai: AiInsights;
-  aiProvider: "gemini" | "groq" | "none";
+  aiProvider: "gemini" | "groq" | "heuristic" | "none";
   starredRepos?: { name: string; url: string; stars: number }[];
   followersList?: { login: string; avatar: string; url: string }[];
   langDetails?: { name: string; count: number; percentage: number }[];

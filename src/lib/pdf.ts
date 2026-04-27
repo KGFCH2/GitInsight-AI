@@ -24,10 +24,12 @@ const classColor: Record<string, [number, number, number]> = {
 };
 
 export function exportPdf(data: AnalysisResult) {
+  // Using 'times' as the closest built-in serif font for 'Cambria Math'
+  const FONT = "times";
   const doc = new jsPDF({ unit: "pt", format: "a4" });
   const W = doc.internal.pageSize.getWidth();
   const H = doc.internal.pageSize.getHeight();
-  const margin = 50;
+  const margin = 45;
   let y = margin;
 
   const setFill = (c: [number, number, number]) => doc.setFillColor(c[0], c[1], c[2]);
@@ -35,16 +37,38 @@ export function exportPdf(data: AnalysisResult) {
   const setDraw = (c: [number, number, number]) => doc.setDrawColor(c[0], c[1], c[2]);
 
   const addFooter = () => {
-    const fy = H - 30;
+    const fy = H - 25;
     setDraw(C.border);
     doc.setLineWidth(0.5);
-    doc.line(margin, fy - 10, W - margin, fy - 10);
-    doc.setFontSize(8);
-    doc.setFont("helvetica", "normal");
+    doc.line(margin, fy - 8, W - margin, fy - 8);
+    doc.setFontSize(7.5);
+    doc.setFont(FONT, "normal");
     setText(C.muted);
-    doc.text(`Generated Analysis for @${data.user.login} | Automated by GitInsight AI`, margin, fy);
+    doc.text(`GITINSIGHT AI • Profile Audit Report • Generated for @${data.user.login}`, margin, fy);
     const pageNo = `Page ${doc.getCurrentPageInfo().pageNumber}`;
     doc.text(pageNo, W - margin - doc.getTextWidth(pageNo), fy);
+  };
+
+  const drawIcon = (x: number, yy: number, type: "star" | "fork" | "code" | "box") => {
+    doc.setLineWidth(1);
+    if (type === "star") {
+      setDraw(C.warning);
+      doc.circle(x + 5, yy + 5, 4, "S");
+    } else if (type === "fork") {
+      setDraw(C.brand);
+      doc.line(x + 5, yy + 2, x + 5, yy + 8);
+      doc.line(x + 2, yy + 2, x + 5, yy + 5);
+      doc.line(x + 8, yy + 2, x + 5, yy + 5);
+    } else if (type === "code") {
+      setDraw(C.accent);
+      doc.line(x + 2, yy + 5, x + 5, yy + 2);
+      doc.line(x + 2, yy + 5, x + 5, yy + 8);
+      doc.line(x + 8, yy + 5, x + 5, yy + 2);
+      doc.line(x + 8, yy + 5, x + 5, yy + 8);
+    } else {
+      setDraw(C.success);
+      doc.rect(x + 2, yy + 2, 6, 6, "S");
+    }
   };
 
   const roundedRect = (x: number, yy: number, w: number, h: number, r: number, fill: [number, number, number], style: "F" | "S" | "FD" = "F") => {
@@ -54,79 +78,74 @@ export function exportPdf(data: AnalysisResult) {
   };
 
   // ============ PAGE 1: FULL SUMMARY ============
-  const bandH = 130;
+  const bandH = 110;
   setFill(C.brand);
   doc.rect(0, 0, W, bandH, "F");
   
-  // Pattern
-  setFill(C.brandDark);
-  for(let i=0; i<W; i+=40) { doc.circle(i, 20, 2, "F"); doc.circle(i + 20, 40, 2, "F"); }
-
   // Title
-  doc.setFont("times", "bolditalic");
-  doc.setFontSize(30);
+  doc.setFont(FONT, "bolditalic");
+  doc.setFontSize(28);
   setText(C.white);
-  doc.text("GITINSIGHT AI", margin, 55);
+  doc.text("GITINSIGHT AI", margin, 45);
   
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10.5);
-  doc.text("Professional Developer Profile Audit Report", margin, 72);
+  doc.setFont(FONT, "normal");
+  doc.setFontSize(10);
+  doc.text("Professional Developer Profile Audit Report", margin, 60);
 
   const handle = `@${data.user.login}${data.user.name ? ` • ${data.user.name}` : ""}`;
-  doc.setFont("courier", "bold");
-  doc.setFontSize(11);
-  const pillW = doc.getTextWidth(handle) + 26;
-  roundedRect(margin, 88, pillW, 24, 12, [255, 255, 255]);
+  doc.setFont(FONT, "bold");
+  doc.setFontSize(10);
+  const pillW = doc.getTextWidth(handle) + 20;
+  roundedRect(margin, 75, pillW, 20, 10, [255, 255, 255]);
   setText(C.brand);
-  doc.text(handle, margin + 13, 104);
+  doc.text(handle, margin + 10, 88);
 
-  y = bandH + 40;
+  y = bandH + 25;
 
-  // Score Summary
+  // Score Summary Card
   const cardW = W - margin * 2;
-  roundedRect(margin, y, cardW, 85, 10, C.soft);
+  roundedRect(margin, y, cardW, 75, 8, C.soft);
   setDraw(C.border);
-  doc.setLineWidth(1);
-  doc.roundedRect(margin, y, cardW, 85, 10, 10, "S");
+  doc.setLineWidth(0.5);
+  doc.roundedRect(margin, y, cardW, 75, 8, 8, "S");
 
-  const cx = margin + 50;
-  const cy = y + 42;
+  const cx = margin + 45;
+  const cy = y + 37;
   setFill(C.brand);
-  doc.circle(cx, cy, 34, "F");
+  doc.circle(cx, cy, 30, "F");
   setFill(C.white);
-  doc.circle(cx, cy, 31, "F");
+  doc.circle(cx, cy, 27, "F");
   
-  doc.setFont("times", "bold");
-  doc.setFontSize(24);
+  doc.setFont(FONT, "bold");
+  doc.setFontSize(22);
   setText(C.ink);
   const scoreStr = String(data.score.total);
   doc.text(scoreStr, cx - doc.getTextWidth(scoreStr)/2, cy + 8);
   
-  const gridX = cx + 65;
+  const gridX = cx + 55;
   const stats = [
-    { l: "STARS", v: data.score.stats.totalStars, c: C.warning },
-    { l: "FORKS", v: data.score.stats.totalForks, c: C.brand },
-    { l: "REPOS", v: data.score.stats.originalRepoCount, c: C.success },
-    { l: "LANGS", v: data.score.stats.languageCount, c: C.accent }
+    { l: "STARS", v: data.score.stats.totalStars, c: C.warning, i: "star" as const },
+    { l: "FORKS", v: data.score.stats.totalForks, c: C.brand, i: "fork" as const },
+    { l: "REPOS", v: data.score.stats.originalRepoCount, c: C.success, i: "box" as const },
+    { l: "LANGS", v: data.score.stats.languageCount, c: C.accent, i: "code" as const }
   ];
-  const sw = (cardW - 130) / 4;
+  const sw = (cardW - 110) / 4;
   stats.forEach((st, i) => {
     const sx = gridX + i * sw;
-    doc.setFont("courier", "bold");
-    doc.setFontSize(14);
+    drawIcon(sx + sw/2 - 20, y + 25, st.i);
+    doc.setFont(FONT, "bold");
+    doc.setFontSize(13);
     setText(st.c);
     const valStr = String(st.v);
-    doc.text(valStr, sx + (sw/2 - doc.getTextWidth(valStr)/2) - 15, y + 42);
-    
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(8);
+    doc.text(valStr, sx + (sw/2 - doc.getTextWidth(valStr)/2) - 5, y + 37);
+    doc.setFontSize(7.5);
     setText(C.muted);
-    doc.text(st.l, sx + (sw/2 - doc.getTextWidth(st.l)/2) - 15, y + 56);
+    doc.text(st.l, sx + (sw/2 - doc.getTextWidth(st.l)/2) - 5, y + 50);
   });
 
-  y += 115;
+  y += 95;
 
-  // Technical Audit
+  // Audit
   sectionHeader("TECHNICAL DIMENSION AUDIT", C.brand);
   const metrics = [
     { n: "Popularity", v: data.score.breakdown.popularity, m: 25, c: C.brand },
@@ -136,62 +155,60 @@ export function exportPdf(data: AnalysisResult) {
     { n: "Community", v: data.score.breakdown.community, m: 10, c: C.brandDark },
     { n: "Tenure", v: data.score.breakdown.tenure, m: 10, c: C.muted }
   ];
-  const barWidthMax = cardW - 140;
   metrics.forEach(m => {
-    doc.setFontSize(9);
+    doc.setFontSize(8.5);
     setText(C.body);
-    doc.text(m.n, margin, y + 9);
-    roundedRect(margin + 110, y + 2, barWidthMax - 10, 8, 4, C.border);
-    const fillW = Math.max(4, (m.v / m.m) * (barWidthMax - 10));
-    roundedRect(margin + 110, y + 2, fillW, 8, 4, m.c);
-    doc.setFont("courier", "bold");
+    doc.text(m.n, margin, y + 8);
+    roundedRect(margin + 100, y + 2, cardW - 145, 6, 3, C.border);
+    const fillW = Math.max(3, (m.v / m.m) * (cardW - 145));
+    roundedRect(margin + 100, y + 2, fillW, 6, 3, m.c);
+    doc.setFont(FONT, "bold");
     setText(C.muted);
-    const valStr = `${m.v}/${m.m}`;
-    doc.text(valStr, W - margin - doc.getTextWidth(valStr), y + 9);
-    y += 20;
+    doc.text(`${m.v}/${m.m}`, W - margin - 25, y + 8);
+    y += 16;
   });
 
-  y += 25;
+  y += 15;
 
-  // Stack Specialization
+  // Stack
   if (data.score.stats.langDetails?.length) {
     sectionHeader("STACK SPECIALIZATION", C.accent);
     let lx = margin;
     data.score.stats.langDetails.slice(0, 10).forEach(l => {
       const label = `${l.name} ${l.percentage}%`;
-      doc.setFont("courier", "normal");
-      doc.setFontSize(8.5);
-      const lw = doc.getTextWidth(label) + 18;
-      if (lx + lw > W - margin) { lx = margin; y += 22; }
-      roundedRect(lx, y, lw, 16, 4, C.soft);
+      doc.setFont(FONT, "normal");
+      doc.setFontSize(8);
+      const lw = doc.getTextWidth(label) + 15;
+      if (lx + lw > W - margin) { lx = margin; y += 18; }
+      roundedRect(lx, y, lw, 14, 4, C.soft);
       setFill(C.accent);
-      doc.rect(lx + 3, y + 3, 2, 10, "F");
+      doc.rect(lx + 2, y + 2, 2, 10, "F");
       setText(C.body);
-      doc.text(label, lx + 9, y + 11);
-      lx += lw + 6;
+      doc.text(label, lx + 8, y + 10);
+      lx += lw + 5;
     });
-    y += 35;
+    y += 28;
   }
 
   // Executive Overview
   if (data.ai.summary) {
     sectionHeader("EXECUTIVE OVERVIEW", C.brand);
-    calloutBox(data.ai.summary, C.brand, "helvetica", 120);
+    calloutBox(data.ai.summary, C.brand, 90);
   }
 
-  // Achievements
-  if (data.badges.length && y < H - 100) {
-    sectionHeader("ACHIEVEMENTS", C.brandDark);
+  // Badges
+  if (data.badges.length && y < H - 80) {
+    sectionHeader("ACHIEVEMENTS & BADGES", C.brandDark);
     let bx = margin;
     data.badges.slice(0, 12).forEach((b) => {
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(8);
-      const tw = doc.getTextWidth(b) + 14;
-      if (bx + tw > W - margin) { bx = margin; y += 22; }
-      roundedRect(bx, y, tw, 16, 8, C.success);
+      doc.setFont(FONT, "bold");
+      doc.setFontSize(7.5);
+      const tw = doc.getTextWidth(b) + 12;
+      if (bx + tw > W - margin) { bx = margin; y += 18; }
+      roundedRect(bx, y, tw, 14, 7, C.success);
       setText(C.white);
-      doc.text(b, bx + 7, y + 10.5);
-      bx += tw + 6;
+      doc.text(b, bx + 6, y + 9.5);
+      bx += tw + 5;
     });
   }
 
@@ -199,85 +216,77 @@ export function exportPdf(data: AnalysisResult) {
 
   // ============ PAGE 2: STRATEGIC INSIGHTS ============
   doc.addPage();
-  y = margin + 20;
+  y = margin + 15;
   setFill(C.brand);
   doc.rect(0, 0, W, 4, "F");
 
   bulletSection("KEY STRENGTHS", data.ai.strengths, C.success, ">>");
-  y += 35;
+  y += 10;
   bulletSection("IMPROVEMENT VECTORS", data.ai.weaknesses, C.danger, "!!");
-  y += 35;
+  y += 10;
   bulletSection("GROWTH STRATEGY", data.ai.actionSteps, C.warning, "->");
-  y += 45;
+  y += 20;
 
   if (data.ai.recruiterInsights) {
     sectionHeader("TECHNICAL RECRUITER'S PERSPECTIVE", C.accent);
-    calloutBox(data.ai.recruiterInsights, C.accent, "times", 200);
+    calloutBox(data.ai.recruiterInsights, C.accent, 160);
   }
 
   addFooter();
 
   // ============ PAGE 3: REPOSITORY HIGHLIGHTS ============
   doc.addPage();
-  y = margin + 20;
+  y = margin + 15;
   setFill(C.brand);
   doc.rect(0, 0, W, 4, "F");
 
   sectionHeader("KEY REPOSITORY HIGHLIGHTS", C.brand);
-  const repos = data.repos.slice(0, 8);
+  const repos = data.repos.slice(0, 10);
   repos.forEach((r, i) => {
     const lines = r.description ? doc.splitTextToSize(r.description, cardW - 30) : [];
-    const tipLines = r.improvementNote ? doc.splitTextToSize(`IMPROVEMENT: ${r.improvementNote}`, cardW - 40) : [];
-    const h = 65 + (lines.length * 15) + (tipLines.length * 13) + (r.improvementNote ? 20 : 0);
+    const tipLines = r.improvementNote ? doc.splitTextToSize(`TIPS: ${r.improvementNote}`, cardW - 40) : [];
+    const h = 55 + (lines.length * 13) + (tipLines.length * 12);
     
-    if (y + h > H - margin - 40) { addFooter(); doc.addPage(); y = margin + 20; setFill(C.brand); doc.rect(0, 0, W, 4, "F"); }
+    if (y + h > H - margin - 30) { addFooter(); doc.addPage(); y = margin + 15; setFill(C.brand); doc.rect(0, 0, W, 4, "F"); }
     
-    roundedRect(margin, y, cardW, h, 8, C.soft);
+    roundedRect(margin, y, cardW, h, 6, C.soft);
     setFill(classColor[r.classification] || C.muted);
-    doc.rect(margin, y, 4, h, "F");
+    doc.rect(margin, y, 3, h, "F");
     
-    doc.setFont("times", "bold");
-    doc.setFontSize(13);
+    doc.setFont(FONT, "bold");
+    doc.setFontSize(12);
     setText(C.ink);
-    const nameLines = doc.splitTextToSize(r.name, cardW - 100);
-    doc.text(nameLines, margin + 15, y + 22);
+    doc.text(r.name, margin + 12, y + 18);
     
     const tag = r.classification.toUpperCase();
-    doc.setFont("courier", "bold");
-    doc.setFontSize(8);
-    const tw = doc.getTextWidth(tag) + 12;
-    roundedRect(W - margin - tw - 10, y + 10, tw, 16, 8, classColor[r.classification] || C.muted);
+    doc.setFont(FONT, "bold");
+    doc.setFontSize(7.5);
+    const tw = doc.getTextWidth(tag) + 10;
+    roundedRect(W - margin - tw - 8, y + 8, tw, 14, 7, classColor[r.classification] || C.muted);
     setText(C.white);
-    doc.text(tag, W - margin - tw - 4, y + 21);
+    doc.text(tag, W - margin - tw - 3, y + 17.5);
     
     setText(C.muted);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(9);
-    const metaY = y + 40 + (nameLines.length > 1 ? (nameLines.length - 1) * 13 : 0);
-    const meta = `STARS: ${r.stars}  |  FORKS: ${r.forks}  |  LANG: ${r.language || "N/A"}`;
-    doc.text(meta, margin + 15, metaY);
+    doc.setFontSize(8);
+    const metaY = y + 32;
+    doc.text(`STARS: ${r.stars}  |  FORKS: ${r.forks}  |  LANG: ${r.language || "N/A"}`, margin + 12, metaY);
     
     if (lines.length) {
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
+      doc.setFont(FONT, "normal");
+      doc.setFontSize(9.5);
       setText(C.body);
-      doc.text(lines.slice(0, 3), margin + 15, metaY + 18, { lineHeightFactor: 1.5 });
+      doc.text(lines.slice(0, 2), margin + 12, metaY + 14, { lineHeightFactor: 1.3 });
     }
 
     if (r.improvementNote) {
-      const tipY = metaY + 18 + (lines.length > 0 ? (lines.length * 15) : 0) + 6;
-      doc.setFont("helvetica", "bolditalic");
-      doc.setFontSize(9);
+      const tipY = metaY + 14 + (lines.length > 0 ? (Math.min(2, lines.length) * 13) : 0) + 4;
+      doc.setFont(FONT, "italic");
+      doc.setFontSize(8.5);
       setText(C.warning);
-      doc.text(tipLines, margin + 20, tipY, { lineHeightFactor: 1.5 });
+      doc.text(tipLines, margin + 16, tipY, { lineHeightFactor: 1.3 });
     }
 
-    y += h + 20;
-    if (i < repos.length - 1 && y < H - 100) {
-      setDraw(C.border);
-      doc.setLineWidth(0.5);
-      doc.line(margin + 20, y - 10, W - margin - 20, y - 10);
-    }
+    y += h + 12;
   });
 
   addFooter();
@@ -286,75 +295,62 @@ export function exportPdf(data: AnalysisResult) {
   // ============ HELPERS ============
   function sectionHeader(title: string, color: [number, number, number]) {
     setFill(color);
-    doc.rect(margin, y, 4, 16, "F");
-    doc.setFont("times", "bold");
-    doc.setFontSize(13);
+    doc.rect(margin, y, 3, 14, "F");
+    doc.setFont(FONT, "bold");
+    doc.setFontSize(11);
     setText(C.ink);
-    doc.text(title, margin + 14, y + 13);
-    y += 32;
+    doc.text(title, margin + 12, y + 11);
+    y += 24;
   }
 
-  function calloutBox(text: string, color: [number, number, number], font: "helvetica" | "times" | "courier" = "helvetica", maxH?: number) {
-    doc.setFont(font, font === "times" ? "italic" : "normal");
-    doc.setFontSize(10.5);
-    const lines = doc.splitTextToSize(text, cardW - 40);
-    let h = lines.length * 16 + 24;
-    if (maxH && h > maxH) h = maxH;
+  function calloutBox(text: string, color: [number, number, number], maxH: number) {
+    doc.setFont(FONT, "italic");
+    doc.setFontSize(10);
+    const lines = doc.splitTextToSize(text, cardW - 35);
+    let h = lines.length * 14 + 18;
+    if (h > maxH) h = maxH;
     
-    if (y + h > H - margin - 40) {
+    if (y + h > H - margin - 30) {
       addFooter();
       doc.addPage();
-      y = margin + 20;
+      y = margin + 15;
       setFill(C.brand);
       doc.rect(0, 0, W, 4, "F");
     }
 
-    roundedRect(margin, y, cardW, h, 8, C.soft);
+    roundedRect(margin, y, cardW, h, 6, C.soft);
     setDraw(color);
-    doc.setLineWidth(0.6);
-    doc.roundedRect(margin, y, cardW, h, 8, 8, "S");
+    doc.setLineWidth(0.5);
+    doc.roundedRect(margin, y, cardW, h, 6, 6, "S");
     setText(C.body);
-    doc.text(lines, margin + 20, y + 20, { maxWidth: cardW - 40, lineHeightFactor: 1.5 });
-    y += h + 25;
+    doc.text(lines, margin + 18, y + 16, { maxWidth: cardW - 35, lineHeightFactor: 1.4 });
+    y += h + 18;
   }
 
   function bulletSection(title: string, items: string[], color: [number, number, number], sym: string) {
     if (!items?.length) return;
-    
-    // Check if we have space for header + at least one bullet
-    if (y > H - margin - 100) {
-      addFooter();
-      doc.addPage();
-      y = margin + 20;
-      setFill(C.brand);
-      doc.rect(0, 0, W, 4, "F");
-    }
-
+    if (y > H - margin - 80) { addFooter(); doc.addPage(); y = margin + 15; setFill(C.brand); doc.rect(0, 0, W, 4, "F"); }
     sectionHeader(title, color);
-    
     items.forEach(it => {
-      doc.setFont("helvetica", "normal");
-      const lines = doc.splitTextToSize(it, cardW - 45);
-      const h = lines.length * 17 + 6;
-      
-      if (y + h > H - margin - 40) {
+      doc.setFont(FONT, "normal");
+      const lines = doc.splitTextToSize(it, cardW - 40);
+      const h = lines.length * 15 + 4;
+      if (y + h > H - margin - 30) {
         addFooter();
         doc.addPage();
-        y = margin + 20;
+        y = margin + 15;
         setFill(C.brand);
         doc.rect(0, 0, W, 4, "F");
-        // Re-print section header for context
         sectionHeader(title + " (CONT.)", color);
       }
-
       setText(color);
-      doc.setFont("courier", "bold");
-      doc.text(sym, margin + 6, y + 12);
+      doc.setFont(FONT, "bold");
+      doc.text(sym, margin + 5, y + 10);
       setText(C.body);
-      doc.setFont("helvetica", "normal");
-      doc.text(lines, margin + 32, y + 12, { lineHeightFactor: 1.5 });
+      doc.setFont(FONT, "normal");
+      doc.text(lines, margin + 28, y + 10, { lineHeightFactor: 1.4 });
       y += h;
     });
-    y += 15;
+    y += 8;
   }
 }
