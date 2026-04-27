@@ -141,23 +141,51 @@ const Result = () => {
         </div>
       </div>
 
-      {loading && !data && <LoadingState simple />}
-      {loading && data && isRefreshing && (
-        <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-card-grad p-12 shadow-sm">
-          <Loader2 className="h-10 w-10 animate-spin text-brand" />
-          <p className="mt-4 text-sm font-medium text-muted-foreground">Updating latest GitHub data...</p>
-        </div>
-      )}
-      
-      {error && !loading && !data && (
-        <div className="rounded-2xl border border-destructive/40 bg-destructive/5 p-8 text-center">
-          <div className="font-display text-lg font-semibold">{error}</div>
-          <p className="mt-1 text-sm text-muted-foreground">Try a different username or check the spelling.</p>
-        </div>
-      )}
+      <AnimatePresence mode="wait">
+        {loading && !data && (
+          <motion.div
+            key="loading"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <LoadingState simple />
+          </motion.div>
+        )}
 
-      {data && (
-        <div className={`transition-opacity duration-300 ${loading ? "opacity-40 grayscale-[0.5] pointer-events-none" : ""}`}>
+        {loading && data && isRefreshing && (
+          <motion.div 
+            key="refreshing"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="flex flex-col items-center justify-center rounded-2xl border border-border bg-card-grad p-12 shadow-sm"
+          >
+            <Loader2 className="h-10 w-10 animate-spin text-brand" />
+            <p className="mt-4 text-sm font-medium text-muted-foreground">Updating latest GitHub data...</p>
+          </motion.div>
+        )}
+        
+        {error && !loading && !data && (
+          <motion.div 
+            key="error"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="rounded-2xl border border-destructive/40 bg-destructive/5 p-8 text-center"
+          >
+            <div className="font-display text-lg font-semibold">{error}</div>
+            <p className="mt-1 text-sm text-muted-foreground">Try a different username or check the spelling.</p>
+          </motion.div>
+        )}
+
+        {data && !loading && (
+          <motion.div 
+            key="data"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
           {/* Top profile + score */}
           <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
             <motion.div
@@ -414,8 +442,9 @@ const Result = () => {
               </TabsContent>
             </Tabs>
           </div>
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
 
       {/* Detail Modals */}
       <AnimatePresence>
