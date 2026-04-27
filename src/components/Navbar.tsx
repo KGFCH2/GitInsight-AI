@@ -14,6 +14,13 @@ const links = [
 export function Navbar() {
   const loc = useLocation();
   const [scrolled, setScrolled] = useState(false);
+  const [lastUser, setLastUser] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Check for last analyzed user on mount and location change
+    const stored = localStorage.getItem("lastAnalyzedUser");
+    setLastUser(stored);
+  }, [loc.pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,11 +30,17 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleBrandClick = (e: React.MouseEvent) => {
+  const handleBrandClick = () => {
+    localStorage.removeItem("lastAnalyzedUser");
+    setLastUser(null);
     if (loc.pathname === "/") {
-      e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
+  };
+
+  const handleHomeClick = () => {
+    localStorage.removeItem("lastAnalyzedUser");
+    setLastUser(null);
   };
 
   return (
@@ -60,22 +73,28 @@ export function Navbar() {
           </Link>
 
           <nav className="hidden items-center gap-1 md:flex">
-            {links.map((l) => (
-              <RNavLink
-                key={l.to}
-                to={l.to}
-                end={l.to === "/"}
-                className={({ isActive }) =>
-                  cn(
-                    "rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-200 hover:-translate-y-0.5 hover:bg-muted hover:text-foreground hover:shadow-sm",
-                    (isActive || (l.to === "/analyze" && loc.pathname.startsWith("/result"))) &&
-                      "bg-muted text-foreground shadow-sm",
-                  )
-                }
-              >
-                {l.label}
-              </RNavLink>
-            ))}
+            {links.map((l) => {
+              const to = (l.to === "/analyze" && lastUser) ? `/result/${lastUser}` : l.to;
+              const isHome = l.to === "/";
+              
+              return (
+                <RNavLink
+                  key={l.to}
+                  to={to}
+                  end={isHome}
+                  onClick={isHome ? handleHomeClick : undefined}
+                  className={({ isActive }) =>
+                    cn(
+                      "rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-200 hover:-translate-y-0.5 hover:bg-muted hover:text-foreground hover:shadow-sm",
+                      (isActive || (l.to === "/analyze" && loc.pathname.startsWith("/result"))) &&
+                        "bg-muted text-foreground shadow-sm",
+                    )
+                  }
+                >
+                  {l.label}
+                </RNavLink>
+              );
+            })}
           </nav>
 
           <div className="flex items-center gap-2">
