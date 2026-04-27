@@ -97,53 +97,53 @@ export function exportPdf(data: AnalysisResult) {
   const bandH = 110;
   setFill(C.brand);
   doc.rect(0, 0, W, bandH, "F");
-  
+
   // Header Mesh Pattern
   setFill(C.brandDark);
-  for(let i=0; i<W; i+=30) {
-    for(let j=0; j<bandH; j+=30) {
-      doc.circle(i + (j%60===0?15:0), j, 0.8, "F");
+  for(let i=0; i<W; i+=25) {
+    for(let j=0; j<bandH; j+=25) {
+      doc.circle(i + (j%50===0?12:0), j, 0.6, "F");
     }
   }
 
-  // Sidebar Accent
-  setFill(C.brand);
-  doc.rect(0, 0, 8, H, "F");
+  // Abstract Accent Shape
+  setFill([255, 255, 255]);
+  doc.setGState(new (doc as any).GState({ opacity: 0.1 }));
+  doc.circle(W - 20, 20, 100, "F");
+  doc.setGState(new (doc as any).GState({ opacity: 1.0 }));
   
   // Title
   doc.setFont(FONT, "bolditalic");
   doc.setFontSize(28);
   setText(C.white);
-  doc.text("GITINSIGHT AI", margin + 10, 45);
+  doc.text("GITINSIGHT AI", margin, 45);
   
   doc.setFont(FONT, "normal");
   doc.setFontSize(10);
-  doc.text("Professional Developer Profile Audit Report", margin + 10, 60);
+  doc.text("Professional Developer Profile Audit Report", margin, 60);
+
+  // Decorative Badge
+  const badgeX = W - margin - 50;
+  setDraw(C.white);
+  doc.setLineWidth(0.5);
+  doc.circle(badgeX + 25, 45, 22, "S");
+  doc.setFontSize(5);
+  setText(C.white);
+  doc.text("CERTIFIED", badgeX + 13, 43);
+  doc.text("AUDIT", badgeX + 18, 51);
 
   const handle = `@${data.user.login}${data.user.name ? ` • ${data.user.name}` : ""}`;
   doc.setFont(FONT, "bold");
   doc.setFontSize(10);
   const pillW = doc.getTextWidth(handle) + 20;
-  roundedRect(margin + 10, 75, pillW, 20, 10, [255, 255, 255]);
+  roundedRect(margin, 75, pillW, 20, 10, [255, 255, 255]);
   setText(C.brand);
-  doc.text(handle, margin + 20, 88);
-
-  // Decorative "Audit Seal"
-  const sealX = W - margin - 60;
-  const sealY = 40;
-  setDraw(C.white);
-  doc.setLineWidth(0.5);
-  doc.circle(sealX + 30, sealY + 30, 25, "S");
-  doc.setFontSize(6);
-  setText(C.white);
-  doc.text("VERIFIED", sealX + 16, sealY + 28);
-  doc.text("AUDIT", sealX + 21, sealY + 36);
+  doc.text(handle, margin + 10, 88);
 
   y = bandH + 25;
 
-  // Score Summary Card with "Glow"
+  // Score Summary Card
   const cardW = W - margin * 2;
-  roundedRect(margin + 2, y + 2, cardW, 75, 8, [240, 240, 255]); // Shadow
   roundedRect(margin, y, cardW, 75, 8, C.soft);
   setDraw(C.border);
   doc.setLineWidth(0.5);
@@ -155,7 +155,7 @@ export function exportPdf(data: AnalysisResult) {
   doc.circle(cx, cy, 30, "F");
   setFill(C.white);
   doc.circle(cx, cy, 27, "F");
-  
+
   // Proper Score Display
   doc.setFont(FONT, "bold");
   doc.setFontSize(18);
@@ -166,13 +166,13 @@ export function exportPdf(data: AnalysisResult) {
   doc.setFontSize(9);
   const totalW = doc.getTextWidth(scoreTotal);
   const scoreX = cx - (valW + totalW) / 2;
-  
+
   doc.setFontSize(18);
   doc.text(scoreVal, scoreX, cy + 6);
   doc.setFontSize(9);
   setText(C.muted);
   doc.text(scoreTotal, scoreX + valW, cy + 6);
-  
+
   const gridX = cx + 55;
   const stats = [
     { l: "STARS", v: data.score.stats.totalStars, c: C.warning, i: "star" as const },
@@ -183,20 +183,20 @@ export function exportPdf(data: AnalysisResult) {
   const sw = (cardW - 110) / 4;
   stats.forEach((st, i) => {
     const sx = gridX + i * sw;
-    const blockCenter = sx + sw/2 - 10;
-    
+    const blockCenter = sx + sw / 2 - 10;
+
     // Draw icon centered above text
     drawIcon(blockCenter, y + 14, st.i);
-    
+
     doc.setFont(FONT, "bold");
     doc.setFontSize(13);
     setText(st.c);
     const valStr = String(st.v);
-    doc.text(valStr, blockCenter + 5 - doc.getTextWidth(valStr)/2, y + 37);
-    
+    doc.text(valStr, blockCenter + 5 - doc.getTextWidth(valStr) / 2, y + 37);
+
     doc.setFontSize(7);
     setText(C.muted);
-    doc.text(st.l, blockCenter + 5 - doc.getTextWidth(st.l)/2, y + 49);
+    doc.text(st.l, blockCenter + 5 - doc.getTextWidth(st.l) / 2, y + 49);
   });
 
   y += 95;
@@ -302,18 +302,18 @@ export function exportPdf(data: AnalysisResult) {
     const lines = r.description ? doc.splitTextToSize(r.description, cardW - 30) : [];
     const tipLines = r.improvementNote ? doc.splitTextToSize(`TIPS: ${r.improvementNote}`, cardW - 40) : [];
     const h = 55 + (lines.length * 13) + (tipLines.length * 12);
-    
+
     if (y + h > H - margin - 30) { addFooter(); doc.addPage(); y = margin + 15; setFill(C.brand); doc.rect(0, 0, W, 4, "F"); }
-    
+
     roundedRect(margin, y, cardW, h, 6, C.soft);
     setFill(classColor[r.classification] || C.muted);
     doc.rect(margin, y, 3, h, "F");
-    
+
     doc.setFont(FONT, "bold");
     doc.setFontSize(12);
     setText(C.ink);
     doc.text(r.name, margin + 12, y + 18);
-    
+
     const tag = r.classification.toUpperCase();
     doc.setFont(FONT, "bold");
     doc.setFontSize(7.5);
@@ -321,12 +321,12 @@ export function exportPdf(data: AnalysisResult) {
     roundedRect(W - margin - tw - 8, y + 8, tw, 14, 7, classColor[r.classification] || C.muted);
     setText(C.white);
     doc.text(tag, W - margin - tw - 3, y + 17.5);
-    
+
     setText(C.muted);
     doc.setFontSize(8);
     const metaY = y + 32;
     doc.text(`STARS: ${r.stars}  |  FORKS: ${r.forks}  |  LANG: ${r.language || "N/A"}`, margin + 12, metaY);
-    
+
     if (lines.length) {
       doc.setFont(FONT, "normal");
       doc.setFontSize(9.5);
@@ -365,7 +365,7 @@ export function exportPdf(data: AnalysisResult) {
     const lines = doc.splitTextToSize(text, cardW - 35);
     let h = lines.length * 14 + 18;
     if (h > maxH) h = maxH;
-    
+
     if (y + h > H - margin - 30) {
       addFooter();
       doc.addPage();
