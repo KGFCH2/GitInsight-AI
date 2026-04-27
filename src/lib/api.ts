@@ -72,7 +72,7 @@ function classifyRepo(r: GhRepo): RepoClassification {
     (r.homepage ? 3 : 0) -
     (ageMonths > 18 ? 8 : 0) -
     (r.fork ? 4 : 0);
-  if (score >= 12) return "good";
+  if (score >= 12) return "strong";
   if (ageMonths > 24 && r.stargazers_count < 1) return "archive";
   return "improve";
 }

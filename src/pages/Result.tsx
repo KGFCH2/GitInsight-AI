@@ -483,20 +483,20 @@ const Result = () => {
 
               <TabsContent value="repos" id="repos-list" className="mt-6">
                 <div className="mb-4 flex flex-wrap gap-2">
-                  {(["all", "good", "improve", "archive"] as const).map((f) => (
-                    <button
-                      key={f}
-                      onClick={() => setFilter(f)}
-                      className={
-                        "rounded-full border px-3 py-1 text-xs font-semibold capitalize transition-colors " +
-                        (filter === f
-                          ? "border-brand-1 bg-brand text-primary-foreground"
-                          : "border-border bg-card text-muted-foreground hover:text-foreground")
-                      }
-                    >
-                      {f}
-                    </button>
-                  ))}
+                      {(["all", "strong", "improve", "archive"] as const).map((f) => (
+                        <button
+                          key={f}
+                          onClick={() => setFilter(f)}
+                          className={
+                            "rounded-full border px-3 py-1 text-xs font-semibold capitalize transition-colors " +
+                            (filter === f
+                              ? "border-brand-1 bg-brand text-primary-foreground"
+                              : "border-border bg-card text-muted-foreground hover:text-foreground")
+                          }
+                        >
+                          {f}
+                        </button>
+                      ))}
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {data.repos

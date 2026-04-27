@@ -1,26 +1,34 @@
 # 🚀 GitInsight AI
 
-> AI-powered GitHub Profile Analyzer with recruiter-grade insights and gamified feedback.
->
-> **Built for AICore Connect Hackathon by UnsaidTalks Education.**
+> Professional GitHub Profile Analytics & Ambassador Ranking Platform.
 
-Enter a GitHub username, get a **0–100 profile score**, AI-generated strengths and weaknesses, a recruiter view, repo-level classification (Good / Improve / Archive), badges, and a downloadable PDF report — all in under 2 minutes.
+GitInsight AI is a powerful evaluation system that helps organizations identify, rank, and improve campus ambassadors using GitHub performance metrics. Get a **0–100 profile score**, AI-generated recruiter-style insights, repo-level classification (Strong / Improve / Archive), badges, and exportable reports.
 
 ---
 
-## ✨ Features
+## ✨ Ambassador Dashboard
+- **Rank ambassadors** by 0–100 score, XP and streaks
+- **Recruiter-style** first impressions & TL;DRs
+- **Per-repo classification**: Strong / Improve / Archive
+- **Shareable reports**, exportable JSON
+
+### 🎯 Problem Statement
+> "Turn a single ambassador cohort into an always-on, self-sustaining growth engine — making community-led marketing structured, scalable, and measurable."
+
+---
+
+## 🛠️ Features
 
 1. **📊 0–100 Profile Score** — Transparent 6-dimension breakdown of popularity, activity, breadth, quality, community, and tenure.
 2. **🤖 AI Insights** — Summary, strengths, weaknesses, and action steps (powered by **Multi-Key Gemini** & Groq fallback).
 3. **💼 Recruiter View** — Hireability paragraph from a professional recruiter's perspective.
-4. **📁 Repo Quality Classifier** — Every repository tagged as Good / Improve / Archive with visual badges.
+4. **📁 Repo Quality Classifier** — Every repository tagged as Strong / Improve / Archive with visual badges.
 5. **🌟 Best Repo Highlight** — Detailed README improvement tips and innovative project ideas.
 6. **🏆 Interactive Dashboards** — Clickable stat tiles for deep dives into starred repos, followers, and languages.
-7. **📄 PDF Export** — Download your results as a polished, color-themed report.
+7. **📄 PDF Export** — Download your results as a polished, color-themed report with real GitHub Achievement logos.
 8. **🌓 Strict Case Matching** — Enforces exact username casing for professional profile accuracy.
 9. **🌗 Dark / Light Mode** — Premium, responsive design with theme-aware colors and smooth animations.
 10. **🔄 Real-time Refresh** — Fetch the latest GitHub data with a single click to bypass cache.
-11. **💾 Persistence** — Remembers your last analyzed profile even when browsing documentation.
 
 ---
 
@@ -98,17 +106,6 @@ npm run build
 ```
 
 The build artifacts will be located in the `dist/` directory.
-
----
-
-## 🏆 Hackathon & Attribution
-
-This project was developed for the **AICore Connect Hackathon**.
-
-- **Organization:** UnsaidTalks Education
-- **Project Name:** GitInsight AI
-- **Developer:** Babin Bid
-- **Focus:** AI-powered evaluation for Campus Ambassador programs and developer profiles.
 
 ---
 
