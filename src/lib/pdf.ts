@@ -84,45 +84,47 @@ export function exportPdf(data: AnalysisResult) {
 
   // Score Summary
   const cardW = W - margin * 2;
-  roundedRect(margin, y, cardW, 80, 10, C.soft);
+  roundedRect(margin, y, cardW, 85, 10, C.soft);
   setDraw(C.border);
   doc.setLineWidth(1);
-  doc.roundedRect(margin, y, cardW, 80, 10, 10, "S");
+  doc.roundedRect(margin, y, cardW, 85, 10, 10, "S");
 
   const cx = margin + 50;
-  const cy = y + 40;
+  const cy = y + 42;
   setFill(C.brand);
-  doc.circle(cx, cy, 32, "F");
+  doc.circle(cx, cy, 34, "F");
   setFill(C.white);
-  doc.circle(cx, cy, 29, "F");
+  doc.circle(cx, cy, 31, "F");
   
   doc.setFont("times", "bold");
-  doc.setFontSize(22);
+  doc.setFontSize(24);
   setText(C.ink);
   const scoreStr = String(data.score.total);
   doc.text(scoreStr, cx - doc.getTextWidth(scoreStr)/2, cy + 8);
   
-  const gridX = cx + 60;
+  const gridX = cx + 65;
   const stats = [
-    { l: "Stars", v: data.score.stats.totalStars, c: C.warning, s: "★" },
-    { l: "Forks", v: data.score.stats.totalForks, c: C.brand, s: "Y" },
-    { l: "Repos", v: data.score.stats.originalRepoCount, c: C.success, s: "#" },
-    { l: "Langs", v: data.score.stats.languageCount, c: C.accent, s: "+" }
+    { l: "STARS", v: data.score.stats.totalStars, c: C.warning },
+    { l: "FORKS", v: data.score.stats.totalForks, c: C.brand },
+    { l: "REPOS", v: data.score.stats.originalRepoCount, c: C.success },
+    { l: "LANGS", v: data.score.stats.languageCount, c: C.accent }
   ];
-  const sw = (cardW - 120) / 4;
+  const sw = (cardW - 130) / 4;
   stats.forEach((st, i) => {
     const sx = gridX + i * sw;
     doc.setFont("courier", "bold");
-    doc.setFontSize(12);
+    doc.setFontSize(14);
     setText(st.c);
-    doc.text(`${st.s} ${st.v}`, sx, y + 45);
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(8.5);
+    const valStr = String(st.v);
+    doc.text(valStr, sx + (sw/2 - doc.getTextWidth(valStr)/2) - 15, y + 42);
+    
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8);
     setText(C.muted);
-    doc.text(st.l, sx + 2, y + 57);
+    doc.text(st.l, sx + (sw/2 - doc.getTextWidth(st.l)/2) - 15, y + 56);
   });
 
-  y += 110;
+  y += 115;
 
   // Technical Audit
   sectionHeader("TECHNICAL DIMENSION AUDIT", C.brand);
@@ -138,7 +140,7 @@ export function exportPdf(data: AnalysisResult) {
   metrics.forEach(m => {
     doc.setFontSize(9);
     setText(C.body);
-    doc.text(m.n.toUpperCase(), margin, y + 9);
+    doc.text(m.n, margin, y + 9);
     roundedRect(margin + 110, y + 2, barWidthMax - 10, 8, 4, C.border);
     const fillW = Math.max(4, (m.v / m.m) * (barWidthMax - 10));
     roundedRect(margin + 110, y + 2, fillW, 8, 4, m.c);
@@ -237,7 +239,7 @@ export function exportPdf(data: AnalysisResult) {
     doc.setFont("times", "bold");
     doc.setFontSize(13);
     setText(C.ink);
-    const nameLines = doc.splitTextToSize(r.name.toUpperCase(), cardW - 100);
+    const nameLines = doc.splitTextToSize(r.name, cardW - 100);
     doc.text(nameLines, margin + 15, y + 22);
     
     const tag = r.classification.toUpperCase();
