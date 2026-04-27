@@ -135,7 +135,7 @@ const Result = () => {
               disabled={loading}
               title="Refresh latest data"
             >
-              <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : "text-brand-1 dark:text-brand"}`} />
+              <RefreshCw className={`h-4 w-4 transition-colors group-hover:text-brand-1 dark:group-hover:text-brand ${loading ? "animate-spin text-brand" : "text-foreground/70"}`} />
             </Button>
           )}
         </div>

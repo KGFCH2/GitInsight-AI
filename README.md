@@ -63,9 +63,9 @@ npm install
 Create a `.env` file in the root directory and add your API keys:
 
 ```env
-VITE_GITHUB_TOKEN=your_github_token
-VITE_GROQ_API_KEY=your_groq_api_key
-VITE_GEMINI_API_KEY=your_gemini_api_key
+APP_GITHUB_TOKEN=your_github_token
+APP_GROQ_API_KEY=your_groq_api_key
+APP_GEMINI_API_KEY=your_gemini_api_key
 ```
 
 ### 4. Run the development server
