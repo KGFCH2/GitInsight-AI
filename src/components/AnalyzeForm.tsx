@@ -55,11 +55,11 @@ export function AnalyzeForm({ defaultValue = "", large = false }: Props) {
       >
         <div className="flex flex-1 items-center gap-3 px-3">
           <Search className="h-5 w-5 shrink-0 text-muted-foreground" />
-          <Input
+          <input
             value={value}
             onChange={(e) => setValue(e.target.value)}
             placeholder="GitHub username (e.g. KGFCH2)"
-            className="h-10 border-0 bg-transparent text-base shadow-none outline-none ring-0 focus-visible:outline-none focus-visible:ring-0"
+            className="flex-1 h-12 border-none bg-transparent text-base outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 shadow-none"
             spellCheck={false}
             autoComplete="off"
           />
