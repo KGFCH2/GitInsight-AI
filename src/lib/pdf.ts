@@ -133,9 +133,9 @@ export function exportPdf(data: AnalysisResult) {
   doc.circle(cx, cy, 27, "F");
   
   doc.setFont(FONT, "bold");
-  doc.setFontSize(22);
+  doc.setFontSize(20);
   setText(C.ink);
-  const scoreStr = String(data.score.total);
+  const scoreStr = `${data.score.total}/100`;
   doc.text(scoreStr, cx - doc.getTextWidth(scoreStr)/2, cy + 8);
   
   const gridX = cx + 55;
@@ -148,16 +148,20 @@ export function exportPdf(data: AnalysisResult) {
   const sw = (cardW - 110) / 4;
   stats.forEach((st, i) => {
     const sx = gridX + i * sw;
-    const center = sx + sw/2 - 8;
-    drawIcon(center - 5, y + 14, st.i);
+    const blockCenter = sx + sw/2 - 10;
+    
+    // Draw icon centered above text
+    drawIcon(blockCenter, y + 14, st.i);
+    
     doc.setFont(FONT, "bold");
     doc.setFontSize(14);
     setText(st.c);
     const valStr = String(st.v);
-    doc.text(valStr, center - doc.getTextWidth(valStr)/2 + 5, y + 37);
+    doc.text(valStr, blockCenter + 5 - doc.getTextWidth(valStr)/2, y + 37);
+    
     doc.setFontSize(7.5);
     setText(C.muted);
-    doc.text(st.l, center - doc.getTextWidth(st.l)/2 + 5, y + 50);
+    doc.text(st.l, blockCenter + 5 - doc.getTextWidth(st.l)/2, y + 50);
   });
 
   y += 95;
