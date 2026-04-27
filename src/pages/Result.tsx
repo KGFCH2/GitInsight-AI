@@ -130,7 +130,7 @@ const Result = () => {
             <Button
               variant="outline"
               size="icon"
-              className="h-12 w-12 shrink-0 rounded-xl"
+              className="group h-12 w-12 shrink-0 rounded-xl transition-all duration-300 hover:scale-105 hover:border-brand/50 hover:bg-brand/5 hover:shadow-glow"
               onClick={() => loadData(true)}
               disabled={loading}
               title="Refresh latest data"
