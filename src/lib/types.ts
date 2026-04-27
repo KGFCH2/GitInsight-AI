@@ -12,6 +12,7 @@ export interface AnalyzedRepo {
   archived: boolean;
   classification: RepoClassification;
   isFork?: boolean;
+  improvementNote?: string;
 }
 
 export interface AnalyzedUser {
@@ -57,6 +58,7 @@ export interface AiInsights {
   actionSteps: string[];
   readmeTips: string[];
   projectIdeas: string[];
+  repoSuggestions?: Record<string, string>;
 }
 
 export interface AnalysisResult {
