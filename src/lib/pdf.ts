@@ -300,6 +300,15 @@ export function exportPdf(data: AnalysisResult) {
     const lines = doc.splitTextToSize(text, cardW - 40);
     let h = lines.length * 16 + 24;
     if (maxH && h > maxH) h = maxH;
+    
+    if (y + h > H - margin - 40) {
+      addFooter();
+      doc.addPage();
+      y = margin + 20;
+      setFill(C.brand);
+      doc.rect(0, 0, W, 4, "F");
+    }
+
     roundedRect(margin, y, cardW, h, 8, C.soft);
     setDraw(color);
     doc.setLineWidth(0.6);
@@ -311,11 +320,33 @@ export function exportPdf(data: AnalysisResult) {
 
   function bulletSection(title: string, items: string[], color: [number, number, number], sym: string) {
     if (!items?.length) return;
+    
+    // Check if we have space for header + at least one bullet
+    if (y > H - margin - 100) {
+      addFooter();
+      doc.addPage();
+      y = margin + 20;
+      setFill(C.brand);
+      doc.rect(0, 0, W, 4, "F");
+    }
+
     sectionHeader(title, color);
+    
     items.forEach(it => {
       doc.setFont("helvetica", "normal");
       const lines = doc.splitTextToSize(it, cardW - 45);
       const h = lines.length * 17 + 6;
+      
+      if (y + h > H - margin - 40) {
+        addFooter();
+        doc.addPage();
+        y = margin + 20;
+        setFill(C.brand);
+        doc.rect(0, 0, W, 4, "F");
+        // Re-print section header for context
+        sectionHeader(title + " (CONT.)", color);
+      }
+
       setText(color);
       doc.setFont("courier", "bold");
       doc.text(sym, margin + 6, y + 12);
