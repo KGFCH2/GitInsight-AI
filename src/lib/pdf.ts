@@ -62,7 +62,7 @@ export function exportPdf(data: AnalysisResult) {
   setFill(C.brandDark);
   for(let i=0; i<W; i+=40) { doc.circle(i, 20, 2, "F"); doc.circle(i + 20, 40, 2, "F"); }
 
-  // Title (Algerian Simulation)
+  // Title
   doc.setFont("times", "bolditalic");
   doc.setFontSize(30);
   setText(C.white);
@@ -80,7 +80,7 @@ export function exportPdf(data: AnalysisResult) {
   setText(C.brand);
   doc.text(handle, margin + 13, 104);
 
-  y = bandH + 30;
+  y = bandH + 40;
 
   // Score Summary
   const cardW = W - margin * 2;
@@ -104,10 +104,10 @@ export function exportPdf(data: AnalysisResult) {
   
   const gridX = cx + 60;
   const stats = [
-    { l: "Stars", v: data.score.stats.totalStars, c: C.warning, i: "★" },
-    { l: "Forks", v: data.score.stats.totalForks, c: C.brand, i: "Y" },
-    { l: "Repos", v: data.score.stats.originalRepoCount, c: C.success, i: "#" },
-    { l: "Langs", v: data.score.stats.languageCount, c: C.accent, i: "+" }
+    { l: "Stars", v: data.score.stats.totalStars, c: C.warning, s: "★" },
+    { l: "Forks", v: data.score.stats.totalForks, c: C.brand, s: "Y" },
+    { l: "Repos", v: data.score.stats.originalRepoCount, c: C.success, s: "#" },
+    { l: "Langs", v: data.score.stats.languageCount, c: C.accent, s: "+" }
   ];
   const sw = (cardW - 120) / 4;
   stats.forEach((st, i) => {
@@ -115,17 +115,17 @@ export function exportPdf(data: AnalysisResult) {
     doc.setFont("courier", "bold");
     doc.setFontSize(12);
     setText(st.c);
-    doc.text(`${st.i} ${st.v}`, sx, y + 45);
+    doc.text(`${st.s} ${st.v}`, sx, y + 45);
     doc.setFont("helvetica", "normal");
     doc.setFontSize(8.5);
     setText(C.muted);
     doc.text(st.l, sx + 2, y + 57);
   });
 
-  y += 105;
+  y += 110;
 
   // Technical Audit
-  sectionHeader("📊 TECHNICAL DIMENSION AUDIT", C.brand);
+  sectionHeader("TECHNICAL DIMENSION AUDIT", C.brand);
   const metrics = [
     { n: "Popularity", v: data.score.breakdown.popularity, m: 25, c: C.brand },
     { n: "Activity", v: data.score.breakdown.activity, m: 20, c: C.success },
@@ -138,29 +138,29 @@ export function exportPdf(data: AnalysisResult) {
   metrics.forEach(m => {
     doc.setFontSize(9);
     setText(C.body);
-    doc.text(m.n, margin, y + 9);
-    roundedRect(margin + 100, y + 2, barWidthMax, 8, 4, C.border);
-    const fillW = Math.max(4, (m.v / m.m) * barWidthMax);
-    roundedRect(margin + 100, y + 2, fillW, 8, 4, m.c);
+    doc.text(m.n.toUpperCase(), margin, y + 9);
+    roundedRect(margin + 110, y + 2, barWidthMax - 10, 8, 4, C.border);
+    const fillW = Math.max(4, (m.v / m.m) * (barWidthMax - 10));
+    roundedRect(margin + 110, y + 2, fillW, 8, 4, m.c);
     doc.setFont("courier", "bold");
     setText(C.muted);
     const valStr = `${m.v}/${m.m}`;
     doc.text(valStr, W - margin - doc.getTextWidth(valStr), y + 9);
-    y += 22;
+    y += 20;
   });
 
-  y += 20;
+  y += 25;
 
   // Stack Specialization
   if (data.score.stats.langDetails?.length) {
-    sectionHeader("🛠️ STACK SPECIALIZATION", C.accent);
+    sectionHeader("STACK SPECIALIZATION", C.accent);
     let lx = margin;
     data.score.stats.langDetails.slice(0, 10).forEach(l => {
       const label = `${l.name} ${l.percentage}%`;
       doc.setFont("courier", "normal");
       doc.setFontSize(8.5);
       const lw = doc.getTextWidth(label) + 18;
-      if (lx + lw > W - margin) { lx = margin; y += 28; }
+      if (lx + lw > W - margin) { lx = margin; y += 22; }
       roundedRect(lx, y, lw, 16, 4, C.soft);
       setFill(C.accent);
       doc.rect(lx + 3, y + 3, 2, 10, "F");
@@ -173,19 +173,19 @@ export function exportPdf(data: AnalysisResult) {
 
   // Executive Overview
   if (data.ai.summary) {
-    sectionHeader("📖 EXECUTIVE OVERVIEW", C.brand);
+    sectionHeader("EXECUTIVE OVERVIEW", C.brand);
     calloutBox(data.ai.summary, C.brand, "helvetica", 120);
   }
 
   // Achievements
   if (data.badges.length && y < H - 100) {
-    sectionHeader("🏆 ACHIEVEMENTS", C.brandDark);
+    sectionHeader("ACHIEVEMENTS", C.brandDark);
     let bx = margin;
     data.badges.slice(0, 12).forEach((b) => {
       doc.setFont("helvetica", "bold");
       doc.setFontSize(8);
       const tw = doc.getTextWidth(b) + 14;
-      if (bx + tw > W - margin) { bx = margin; y += 28; }
+      if (bx + tw > W - margin) { bx = margin; y += 22; }
       roundedRect(bx, y, tw, 16, 8, C.success);
       setText(C.white);
       doc.text(b, bx + 7, y + 10.5);
@@ -201,15 +201,15 @@ export function exportPdf(data: AnalysisResult) {
   setFill(C.brand);
   doc.rect(0, 0, W, 4, "F");
 
-  bulletSection("✅ KEY STRENGTHS", data.ai.strengths, C.success, ">>");
-  y += 25;
-  bulletSection("⚠️ IMPROVEMENT VECTORS", data.ai.weaknesses, C.danger, "!!");
-  y += 25;
-  bulletSection("🚀 GROWTH STRATEGY", data.ai.actionSteps, C.warning, "->");
+  bulletSection("KEY STRENGTHS", data.ai.strengths, C.success, ">>");
   y += 35;
+  bulletSection("IMPROVEMENT VECTORS", data.ai.weaknesses, C.danger, "!!");
+  y += 35;
+  bulletSection("GROWTH STRATEGY", data.ai.actionSteps, C.warning, "->");
+  y += 45;
 
   if (data.ai.recruiterInsights) {
-    sectionHeader("💼 TECHNICAL RECRUITER'S PERSPECTIVE", C.accent);
+    sectionHeader("TECHNICAL RECRUITER'S PERSPECTIVE", C.accent);
     calloutBox(data.ai.recruiterInsights, C.accent, "times", 200);
   }
 
@@ -221,12 +221,12 @@ export function exportPdf(data: AnalysisResult) {
   setFill(C.brand);
   doc.rect(0, 0, W, 4, "F");
 
-  sectionHeader("✨ KEY REPOSITORY HIGHLIGHTS", C.brand);
+  sectionHeader("KEY REPOSITORY HIGHLIGHTS", C.brand);
   const repos = data.repos.slice(0, 8);
   repos.forEach((r, i) => {
     const lines = r.description ? doc.splitTextToSize(r.description, cardW - 30) : [];
-    const tipLines = r.improvementNote ? doc.splitTextToSize(`💡 Improvement Tip: ${r.improvementNote}`, cardW - 40) : [];
-    const h = 55 + (lines.length * 13) + (tipLines.length * 12) + (r.improvementNote ? 16 : 0);
+    const tipLines = r.improvementNote ? doc.splitTextToSize(`IMPROVEMENT: ${r.improvementNote}`, cardW - 40) : [];
+    const h = 65 + (lines.length * 15) + (tipLines.length * 13) + (r.improvementNote ? 20 : 0);
     
     if (y + h > H - margin - 40) { addFooter(); doc.addPage(); y = margin + 20; setFill(C.brand); doc.rect(0, 0, W, 4, "F"); }
     
@@ -235,46 +235,46 @@ export function exportPdf(data: AnalysisResult) {
     doc.rect(margin, y, 4, h, "F");
     
     doc.setFont("times", "bold");
-    doc.setFontSize(12);
+    doc.setFontSize(13);
     setText(C.ink);
-    const nameLines = doc.splitTextToSize(r.name.toUpperCase(), cardW - 90);
-    doc.text(nameLines, margin + 15, y + 18);
+    const nameLines = doc.splitTextToSize(r.name.toUpperCase(), cardW - 100);
+    doc.text(nameLines, margin + 15, y + 22);
     
     const tag = r.classification.toUpperCase();
     doc.setFont("courier", "bold");
     doc.setFontSize(8);
     const tw = doc.getTextWidth(tag) + 12;
-    roundedRect(W - margin - tw - 10, y + 8, tw, 16, 8, classColor[r.classification] || C.muted);
+    roundedRect(W - margin - tw - 10, y + 10, tw, 16, 8, classColor[r.classification] || C.muted);
     setText(C.white);
-    doc.text(tag, W - margin - tw - 4, y + 19);
+    doc.text(tag, W - margin - tw - 4, y + 21);
     
     setText(C.muted);
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(8.5);
-    const metaY = y + 34 + (nameLines.length > 1 ? (nameLines.length - 1) * 12 : 0);
-    const meta = `STARS: ${r.stars}  |  FORKS: ${r.forks}  |  LANGUAGE: ${r.language || "N/A"}`;
+    doc.setFontSize(9);
+    const metaY = y + 40 + (nameLines.length > 1 ? (nameLines.length - 1) * 13 : 0);
+    const meta = `STARS: ${r.stars}  |  FORKS: ${r.forks}  |  LANG: ${r.language || "N/A"}`;
     doc.text(meta, margin + 15, metaY);
     
     if (lines.length) {
       doc.setFont("helvetica", "normal");
-      doc.setFontSize(9.5);
+      doc.setFontSize(10);
       setText(C.body);
-      doc.text(lines.slice(0, 3), margin + 15, metaY + 16, { lineHeightFactor: 1.5 });
+      doc.text(lines.slice(0, 3), margin + 15, metaY + 18, { lineHeightFactor: 1.5 });
     }
 
     if (r.improvementNote) {
-      const tipY = metaY + 16 + (lines.length > 0 ? (lines.length * 13) : 0) + 4;
+      const tipY = metaY + 18 + (lines.length > 0 ? (lines.length * 15) : 0) + 6;
       doc.setFont("helvetica", "bolditalic");
-      doc.setFontSize(8.5);
+      doc.setFontSize(9);
       setText(C.warning);
       doc.text(tipLines, margin + 20, tipY, { lineHeightFactor: 1.5 });
     }
 
-    y += h + 18;
-    if (i < repos.length - 1 && y < H - 80) {
+    y += h + 20;
+    if (i < repos.length - 1 && y < H - 100) {
       setDraw(C.border);
       doc.setLineWidth(0.5);
-      doc.line(margin + 20, y - 9, W - margin - 20, y - 9);
+      doc.line(margin + 20, y - 10, W - margin - 20, y - 10);
     }
   });
 
@@ -284,27 +284,27 @@ export function exportPdf(data: AnalysisResult) {
   // ============ HELPERS ============
   function sectionHeader(title: string, color: [number, number, number]) {
     setFill(color);
-    doc.rect(margin, y, 3, 14, "F");
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(11);
+    doc.rect(margin, y, 4, 16, "F");
+    doc.setFont("times", "bold");
+    doc.setFontSize(13);
     setText(C.ink);
-    doc.text(title, margin + 12, y + 11);
+    doc.text(title, margin + 14, y + 13);
     y += 32;
   }
 
   function calloutBox(text: string, color: [number, number, number], font: "helvetica" | "times" | "courier" = "helvetica", maxH?: number) {
     doc.setFont(font, font === "times" ? "italic" : "normal");
-    doc.setFontSize(10);
-    const lines = doc.splitTextToSize(text, cardW - 30);
-    let h = lines.length * 15 + 18;
+    doc.setFontSize(10.5);
+    const lines = doc.splitTextToSize(text, cardW - 40);
+    let h = lines.length * 16 + 24;
     if (maxH && h > maxH) h = maxH;
     roundedRect(margin, y, cardW, h, 8, C.soft);
     setDraw(color);
-    doc.setLineWidth(0.5);
+    doc.setLineWidth(0.6);
     doc.roundedRect(margin, y, cardW, h, 8, 8, "S");
     setText(C.body);
-    doc.text(lines, margin + 15, y + 16, { maxWidth: cardW - 30, lineHeightFactor: 1.5 });
-    y += h + 22;
+    doc.text(lines, margin + 20, y + 20, { maxWidth: cardW - 40, lineHeightFactor: 1.5 });
+    y += h + 25;
   }
 
   function bulletSection(title: string, items: string[], color: [number, number, number], sym: string) {
@@ -312,16 +312,16 @@ export function exportPdf(data: AnalysisResult) {
     sectionHeader(title, color);
     items.forEach(it => {
       doc.setFont("helvetica", "normal");
-      const lines = doc.splitTextToSize(it, cardW - 35);
-      const h = lines.length * 16 + 4;
+      const lines = doc.splitTextToSize(it, cardW - 45);
+      const h = lines.length * 17 + 6;
       setText(color);
       doc.setFont("courier", "bold");
-      doc.text(sym, margin + 5, y + 10);
+      doc.text(sym, margin + 6, y + 12);
       setText(C.body);
       doc.setFont("helvetica", "normal");
-      doc.text(lines, margin + 28, y + 10, { lineHeightFactor: 1.5 });
+      doc.text(lines, margin + 32, y + 12, { lineHeightFactor: 1.5 });
       y += h;
     });
-    y += 12;
+    y += 15;
   }
 }
