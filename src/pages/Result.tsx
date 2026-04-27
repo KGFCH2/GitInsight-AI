@@ -77,6 +77,7 @@ const Result = () => {
         localStorage.setItem("lastAnalyzedUser", username);
       })
       .catch((e: Error) => {
+        console.error("Analysis Error:", e);
         setError(e.message || "Failed to analyze");
         toast.error(e.message || "Failed to analyze");
       })
