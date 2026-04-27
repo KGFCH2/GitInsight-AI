@@ -59,7 +59,7 @@ export function AnalyzeForm({ defaultValue = "", large = false }: Props) {
             value={value}
             onChange={(e) => setValue(e.target.value)}
             placeholder="GitHub username (e.g. KGFCH2)"
-            className="h-10 border-transparent rounded-lg bg-transparent text-base shadow-none outline-none ring-0 transition-all hover:border-brand hover:shadow-[0_0_15px_rgba(99,102,241,0.5)] focus:border-brand focus:shadow-[0_0_15px_rgba(99,102,241,0.5)] focus-visible:outline-none focus-visible:ring-0"
+            className="h-10 border-0 bg-transparent text-base shadow-none outline-none ring-0 focus-visible:outline-none focus-visible:ring-0"
             spellCheck={false}
             autoComplete="off"
           />
