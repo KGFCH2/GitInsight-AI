@@ -100,9 +100,10 @@ export function exportPdf(data: AnalysisResult) {
   setFill(C.brandDark);
   doc.rect(0, 0, W, bandH, "F");
   
-  // Layer 2: Gradient Slash
+  // Layer 2: Gradient Slash (Drawn with triangles as polygon is not in base types)
   setFill(C.brand);
-  doc.polygon([{x: W*0.3, y: 0}, {x: W, y: 0}, {x: W, y: bandH}, {x: W*0.1, y: bandH}], "F");
+  doc.triangle(W*0.3, 0, W, 0, W, bandH, "F");
+  doc.triangle(W*0.3, 0, W, bandH, W*0.1, bandH, "F");
   
   // Layer 3: Tech Scan Lines
   doc.setLineWidth(0.5);
