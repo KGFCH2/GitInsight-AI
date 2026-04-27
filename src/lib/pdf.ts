@@ -53,8 +53,8 @@ export function exportPdf(data: AnalysisResult) {
     doc.roundedRect(x, yy, w, h, r, r, style);
   };
 
-  // ============ PAGE 1: COVER & BADGES ============
-  const bandH = 160;
+  // ============ PAGE 1: COVER & CORE STATS ============
+  const bandH = 140;
   setFill(C.brand);
   doc.rect(0, 0, W, bandH, "F");
   
@@ -62,35 +62,34 @@ export function exportPdf(data: AnalysisResult) {
   setFill(C.brandDark);
   for(let i=0; i<W; i+=40) { doc.circle(i, 20, 2, "F"); doc.circle(i + 20, 40, 2, "F"); }
 
-  // Title (Algerian Simulation - Bold Italic Times)
+  // Title (Algerian Simulation)
   doc.setFont("times", "bolditalic");
-  doc.setFontSize(32);
+  doc.setFontSize(30);
   setText(C.white);
   doc.text("GITINSIGHT AI", margin, 65);
   
-  doc.setFont("helvetica", "normal"); // Comic Sans feel fallback
-  doc.setFontSize(12);
-  doc.text("Professional Developer Profile Audit", margin, 85);
+  doc.setFont("helvetica", "normal"); // Comic Sans Alternative
+  doc.setFontSize(11);
+  doc.text("Professional Developer Profile Audit Report", margin, 82);
 
-  // User Badge
   const handle = `@${data.user.login}${data.user.name ? ` • ${data.user.name}` : ""}`;
-  doc.setFont("courier", "bold"); // Cambria Math feel fallback
-  doc.setFontSize(13);
+  doc.setFont("courier", "bold"); // Cambria Alternative
+  doc.setFontSize(12);
   const pillW = doc.getTextWidth(handle) + 30;
-  roundedRect(margin, 105, pillW, 30, 15, [255, 255, 255]);
+  roundedRect(margin, 100, pillW, 26, 13, [255, 255, 255]);
   setText(C.brand);
-  doc.text(handle, margin + 15, 125);
+  doc.text(handle, margin + 15, 117);
 
   y = bandH + 30;
 
-  // Score Summary
+  // Score Summary Card
   const cardW = W - margin * 2;
   roundedRect(margin, y, cardW, 100, 12, C.soft);
   setDraw(C.border);
   doc.setLineWidth(1);
   doc.roundedRect(margin, y, cardW, 100, 12, 12, "S");
 
-  const cx = margin + 60;
+  const cx = margin + 55;
   const cy = y + 50;
   setFill(C.brand);
   doc.circle(cx, cy, 38, "F");
@@ -103,82 +102,139 @@ export function exportPdf(data: AnalysisResult) {
   const scoreStr = String(data.score.total);
   doc.text(scoreStr, cx - doc.getTextWidth(scoreStr)/2, cy + 8);
   
-  const gridX = cx + 60;
+  const gridX = cx + 65;
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(11);
+  doc.setFontSize(10);
   setText(C.ink);
-  doc.text("Performance Metrics Summary", gridX, y + 30);
+  doc.text("Profile Performance Metrics", gridX, y + 25);
   
   const stats = [
-    { l: "Stars", v: data.score.stats.totalStars, c: C.warning, s: "*" },
-    { l: "Forks", v: data.score.stats.totalForks, c: C.brand, s: "Y" },
-    { l: "Repos", v: data.score.stats.originalRepoCount, c: C.success, s: "#" },
-    { l: "Langs", v: data.score.stats.languageCount, c: C.accent, s: "+" }
+    { l: "Stars", v: data.score.stats.totalStars, c: C.warning },
+    { l: "Forks", v: data.score.stats.totalForks, c: C.brand },
+    { l: "Repos", v: data.score.stats.originalRepoCount, c: C.success },
+    { l: "Langs", v: data.score.stats.languageCount, c: C.accent }
   ];
   
-  const sw = (cardW - 120) / 4;
+  const sw = (cardW - 130) / 4;
   stats.forEach((st, i) => {
     const sx = gridX + i * sw;
     doc.setFont("courier", "bold");
-    doc.setFontSize(14);
+    doc.setFontSize(13);
     setText(st.c);
     doc.text(String(st.v), sx, y + 60);
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(9);
+    doc.setFontSize(8);
     setText(C.muted);
     doc.text(st.l, sx, y + 75);
   });
 
   y += 130;
 
-  // Achievement Badges on Page 1
+  // TECHNICAL DIMENSION AUDIT (Bars)
+  sectionHeader("TECHNICAL DIMENSION AUDIT", C.brand);
+  const metrics = [
+    { n: "Popularity", v: data.score.breakdown.popularity, m: 25, c: C.brand },
+    { n: "Activity", v: data.score.breakdown.activity, m: 20, c: C.success },
+    { n: "Breadth", v: data.score.breakdown.breadth, m: 15, c: C.accent },
+    { n: "Quality", v: data.score.breakdown.quality, m: 20, c: C.warning },
+    { n: "Community", v: data.score.breakdown.community, m: 10, c: C.brandDark },
+    { n: "Tenure", v: data.score.breakdown.tenure, m: 10, c: C.muted }
+  ];
+
+  const barWidthMax = cardW - 140;
+  metrics.forEach(m => {
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    setText(C.body);
+    doc.text(m.n, margin, y + 10);
+    
+    roundedRect(margin + 100, y + 2, barWidthMax, 10, 5, C.border);
+    const fillW = Math.max(4, (m.v / m.m) * barWidthMax);
+    roundedRect(margin + 100, y + 2, fillW, 10, 5, m.c);
+    
+    doc.setFont("courier", "bold");
+    setText(C.muted);
+    const valStr = `${m.v}/${m.m}`;
+    doc.text(valStr, W - margin - doc.getTextWidth(valStr), y + 10);
+    y += 20;
+  });
+
+  y += 15;
+
+  // BADGES on Page 1
   if (data.badges.length) {
-    sectionHeader("EARNED ACHIEVEMENTS", C.brandDark);
+    sectionHeader("ACHIEVEMENTS & BADGES", C.brandDark);
     let bx = margin;
     data.badges.forEach((b) => {
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(9);
-      const tw = doc.getTextWidth(b) + 20;
-      if (bx + tw > W - margin) { bx = margin; y += 25; }
-      roundedRect(bx, y, tw, 20, 10, C.success);
+      doc.setFontSize(8);
+      const tw = doc.getTextWidth(b) + 16;
+      if (bx + tw > W - margin) { bx = margin; y += 22; }
+      roundedRect(bx, y, tw, 18, 9, C.success);
       setText(C.white);
-      doc.text(b, bx + 10, y + 13.5);
-      bx += tw + 8;
+      doc.text(b, bx + 8, y + 12);
+      bx += tw + 6;
     });
-    y += 40;
+    y += 30;
   }
 
   addFooter();
 
-  // ============ PAGE 2: AI INSIGHTS ============
+  // ============ PAGE 2: ANALYSIS & INSIGHTS ============
   doc.addPage();
   y = margin + 20;
   setFill(C.brand);
   doc.rect(0, 0, W, 4, "F");
+
+  // STACK SPECIALIZATION
+  if (data.score.stats.langDetails?.length) {
+    sectionHeader("STACK SPECIALIZATION", C.accent);
+    let lx = margin;
+    data.score.stats.langDetails.slice(0, 8).forEach(l => {
+      const label = `${l.name} ${l.percentage}%`;
+      doc.setFont("courier", "normal");
+      doc.setFontSize(9);
+      const lw = doc.getTextWidth(label) + 20;
+      if (lx + lw > W - margin) { lx = margin; y += 22; }
+      roundedRect(lx, y, lw, 18, 4, C.soft);
+      setFill(C.accent);
+      doc.rect(lx + 4, y + 4, 3, 10, "F");
+      setText(C.body);
+      doc.text(label, lx + 12, y + 12);
+      lx += lw + 6;
+    });
+    y += 35;
+  }
+
+  // EXECUTIVE OVERVIEW
+  if (data.ai.summary) {
+    sectionHeader("EXECUTIVE OVERVIEW", C.brand);
+    calloutBox(data.ai.summary, C.brand, "helvetica");
+  }
 
   bulletSection("KEY STRENGTHS", data.ai.strengths, C.success, ">>");
   bulletSection("IMPROVEMENT VECTORS", data.ai.weaknesses, C.danger, "!!");
   bulletSection("GROWTH STRATEGY", data.ai.actionSteps, C.warning, "->");
 
   if (data.ai.recruiterInsights) {
-    sectionHeader("TECHNICAL RECRUITER'S PERSPECTIVE", C.accent);
-    calloutBox(data.ai.recruiterInsights, C.accent, "times"); // Formal Times tone
+    sectionHeader("TECHNICAL RECRUITER PERSPECTIVE", C.accent);
+    calloutBox(data.ai.recruiterInsights, C.accent, "times");
   }
 
   addFooter();
 
-  // ============ PAGE 3: REPOSITORY HIGHLIGHTS ============
+  // ============ PAGE 3: REPOSITORIES ============
   doc.addPage();
   y = margin + 20;
   setFill(C.brand);
   doc.rect(0, 0, W, 4, "F");
 
   sectionHeader("KEY REPOSITORY HIGHLIGHTS", C.brand);
-  const top = data.repos.slice(0, 8);
-  top.forEach(r => {
+  const repos = data.repos.slice(0, 8);
+  repos.forEach(r => {
     const lines = r.description ? doc.splitTextToSize(r.description, cardW - 30) : [];
-    const tipLines = r.improvementNote ? doc.splitTextToSize(`Tip: ${r.improvementNote}`, cardW - 40) : [];
-    const h = 45 + (lines.length * 12) + (tipLines.length * 11) + (r.improvementNote ? 10 : 0);
+    const tipLines = r.improvementNote ? doc.splitTextToSize(`💡 Tip: ${r.improvementNote}`, cardW - 40) : [];
+    const h = 45 + (lines.length * 12) + (tipLines.length * 11) + (r.improvementNote ? 12 : 0);
     
     if (y + h > H - margin - 40) { addFooter(); doc.addPage(); y = margin + 20; setFill(C.brand); doc.rect(0, 0, W, 4, "F"); }
     
@@ -227,24 +283,24 @@ export function exportPdf(data: AnalysisResult) {
     setFill(color);
     doc.rect(margin, y, 3, 16, "F");
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(13);
+    doc.setFontSize(12);
     setText(C.ink);
     doc.text(title, margin + 12, y + 13);
-    y += 28;
+    y += 26;
   }
 
   function calloutBox(text: string, color: [number, number, number], font: "helvetica" | "times" | "courier" = "helvetica") {
     doc.setFont(font, font === "times" ? "italic" : "normal");
-    doc.setFontSize(10.5);
+    doc.setFontSize(10);
     const lines = doc.splitTextToSize(text, cardW - 30);
-    const h = lines.length * 14 + 20;
+    const h = lines.length * 14 + 18;
     roundedRect(margin, y, cardW, h, 8, C.soft);
     setDraw(color);
     doc.setLineWidth(0.5);
     doc.roundedRect(margin, y, cardW, h, 8, 8, "S");
     setText(C.body);
-    doc.text(lines, margin + 15, y + 18);
-    y += h + 20;
+    doc.text(lines, margin + 15, y + 16);
+    y += h + 18;
   }
 
   function bulletSection(title: string, items: string[], color: [number, number, number], sym: string) {
@@ -262,6 +318,6 @@ export function exportPdf(data: AnalysisResult) {
       doc.text(lines, margin + 25, y + 10);
       y += h;
     });
-    y += 15;
+    y += 12;
   }
 }
