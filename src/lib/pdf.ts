@@ -98,28 +98,52 @@ export function exportPdf(data: AnalysisResult) {
   setFill(C.brand);
   doc.rect(0, 0, W, bandH, "F");
   
+  // Header Mesh Pattern
+  setFill(C.brandDark);
+  for(let i=0; i<W; i+=30) {
+    for(let j=0; j<bandH; j+=30) {
+      doc.circle(i + (j%60===0?15:0), j, 0.8, "F");
+    }
+  }
+
+  // Sidebar Accent
+  setFill(C.brand);
+  doc.rect(0, 0, 8, H, "F");
+  
   // Title
   doc.setFont(FONT, "bolditalic");
   doc.setFontSize(28);
   setText(C.white);
-  doc.text("GITINSIGHT AI", margin, 45);
+  doc.text("GITINSIGHT AI", margin + 10, 45);
   
   doc.setFont(FONT, "normal");
   doc.setFontSize(10);
-  doc.text("Professional Developer Profile Audit Report", margin, 60);
+  doc.text("Professional Developer Profile Audit Report", margin + 10, 60);
 
   const handle = `@${data.user.login}${data.user.name ? ` • ${data.user.name}` : ""}`;
   doc.setFont(FONT, "bold");
   doc.setFontSize(10);
   const pillW = doc.getTextWidth(handle) + 20;
-  roundedRect(margin, 75, pillW, 20, 10, [255, 255, 255]);
+  roundedRect(margin + 10, 75, pillW, 20, 10, [255, 255, 255]);
   setText(C.brand);
-  doc.text(handle, margin + 10, 88);
+  doc.text(handle, margin + 20, 88);
+
+  // Decorative "Audit Seal"
+  const sealX = W - margin - 60;
+  const sealY = 40;
+  setDraw(C.white);
+  doc.setLineWidth(0.5);
+  doc.circle(sealX + 30, sealY + 30, 25, "S");
+  doc.setFontSize(6);
+  setText(C.white);
+  doc.text("VERIFIED", sealX + 16, sealY + 28);
+  doc.text("AUDIT", sealX + 21, sealY + 36);
 
   y = bandH + 25;
 
-  // Score Summary Card
+  // Score Summary Card with "Glow"
   const cardW = W - margin * 2;
+  roundedRect(margin + 2, y + 2, cardW, 75, 8, [240, 240, 255]); // Shadow
   roundedRect(margin, y, cardW, 75, 8, C.soft);
   setDraw(C.border);
   doc.setLineWidth(0.5);
