@@ -176,7 +176,7 @@ const Result = () => {
       <div className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div className="flex-1">
           <div className="text-xs uppercase tracking-widest text-muted-foreground">Public Profile Report</div>
-          <h1 className="font-display text-4xl font-black italic tracking-tighter sm:text-6xl">
+          <h1 className="font-display text-2xl font-black italic tracking-tighter sm:text-4xl">
             <a
               href={`https://github.com/${data?.user.login || username}`}
               target="_blank"
@@ -188,7 +188,7 @@ const Result = () => {
           </h1>
         </div>
         <div className="flex w-full max-w-lg flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
-          <AnalyzeForm defaultValue={data?.user.login || username} />
+          <AnalyzeForm defaultValue="" />
           {data && (
             <Button
               variant="outline"
@@ -766,7 +766,7 @@ function BulletList({
     <ol className="space-y-4">
       {items.map((it, i) => (
         <li key={i} className="flex gap-4 text-sm leading-relaxed group">
-          <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-xl bg-muted/40 shadow-sm border border-border/40 group-hover:bg-brand/10 group-hover:text-brand group-hover:shadow-glow-intense group-hover:scale-110 transition-all duration-300">
+          <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-xl bg-card shadow-sm border border-border group-hover:border-brand-1/40 group-hover:bg-brand/10 group-hover:scale-110 group-hover:shadow-md transition-all duration-300">
             {getIcon(i)}
           </div>
           <span className="flex-1 text-foreground/80 group-hover:text-foreground group-hover:translate-x-1 transition-all duration-300">{it}</span>
