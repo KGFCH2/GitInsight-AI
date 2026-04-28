@@ -52,10 +52,7 @@ export function ThemeToggle() {
           {dark ? (
             <Moon className="h-4 w-4 text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.6)]" />
           ) : (
-            <div className="relative flex h-4 w-4 items-center justify-center">
-               <Sun className="h-4 w-4 text-yellow-400 drop-shadow-[0_0_5px_rgba(234,179,8,0.8)]" />
-               <div className="absolute inset-0 bg-gradient-to-tr from-red-500 via-orange-500 to-yellow-400 opacity-40 blur-[2px] rounded-full" />
-            </div>
+            <Sun className="h-4 w-4 text-orange-500 drop-shadow-[0_0_8px_rgba(249,115,22,0.6)]" />
           )}
         </motion.div>
       </AnimatePresence>

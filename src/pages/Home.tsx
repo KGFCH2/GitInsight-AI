@@ -254,7 +254,7 @@ const Home = () => {
       {/* CTA */}
       <section className="container pb-12">
         <div className="overflow-hidden rounded-3xl border border-border bg-card-grad p-10 text-center shadow-elev sm:p-16">
-          <div className="icon-glow-pop mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-brand/10 shadow-glow transition-all duration-500">
+          <div className="icon-glow-pop mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-brand/10 shadow-glow transition-all duration-500">
             <Target className="h-10 w-10 text-brand-1 brightness-125" />
           </div>
           <h2 className="hover-pop font-display text-3xl font-bold sm:text-4xl">

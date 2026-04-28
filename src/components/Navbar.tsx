@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink as RNavLink, useLocation } from "react-router-dom";
-import { Github } from "lucide-react";
+import { BookOpen, Github, History as HistoryIcon, Home as HomeIcon, Search, HelpCircle } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { to: "/", label: "Home" },
-  { to: "/analyze", label: "Analyze" },
-  { to: "/history", label: "History" },
-  { to: "/documentation", label: "Docs" },
+  { to: "/", label: "Home", icon: HomeIcon },
+  { to: "/analyze", label: "Analyze", icon: Search },
+  { to: "/history", label: "History", icon: HistoryIcon },
+  { to: "/documentation", label: "Docs", icon: BookOpen },
 ];
 
 export function Navbar() {
@@ -85,12 +85,13 @@ export function Navbar() {
                   onClick={isHome ? handleHomeClick : undefined}
                   className={({ isActive }) =>
                     cn(
-                      "rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-200 hover:-translate-y-0.5 hover:bg-muted/40 hover:text-foreground hover:shadow-sm",
+                      "flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-200 hover:-translate-y-0.5 hover:bg-muted/40 hover:text-foreground hover:shadow-sm",
                       (isActive || (l.to === "/analyze" && loc.pathname.startsWith("/result"))) &&
                         "bg-muted text-foreground shadow-sm",
                     )
                   }
                 >
+                  <l.icon className="h-4 w-4" />
                   {l.label}
                 </RNavLink>
               );

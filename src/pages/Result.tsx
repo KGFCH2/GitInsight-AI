@@ -135,7 +135,8 @@ const Result = () => {
         "Starstruck": "https://github.githubassets.com/images/modules/profile/achievements/starstruck-default.png",
         "YOLO": "https://github.githubassets.com/images/modules/profile/achievements/yolo-default.png",
         "Pair Extraordinaire": "https://github.githubassets.com/images/modules/profile/achievements/pair-extraordinaire-default.png",
-        "Galaxy Brain": "https://github.githubassets.com/images/modules/profile/achievements/galaxy-brain-default.png"
+        "Galaxy Brain": "https://github.githubassets.com/images/modules/profile/achievements/galaxy-brain-default.png",
+        "Quickdraw": "https://github.githubassets.com/images/modules/profile/achievements/quickdraw-default.png"
       };
 
       const iconPromises = (data.realAchievements || []).map(async (ach) => {

@@ -320,6 +320,7 @@ export function deriveRealAchievements(user: GhUser, stats: any): string[] {
   if (stats.originalRepoCount >= 10) achievements.push("YOLO");
   if (user.followers >= 10) achievements.push("Pair Extraordinaire");
   if (user.public_repos >= 40) achievements.push("Galaxy Brain");
+  if (user.public_repos >= 5) achievements.push("Quickdraw");
   
   return achievements;
 }
@@ -343,8 +344,8 @@ export async function analyzeProfile(username: string, force = false): Promise<A
     gh<{ login: string; avatar_url: string; html_url: string }[]>(`https://api.github.com/users/${cleaned}/followers?per_page=100${force ? `&t=${Date.now()}` : ""}`, force),
   ]);
 
-  if (user.login.toLowerCase() !== cleaned.toLowerCase()) {
-    throw new Error(`Username mismatch. Found "${user.login}", but expected "${cleaned}".`);
+  if (user.login !== cleaned) {
+    throw new Error(`Profile not found with exact casing: "${cleaned}". GitHub usernames are case-sensitive in this dashboard.`);
   }
 
   const score = computeScore(user, repos);
