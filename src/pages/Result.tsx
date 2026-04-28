@@ -63,7 +63,7 @@ const Result = () => {
   const loadData = (isRefresh = false) => {
     const params = new URLSearchParams(location.search);
     const fromHistory = params.get("from") === "history";
-    
+
     setLoading(true);
     setError(null);
     if (!isRefresh && !fromHistory) {
@@ -127,7 +127,7 @@ const Result = () => {
       };
 
       const faviconB64 = await fetchB64("/favicon.png");
-      
+
       const achievementMap: Record<string, string> = {
         "Arctic Code Vault Contributor": "https://github.githubassets.com/images/modules/profile/achievements/arctic-code-vault-contributor-default.png",
         "Pull Shark": "https://github.githubassets.com/images/modules/profile/achievements/pull-shark-default.png",
@@ -176,10 +176,10 @@ const Result = () => {
       <div className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div className="flex-1">
           <div className="text-xs uppercase tracking-widest text-muted-foreground">Public Profile Report</div>
-          <h1 className="font-display text-3xl font-black italic tracking-tighter sm:text-5xl">
-            <a 
-              href={`https://github.com/${data?.user.login || username}`} 
-              target="_blank" 
+          <h1 className="font-display text-4xl font-black italic tracking-tighter sm:text-6xl">
+            <a
+              href={`https://github.com/${data?.user.login || username}`}
+              target="_blank"
               rel="noreferrer"
               className="hover:text-brand-1 hover:underline transition-colors"
             >
@@ -218,7 +218,7 @@ const Result = () => {
         )}
 
         {loading && data && isRefreshing && (
-          <motion.div 
+          <motion.div
             key="refreshing"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -229,9 +229,9 @@ const Result = () => {
             <p className="mt-4 text-sm font-medium text-muted-foreground">Updating latest GitHub data...</p>
           </motion.div>
         )}
-        
+
         {error && !loading && !data && (
-          <motion.div 
+          <motion.div
             key="error"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -243,216 +243,215 @@ const Result = () => {
         )}
 
         {data && !loading && (
-          <motion.div 
+          <motion.div
             key="data"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-          {/* Top profile + score */}
-          <div className="grid gap-6 lg:grid-cols-2 lg:items-stretch">
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex flex-col rounded-2xl border border-border bg-card-grad p-5 shadow-elev h-full"
-            >
-              <div className="flex-1">
-                <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
-                  <img
-                    src={data.user.avatar}
-                    alt={data.user.login}
-                    className="h-16 w-16 rounded-xl border border-border object-cover"
-                    loading="lazy"
-                  />
-                  <div className="flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h2 className="font-display text-2xl font-bold">
-                        {data.user.name || data.user.login}
-                      </h2>
-                      <a
-                        href={data.user.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-brand-1"
-                      >
-                        @{data.user.login}
-                        <ExternalLink className="h-3 w-3" />
-                      </a>
-                    </div>
-                    {data.user.bio && (
-                      <p className="mt-2 max-w-prose text-sm text-muted-foreground leading-relaxed">{data.user.bio}</p>
-                    )}
-                    <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted-foreground">
-                      {data.user.location && (
-                        <span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3" /> {data.user.location}</span>
-                      )}
-                      {data.user.company && (
-                        <span className="inline-flex items-center gap-1"><Building2 className="h-3 w-3" /> {data.user.company}</span>
-                      )}
-                      {data.user.blog && (
-                        <a href={data.user.blog} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:text-brand-1">
-                          <Globe className="h-3 w-3" /> Website
+            {/* Top profile + score */}
+            <div className="grid gap-6 lg:grid-cols-2 lg:items-stretch">
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex flex-col rounded-2xl border border-border bg-card-grad p-6 shadow-elev h-full"
+              >
+                <div className="flex-1">
+                  <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
+                    <img
+                      src={data.user.avatar}
+                      alt={data.user.login}
+                      className="h-20 w-20 rounded-2xl border border-border object-cover"
+                      loading="lazy"
+                    />
+                    <div className="flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h2 className="font-display text-2xl font-bold">
+                          {data.user.name || data.user.login}
+                        </h2>
+                        <a
+                          href={data.user.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-brand-1"
+                        >
+                          @{data.user.login}
+                          <ExternalLink className="h-3 w-3" />
                         </a>
+                      </div>
+                      {data.user.bio && (
+                        <p className="mt-2 max-w-prose text-sm text-muted-foreground leading-relaxed">{data.user.bio}</p>
                       )}
-                      <span className="inline-flex items-center gap-1">
-                        <Calendar className="h-3 w-3" /> {data.score.stats.accountAgeYears}y on GitHub
-                      </span>
+                      <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted-foreground">
+                        {data.user.location && (
+                          <span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3" /> {data.user.location}</span>
+                        )}
+                        {data.user.company && (
+                          <span className="inline-flex items-center gap-1"><Building2 className="h-3 w-3" /> {data.user.company}</span>
+                        )}
+                        {data.user.blog && (
+                          <a href={data.user.blog} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:text-brand-1">
+                            <Globe className="h-3 w-3" /> Website
+                          </a>
+                        )}
+                        <span className="inline-flex items-center gap-1">
+                          <Calendar className="h-3 w-3" /> {data.score.stats.accountAgeYears}y on GitHub
+                        </span>
+                      </div>
                     </div>
+                  </div>
+
+                  <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                    <Stat
+                      label="Total Stars"
+                      value={data.starredRepos?.length || 0}
+                      icon={Star}
+                      onClick={() => setModalType("stars")}
+                      subLabel="Starred by user"
+                      color="amber"
+                    />
+                    <Stat
+                      label="Followers"
+                      value={data.user.followers}
+                      icon={Users}
+                      onClick={() => setModalType("followers")}
+                      color="purple"
+                    />
+                    <Stat
+                      label="Public Repos"
+                      value={data.repos.length}
+                      icon={Sparkles}
+                      onClick={() => {
+                        setActiveTab("repos");
+                        setTimeout(() => {
+                          document.getElementById("repos-list")?.scrollIntoView({ behavior: "smooth" });
+                        }, 100);
+                      }}
+                      color="brand"
+                    />
+                    <Stat
+                      label="Top Languages"
+                      value={data.score.stats.languageCount}
+                      icon={TrendingUp}
+                      onClick={() => setModalType("langs")}
+                      color="blue"
+                    />
                   </div>
                 </div>
 
-                <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
-                  <Stat 
-                    label="Total Stars" 
-                    value={data.starredRepos?.length || 0} 
-                    icon={Star} 
-                    onClick={() => setModalType("stars")}
-                    subLabel="Starred by user"
-                    color="amber"
-                  />
-                  <Stat 
-                    label="Followers" 
-                    value={data.user.followers} 
-                    icon={Users} 
-                    onClick={() => setModalType("followers")}
-                    color="purple"
-                  />
-                  <Stat 
-                    label="Public Repos" 
-                    value={data.repos.length} 
-                    icon={Sparkles} 
-                    onClick={() => {
-                      setActiveTab("repos");
-                      setTimeout(() => {
-                        document.getElementById("repos-list")?.scrollIntoView({ behavior: "smooth" });
-                      }, 100);
-                    }}
-                    color="brand"
-                  />
-                  <Stat 
-                    label="Top Languages" 
-                    value={data.score.stats.languageCount} 
-                    icon={TrendingUp} 
-                    onClick={() => setModalType("langs")}
-                    color="blue"
-                  />
-                </div>
-              </div>
-
-              <div className="mt-auto flex flex-col gap-3 border-t border-border/40 pt-5">
-                <div className="flex items-center gap-2 text-xs font-medium">
+                <div className="mt-8 flex items-center gap-2 border-t border-border/40 pt-4 text-xs font-medium">
                   <div className="flex items-center gap-1 font-black text-[#f59e0b]">
                     <Star className="h-3.5 w-3.5 fill-current" /> {data.score.stats.totalStars} Stars Earned
                   </div>
                   <span className="text-muted-foreground">•</span>
                   <span className="italic text-brand-1">Click tiles for deep analysis</span>
                 </div>
-                
-                <div className="flex flex-wrap gap-3">
-                  <Button 
-                    onClick={share} 
-                    size="sm" 
-                    className="gap-2 bg-blue-600 font-bold text-white shadow-lg transition-all hover:scale-105 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 h-10 px-6 rounded-xl"
-                  >
-                    <Share2 className="h-4 w-4" /> Share
-                  </Button>
-                  <Button 
-                    onClick={handleExport} 
-                    size="sm" 
-                    className="gap-2 bg-emerald-600 font-bold text-white shadow-lg transition-all hover:scale-105 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-400 h-10 px-6 rounded-xl"
-                  >
-                    <Download className="h-4 w-4" /> Export PDF
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="flex flex-col items-center justify-center rounded-2xl border border-border bg-card-grad p-6 shadow-elev h-full"
-            >
-              <div className="flex flex-col items-center gap-10 w-full">
-                <ScoreRing value={data.score.total} />
-                <div className="w-full">
-                  <ScoreBreakdownChart
-                    data={[
-                      { label: "Popularity", value: data.score.breakdown.popularity, max: 25 },
-                      { label: "Activity", value: data.score.breakdown.activity, max: 20 },
-                      { label: "Breadth", value: data.score.breakdown.breadth, max: 15 },
-                      { label: "Quality", value: data.score.breakdown.quality, max: 20 },
-                      { label: "Community", value: data.score.breakdown.community, max: 10 },
-                      { label: "Tenure", value: data.score.breakdown.tenure, max: 10 },
-                    ]}
-                  />
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="flex flex-col rounded-2xl border border-border bg-card-grad p-8 shadow-elev h-full"
+              >
+                <div className="flex flex-col h-full lg:flex-row lg:items-center gap-10">
+                  <div className="flex flex-col items-center justify-center flex-1">
+                    <ScoreRing value={data.score.total} />
+                  </div>
+                  <div className="flex-[1.5]">
+                    <ScoreBreakdownChart
+                      data={[
+                        { label: "Popularity", value: data.score.breakdown.popularity, max: 25 },
+                        { label: "Activity", value: data.score.breakdown.activity, max: 20 },
+                        { label: "Breadth", value: data.score.breakdown.breadth, max: 15 },
+                        { label: "Quality", value: data.score.breakdown.quality, max: 20 },
+                        { label: "Community", value: data.score.breakdown.community, max: 10 },
+                        { label: "Tenure", value: data.score.breakdown.tenure, max: 10 },
+                      ]}
+                    />
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          </div>
-
-
-          {/* Best Repo */}
-          {data.bestRepo && (
-            <div className="mt-6 overflow-hidden rounded-2xl border border-brand-1/40 bg-card-grad p-6 shadow-glow">
-              <div className="mb-2 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-brand-1">
-                <Crown className="h-4 w-4" /> Best Repo Highlight
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <a
-                    href={data.bestRepo.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="font-display text-2xl font-bold hover:text-brand-1"
-                  >
-                    {data.bestRepo.name}
-                  </a>
-                  {data.bestRepo.description && (
-                    <p className="mb-4 line-clamp-2 text-sm text-muted-foreground">
-                      {data.bestRepo.description ?? "No description."}
-                    </p>
-                  )}
-                  {data.bestRepo.improvementNote && (
-                    <div className="mb-4 rounded-lg border border-warning/20 bg-warning/5 p-2.5 text-[11px] leading-relaxed text-warning/90">
-                      <span className="font-bold uppercase tracking-wider italic">💡 Tip:</span> {data.bestRepo.improvementNote}
-                    </div>
-                  )}
-                </div>
-                <div className="flex items-center gap-4 text-sm">
-                  <span className="inline-flex items-center gap-1.5"><Star className="h-4 w-4" /> {data.bestRepo.stars}</span>
-                  {data.bestRepo.language && (
-                    <span className="rounded-full bg-muted px-3 py-1 text-xs font-medium">{data.bestRepo.language}</span>
-                  )}
-                </div>
-              </div>
+              </motion.div>
             </div>
-          )}
 
-          {/* Tabs */}
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Button
+                onClick={share}
+                size="sm"
+                className="gap-2 bg-blue-600 font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400"
+              >
+                <Share2 className="h-4 w-4" /> Share
+              </Button>
+              <Button
+                onClick={handleExport}
+                size="sm"
+                className="gap-2 bg-emerald-600 font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-400"
+              >
+                <Download className="h-4 w-4" /> Export PDF
+              </Button>
+            </div>
+
+            {/* Best Repo */}
+            {data.bestRepo && (
+              <div className="mt-6 overflow-hidden rounded-2xl border border-brand-1/40 bg-card-grad p-6 shadow-glow">
+                <div className="mb-2 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-brand-1">
+                  <Crown className="h-4 w-4" /> Best Repo Highlight
+                </div>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <a
+                      href={data.bestRepo.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="font-display text-2xl font-bold hover:text-brand-1"
+                    >
+                      {data.bestRepo.name}
+                    </a>
+                    {data.bestRepo.description && (
+                      <p className="mb-4 line-clamp-2 text-sm text-muted-foreground">
+                        {data.bestRepo.description ?? "No description."}
+                      </p>
+                    )}
+                    {data.bestRepo.improvementNote && (
+                      <div className="mb-4 rounded-lg border border-warning/20 bg-warning/5 p-2.5 text-[11px] leading-relaxed text-warning/90">
+                        <span className="font-bold uppercase tracking-wider italic">💡 Tip:</span> {data.bestRepo.improvementNote}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-4 text-sm">
+                    <span className="inline-flex items-center gap-1.5"><Star className="h-4 w-4" /> {data.bestRepo.stars}</span>
+                    {data.bestRepo.language && (
+                      <span className="rounded-full bg-muted px-3 py-1 text-xs font-medium">{data.bestRepo.language}</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Tabs */}
             <div className="mt-10">
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="mb-6 grid w-full grid-cols-2 lg:grid-cols-4">
-            <TabsTrigger value="ai" className="gap-2"><TrendingUp className="h-4 w-4" /> Strategic View</TabsTrigger>
-            <TabsTrigger value="recruiter" className="gap-2"><Users className="h-4 w-4" /> Recruiter Perspective</TabsTrigger>
-            <TabsTrigger value="badges" className="gap-2"><Crown className="h-4 w-4" /> Achievements & Badges</TabsTrigger>
-            <TabsTrigger value="repos" className="gap-2"><Sparkles className="h-4 w-4" /> Public Repositories</TabsTrigger>
-          </TabsList>
+                <TabsList className="mb-6 grid w-full grid-cols-2 lg:grid-cols-4">
+                  <TabsTrigger value="ai" className="gap-2"><TrendingUp className="h-4 w-4" /> Strategic View</TabsTrigger>
+                  <TabsTrigger value="recruiter" className="gap-2"><Users className="h-4 w-4" /> Recruiter Perspective</TabsTrigger>
+                  <TabsTrigger value="badges" className="gap-2"><Crown className="h-4 w-4" /> Achievements & Badges</TabsTrigger>
+                  <TabsTrigger value="repos" className="gap-2"><Sparkles className="h-4 w-4" /> Public Repositories</TabsTrigger>
+                </TabsList>
 
                 <TabsContent value="ai" className="mt-6 space-y-6">
-                {data.ai.summary && (
-                  <Card title="Summary" icon={Sparkles}>
-                    <p className="text-sm leading-relaxed text-muted-foreground">{data.ai.summary}</p>
-                  </Card>
-                )}
-                <div className="grid gap-6 md:grid-cols-2">
-                  <Card title="Strengths" icon={TrendingUp} accent="success">
-                    <BulletList items={data.ai.strengths} iconType="success" />
-                  </Card>
-                  <Card title="Weaknesses" icon={Lightbulb} accent="warning">
-                    <BulletList items={data.ai.weaknesses} iconType="warning" />
-                  </Card>
-                </div>
+                  {data.ai.summary && (
+                    <Card title="Summary" icon={Sparkles}>
+                      <p className="text-sm leading-relaxed text-muted-foreground">{data.ai.summary}</p>
+                    </Card>
+                  )}
+                  <div className="grid gap-6 md:grid-cols-2">
+                    <Card title="Strengths" icon={TrendingUp} accent="success">
+                      <BulletList items={data.ai.strengths} iconType="success" />
+                    </Card>
+                    <Card title="Weaknesses" icon={Lightbulb} accent="warning">
+                      <BulletList items={data.ai.weaknesses} iconType="warning" />
+                    </Card>
+                  </div>
                   <Card title="Dimension Analysis" icon={Gauge}>
                     <div className="grid gap-6 sm:grid-cols-2">
                       <div className="space-y-1 group/item">
@@ -492,94 +491,93 @@ const Result = () => {
                 </TabsContent>
 
 
-              <TabsContent value="repos" id="repos-list" className="mt-6">
-                <div className="mb-4 flex flex-wrap gap-2">
-                  {(["all", "good", "improve", "archive"] as const).map((f) => (
-                    <button
-                      key={f}
-                      onClick={() => setFilter(f)}
-                      className={
-                        "rounded-full border px-3 py-1 text-xs font-semibold capitalize transition-colors " +
-                        (filter === f
-                          ? "border-brand-1 bg-brand text-primary-foreground"
-                          : "border-border bg-card text-muted-foreground hover:text-foreground")
-                      }
-                    >
-                      {f}
-                    </button>
-                  ))}
-                </div>
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {data.repos
-                    .filter((r) => filter === "all" || r.classification === filter)
-                    .map((r, i) => (
-                      <RepoCard key={r.name} repo={r} index={i} />
+                <TabsContent value="repos" id="repos-list" className="mt-6">
+                  <div className="mb-4 flex flex-wrap gap-2">
+                    {(["all", "good", "improve", "archive"] as const).map((f) => (
+                      <button
+                        key={f}
+                        onClick={() => setFilter(f)}
+                        className={
+                          "rounded-full border px-3 py-1 text-xs font-semibold capitalize transition-colors " +
+                          (filter === f
+                            ? "border-brand-1 bg-brand text-primary-foreground"
+                            : "border-border bg-card text-muted-foreground hover:text-foreground")
+                        }
+                      >
+                        {f}
+                      </button>
                     ))}
-                </div>
-              </TabsContent>
-              <TabsContent value="badges" className="mt-6 space-y-6">
-                <Card title="GitHub Achievements" icon={Award}>
-                  <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                    {data.realAchievements?.map(a => (
-                      <div key={a} className="group relative flex flex-col items-center justify-center rounded-2xl border border-border bg-muted/20 p-6 text-center transition-all hover:-translate-y-1 hover:border-brand-1/40 hover:bg-card hover:shadow-glow">
-                        <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-brand/10 p-2 shadow-inner group-hover:scale-110 group-hover:bg-brand/20 transition-all">
-                          {a.includes("Vault") && <img src="https://github.githubassets.com/images/modules/profile/achievements/arctic-code-vault-contributor-default.png" className="h-10 w-10" />}
-                          {a.includes("Shark") && <img src="https://github.githubassets.com/images/modules/profile/achievements/pull-shark-default.png" className="h-10 w-10" />}
-                          {a.includes("YOLO") && <img src="https://github.githubassets.com/images/modules/profile/achievements/yolo-default.png" className="h-10 w-10" />}
-                          {a.includes("Pair") && <img src="https://github.githubassets.com/images/modules/profile/achievements/pair-extraordinaire-default.png" className="h-10 w-10" />}
-                          {a.includes("Starstruck") && <img src="https://github.githubassets.com/images/modules/profile/achievements/starstruck-default.png" className="h-10 w-10" />}
-                          {a.includes("Galaxy") && <img src="https://github.githubassets.com/images/modules/profile/achievements/galaxy-brain-default.png" className="h-10 w-10" />}
-                        </div>
-                        <div className="text-[10px] font-black tracking-tight uppercase group-hover:text-brand-1">{a}</div>
-                      </div>
-                    ))}
-                    {(!data.realAchievements || data.realAchievements.length === 0) && (
-                      <p className="col-span-full py-10 text-center text-sm text-muted-foreground">Keep coding to unlock more achievements!</p>
-                    )}
                   </div>
-                </Card>
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {data.repos
+                      .filter((r) => filter === "all" || r.classification === filter)
+                      .map((r, i) => (
+                        <RepoCard key={r.name} repo={r} index={i} />
+                      ))}
+                  </div>
+                </TabsContent>
+                <TabsContent value="badges" className="mt-6 space-y-6">
+                  <Card title="GitHub Achievements" icon={Award}>
+                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                      {data.realAchievements?.map(a => (
+                        <div key={a} className="group relative flex flex-col items-center justify-center rounded-2xl border border-border bg-muted/20 p-6 text-center transition-all hover:-translate-y-1 hover:border-brand-1/40 hover:bg-card hover:shadow-glow">
+                          <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-brand/10 p-2 shadow-inner group-hover:scale-110 group-hover:bg-brand/20 transition-all">
+                            {a.includes("Vault") && <img src="https://github.githubassets.com/images/modules/profile/achievements/arctic-code-vault-contributor-default.png" className="h-10 w-10" />}
+                            {a.includes("Shark") && <img src="https://github.githubassets.com/images/modules/profile/achievements/pull-shark-default.png" className="h-10 w-10" />}
+                            {a.includes("YOLO") && <img src="https://github.githubassets.com/images/modules/profile/achievements/yolo-default.png" className="h-10 w-10" />}
+                            {a.includes("Pair") && <img src="https://github.githubassets.com/images/modules/profile/achievements/pair-extraordinaire-default.png" className="h-10 w-10" />}
+                            {a.includes("Starstruck") && <img src="https://github.githubassets.com/images/modules/profile/achievements/starstruck-default.png" className="h-10 w-10" />}
+                            {a.includes("Galaxy") && <img src="https://github.githubassets.com/images/modules/profile/achievements/galaxy-brain-default.png" className="h-10 w-10" />}
+                          </div>
+                          <div className="text-[10px] font-black tracking-tight uppercase group-hover:text-brand-1">{a}</div>
+                        </div>
+                      ))}
+                      {(!data.realAchievements || data.realAchievements.length === 0) && (
+                        <p className="col-span-full py-10 text-center text-sm text-muted-foreground">Keep coding to unlock more achievements!</p>
+                      )}
+                    </div>
+                  </Card>
 
-                <Card title="AI Badges" icon={Sparkles}>
-                  <BadgeGrid badges={data.badges} />
-                </Card>
-              </TabsContent>
-            </Tabs>
-          </div>
-        </motion.div>
-      )}
+                  <Card title="AI Badges" icon={Sparkles}>
+                    <BadgeGrid badges={data.badges} />
+                  </Card>
+                </TabsContent>
+              </Tabs>
+            </div>
+          </motion.div>
+        )}
       </AnimatePresence>
 
       {/* Detail Modals */}
       <AnimatePresence>
         {modalType && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setModalType(null)}
               className="absolute inset-0 bg-background/80 backdrop-blur-sm"
             />
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-border bg-card shadow-2xl"
             >
-              <div className={`flex items-center justify-between border-b p-5 ${
-                modalType === "stars" ? "bg-[#f59e0b] text-white" : 
-                modalType === "followers" ? "bg-[#a855f7] text-white" : 
-                "bg-[#2563eb] text-white"
-              }`}>
+              <div className={`flex items-center justify-between border-b p-5 ${modalType === "stars" ? "bg-[#f59e0b] text-white" :
+                  modalType === "followers" ? "bg-[#a855f7] text-white" :
+                    "bg-[#2563eb] text-white"
+                }`}>
                 <h3 className="flex items-center gap-2 font-display text-xl font-black italic tracking-tight">
                   {modalType === "stars" && <><Star className="h-6 w-6 fill-current" /> Starred Repositories</>}
                   {modalType === "followers" && <><Users className="h-6 w-6" /> Followers List</>}
                   {modalType === "langs" && <><TrendingUp className="h-6 w-6" /> Language Breakdown</>}
                 </h3>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={() => setModalType(null)} 
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setModalType(null)}
                   className="h-10 w-10 rounded-full bg-white text-[#ef4444] shadow-lg hover:bg-red-50 hover:text-red-600"
                 >
                   <X className="h-6 w-6 stroke-[3]" />
@@ -589,10 +587,10 @@ const Result = () => {
                 {modalType === "stars" && (
                   <div className="space-y-3">
                     {data?.starredRepos?.map((r, i) => (
-                      <a 
-                        key={i} 
-                        href={r.url} 
-                        target="_blank" 
+                      <a
+                        key={i}
+                        href={r.url}
+                        target="_blank"
                         rel="noreferrer"
                         className="flex items-center justify-between rounded-xl border border-l-4 border-l-[#f59e0b] bg-card p-4 transition-all hover:bg-[#f59e0b]/5 hover:shadow-md"
                       >
@@ -612,10 +610,10 @@ const Result = () => {
                 {modalType === "followers" && (
                   <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                     {data?.followersList?.map((f, i) => (
-                      <a 
-                        key={i} 
-                        href={f.url} 
-                        target="_blank" 
+                      <a
+                        key={i}
+                        href={f.url}
+                        target="_blank"
                         rel="noreferrer"
                         className="flex flex-col items-center gap-3 rounded-2xl border border-l-4 border-l-[#a855f7] bg-card p-4 transition-all hover:bg-[#a855f7]/5 hover:shadow-md"
                       >
@@ -639,7 +637,7 @@ const Result = () => {
                           <span className="text-muted-foreground">{l.percentage}% ({l.count} repos)</span>
                         </div>
                         <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-                          <motion.div 
+                          <motion.div
                             initial={{ width: 0 }}
                             animate={{ width: `${l.percentage}%` }}
                             className="h-full bg-brand"
@@ -684,7 +682,7 @@ function Stat({
   };
 
   return (
-    <button 
+    <button
       onClick={onClick}
       disabled={!onClick}
       className={`group relative overflow-hidden rounded-xl border border-border bg-background/40 p-3 text-left transition-all ${onClick ? themes[color] + " active:scale-95 shadow-sm" : ""}`}
@@ -694,12 +692,11 @@ function Stat({
       </div>
       <div className="mt-1 font-display text-2xl font-black tabular-nums transition-transform group-hover:scale-105 group-hover:tracking-tight">{value.toLocaleString()}</div>
       {subLabel && <div className="mt-0.5 text-[10px] font-medium text-muted-foreground/60 transition-colors group-hover:text-inherit">{subLabel}</div>}
-      
+
       {/* Subtle background glow on hover */}
       {onClick && (
-        <div className={`absolute -right-4 -top-4 h-12 w-12 rounded-full opacity-0 blur-2xl transition-opacity group-hover:opacity-20 ${
-          color === "brand" ? "bg-brand" : color === "amber" ? "bg-amber" : color === "purple" ? "bg-purple" : "bg-blue"
-        }`} />
+        <div className={`absolute -right-4 -top-4 h-12 w-12 rounded-full opacity-0 blur-2xl transition-opacity group-hover:opacity-20 ${color === "brand" ? "bg-brand" : color === "amber" ? "bg-amber" : color === "purple" ? "bg-purple" : "bg-blue"
+          }`} />
       )}
     </button>
   );
@@ -721,7 +718,7 @@ function Card({
   return (
     <div className="group rounded-2xl border border-border bg-card-grad p-6 transition-all duration-300 hover:border-brand-1/30 hover:bg-muted/10 hover:shadow-glow">
       <div className="mb-4 flex items-center gap-2">
-        <div className="rounded-lg bg-brand/10 p-2 group-hover:scale-110 group-hover:bg-brand/20 group-hover:shadow-md transition-all duration-300">
+        <div className="icon-glow-pop rounded-lg bg-brand/10 p-2 group-hover:scale-110 group-hover:bg-brand/20 group-hover:shadow-glow-intense transition-all duration-300">
           <Icon className={`h-4 w-4 ${accentClass} group-hover:scale-110 transition-transform`} />
         </div>
         <h3 className="font-display text-base font-semibold transition-colors group-hover:text-brand-1">{title}</h3>
@@ -731,29 +728,29 @@ function Card({
   );
 }
 
-function BulletList({ 
-  items, 
+function BulletList({
+  items,
   numbered = false,
   iconType = "dot"
-}: { 
-  items: string[]; 
+}: {
+  items: string[];
   numbered?: boolean;
   iconType?: "dot" | "success" | "warning" | "step" | "tip" | "idea"
 }) {
   if (!items?.length) return <p className="text-sm text-muted-foreground">—</p>;
-  
+
   const getIcon = (i: number) => {
     if (numbered) return <span className="text-xs font-black">{i + 1}</span>;
-    
+
     // Diverse icons for variety
     const icons = [Sparkles, Zap, Target, Award, ShieldCheck, Gauge, Lightbulb];
     const IconComp = icons[i % icons.length];
 
-    if (iconType === "success") return <IconComp className="h-3.5 w-3.5 text-success brightness-125" />;
-    if (iconType === "warning") return <IconComp className="h-3.5 w-3.5 text-warning brightness-125" />;
-    if (iconType === "step") return <IconComp className="h-3.5 w-3.5 text-brand-1 brightness-125" />;
-    if (iconType === "tip") return <IconComp className="h-3.5 w-3.5 text-amber brightness-125" />;
-    if (iconType === "idea") return <IconComp className="h-3.5 w-3.5 text-blue-400 brightness-125" />;
+    if (iconType === "success") return <IconComp className="h-3.5 w-3.5 text-success" />;
+    if (iconType === "warning") return <IconComp className="h-3.5 w-3.5 text-warning" />;
+    if (iconType === "step") return <IconComp className="h-3.5 w-3.5 text-brand-1" />;
+    if (iconType === "tip") return <IconComp className="h-3.5 w-3.5 text-amber drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]" />;
+    if (iconType === "idea") return <IconComp className="h-3.5 w-3.5 text-blue drop-shadow-[0_0_5px_rgba(37,99,235,0.5)]" />;
     return <div className="h-1.5 w-1.5 rounded-full bg-brand-1" />;
   };
 
@@ -761,7 +758,7 @@ function BulletList({
     <ol className="space-y-4">
       {items.map((it, i) => (
         <li key={i} className="flex gap-4 text-sm leading-relaxed group">
-          <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-xl bg-card shadow-sm border border-border group-hover:border-brand-1/40 group-hover:bg-brand/10 group-hover:scale-110 group-hover:shadow-md transition-all duration-300">
+          <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-xl bg-muted/40 shadow-sm border border-border/40 group-hover:bg-brand/10 group-hover:text-brand group-hover:shadow-glow-intense group-hover:scale-110 transition-all duration-300">
             {getIcon(i)}
           </div>
           <span className="flex-1 text-foreground/80 group-hover:text-foreground group-hover:translate-x-1 transition-all duration-300">{it}</span>
