@@ -339,12 +339,31 @@ const Result = () => {
                 </div>
               </div>
 
-              <div className="mt-8 flex items-center gap-2 border-t border-border/40 pt-4 text-xs font-medium">
-                <div className="flex items-center gap-1 font-black text-[#f59e0b]">
-                  <Star className="h-3.5 w-3.5 fill-current" /> {data.score.stats.totalStars} Stars Earned
+              <div className="mt-auto flex flex-col gap-4 border-t border-border/40 pt-6">
+                <div className="flex items-center gap-2 text-xs font-medium">
+                  <div className="flex items-center gap-1 font-black text-[#f59e0b]">
+                    <Star className="h-3.5 w-3.5 fill-current" /> {data.score.stats.totalStars} Stars Earned
+                  </div>
+                  <span className="text-muted-foreground">•</span>
+                  <span className="italic text-brand-1">Click tiles for deep analysis</span>
                 </div>
-                <span className="text-muted-foreground">•</span>
-                <span className="italic text-brand-1">Click tiles for deep analysis</span>
+                
+                <div className="flex flex-wrap gap-3">
+                  <Button 
+                    onClick={share} 
+                    size="sm" 
+                    className="gap-2 bg-blue-600 font-bold text-white shadow-lg transition-all hover:scale-105 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 h-10 px-6 rounded-xl"
+                  >
+                    <Share2 className="h-4 w-4" /> Share
+                  </Button>
+                  <Button 
+                    onClick={handleExport} 
+                    size="sm" 
+                    className="gap-2 bg-emerald-600 font-bold text-white shadow-lg transition-all hover:scale-105 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-400 h-10 px-6 rounded-xl"
+                  >
+                    <Download className="h-4 w-4" /> Export PDF
+                  </Button>
+                </div>
               </div>
             </motion.div>
 
@@ -372,22 +391,6 @@ const Result = () => {
             </motion.div>
           </div>
 
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Button 
-              onClick={share} 
-              size="sm" 
-              className="gap-2 bg-blue-600 font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400"
-            >
-              <Share2 className="h-4 w-4" /> Share
-            </Button>
-            <Button 
-              onClick={handleExport} 
-              size="sm" 
-              className="gap-2 bg-emerald-600 font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-400"
-            >
-              <Download className="h-4 w-4" /> Export PDF
-            </Button>
-          </div>
 
           {/* Best Repo */}
           {data.bestRepo && (
