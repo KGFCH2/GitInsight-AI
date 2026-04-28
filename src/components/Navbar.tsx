@@ -74,7 +74,7 @@ export function Navbar() {
 
           <nav className="hidden items-center gap-1 md:flex">
             {links.map((l) => {
-              const to = (l.to === "/analyze" && lastUser) ? `/result/${lastUser}` : l.to;
+              const to = l.to;
               const isHome = l.to === "/";
               
               return (

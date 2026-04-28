@@ -314,12 +314,12 @@ export function deriveRealAchievements(user: GhUser, stats: any): string[] {
   const age = (Date.now() - new Date(user.created_at).getTime()) / (1000 * 60 * 60 * 24 * 365);
   
   // High-fidelity heuristics for "Real" GitHub Achievements
-  if (age >= 4) achievements.push("Arctic Code Vault Contributor");
-  if (stats.totalStars >= 50) achievements.push("Starstruck");
-  if (stats.totalForks >= 10) achievements.push("Pull Shark");
-  if (stats.originalRepoCount >= 15) achievements.push("YOLO");
-  if (user.followers >= 20) achievements.push("Pair Extraordinaire");
-  if (user.public_repos >= 50) achievements.push("Galaxy Brain");
+  if (age >= 2) achievements.push("Arctic Code Vault Contributor");
+  if (stats.totalStars >= 15) achievements.push("Starstruck");
+  if (stats.totalForks >= 5) achievements.push("Pull Shark");
+  if (stats.originalRepoCount >= 10) achievements.push("YOLO");
+  if (user.followers >= 10) achievements.push("Pair Extraordinaire");
+  if (user.public_repos >= 40) achievements.push("Galaxy Brain");
   
   return achievements;
 }
