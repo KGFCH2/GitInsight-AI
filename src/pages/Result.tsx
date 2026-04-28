@@ -527,7 +527,7 @@ const Result = () => {
                     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                       {data.realAchievements?.map(a => (
                         <div key={a} className="group relative flex flex-col items-center justify-center rounded-2xl border border-border bg-muted/20 p-6 text-center transition-all hover:-translate-y-1 hover:border-brand-1/40 hover:bg-card hover:shadow-glow">
-                          <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-brand/10 p-2 shadow-inner group-hover:scale-110 group-hover:bg-brand/20 transition-all">
+                          <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-brand/10 p-2 shadow-inner group-hover:scale-105 group-hover:bg-brand/20 transition-all">
                             {a.includes("Vault") && <img src="https://github.githubassets.com/images/modules/profile/achievements/arctic-code-vault-contributor-default.png" className="h-10 w-10" />}
                             {a.includes("Shark") && <img src="https://github.githubassets.com/images/modules/profile/achievements/pull-shark-default.png" className="h-10 w-10" />}
                             {a.includes("YOLO") && <img src="https://github.githubassets.com/images/modules/profile/achievements/yolo-default.png" className="h-10 w-10" />}
@@ -733,7 +733,7 @@ function Card({
   return (
     <div className="group rounded-2xl border border-border bg-card-grad p-6 transition-all duration-300 hover:border-brand-1/30 hover:bg-muted/10 hover:shadow-glow">
       <div className="mb-4 flex items-center gap-2">
-        <div className="flex h-8 w-8 items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:translate-y-[-2px]">
+        <div className="flex h-8 w-8 items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:translate-y-[-1px]">
           <Icon className={`h-5 w-5 ${accentClass} brightness-110`} />
         </div>
         <h3 className="font-display text-base font-semibold transition-colors group-hover:text-brand-1">{title}</h3>
@@ -773,7 +773,7 @@ function BulletList({
     <ol className="space-y-4">
       {items.map((it, i) => (
         <li key={i} className="flex gap-4 text-sm leading-relaxed group">
-          <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center transition-all duration-300 group-hover:scale-125 group-hover:translate-y-[-1px]">
+          <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:translate-y-[-0.5px]">
             {getIcon(i)}
           </div>
           <span className="flex-1 text-foreground/80 group-hover:text-foreground group-hover:translate-x-1 transition-all duration-300">{it}</span>

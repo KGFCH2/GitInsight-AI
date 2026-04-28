@@ -51,7 +51,7 @@
       linear-gradient(180deg, hsl(var(--background)), hsl(var(--background)));
     --gradient-brand: linear-gradient(135deg, hsl(var(--brand-1)), hsl(var(--brand-2)) 60%, hsl(var(--brand-3)));
     --gradient-card: linear-gradient(160deg, hsl(var(--card)) 0%, hsl(240 20% 98%) 100%);
-    --shadow-glow: 0 10px 40px -10px hsl(var(--brand-1) / 0.35);
+    --shadow-glow: 0 8px 30px -10px hsl(var(--brand-1) / 0.25);
     --shadow-elev: 0 20px 60px -20px hsl(240 40% 10% / 0.12);
 
     --sidebar-background: 0 0% 98%;
@@ -106,7 +106,7 @@
       linear-gradient(180deg, hsl(240 30% 5%), hsl(240 22% 6%));
     --gradient-brand: linear-gradient(135deg, hsl(var(--brand-1)), hsl(var(--brand-2)) 60%, hsl(var(--brand-3)));
     --gradient-card: linear-gradient(160deg, hsl(240 20% 10%) 0%, hsl(240 22% 7%) 100%);
-    --shadow-glow: 0 10px 50px -10px hsl(var(--brand-1) / 0.55);
+    --shadow-glow: 0 10px 40px -15px hsl(var(--brand-1) / 0.4);
     --shadow-elev: 0 20px 60px -20px hsl(0 0% 0% / 0.6);
 
     --sidebar-background: 240 5.9% 10%;
