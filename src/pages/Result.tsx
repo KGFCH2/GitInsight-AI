@@ -674,29 +674,37 @@ function Stat({
   subLabel?: string;
   color?: "brand" | "amber" | "purple" | "blue";
 }) {
-  const themes = {
-    brand: "hover:border-brand/40 hover:bg-brand/5 text-brand-1 hover:shadow-[0_0_25px_-5px_rgba(20,184,166,0.5)] dark:hover:shadow-[0_0_30px_-5px_rgba(20,184,166,0.4)]",
-    amber: "hover:border-amber/40 hover:bg-amber/5 text-amber hover:shadow-[0_0_25px_-5px_rgba(245,158,11,0.5)] dark:hover:shadow-[0_0_30px_-5px_rgba(245,158,11,0.4)]",
-    purple: "hover:border-purple/40 hover:bg-purple/5 text-purple hover:shadow-[0_0_25px_-5px_rgba(168,85,247,0.5)] dark:hover:shadow-[0_0_30px_-5px_rgba(168,85,247,0.4)]",
-    blue: "hover:border-blue/40 hover:bg-blue/5 text-blue hover:shadow-[0_0_25px_-5px_rgba(37,99,235,0.5)] dark:hover:shadow-[0_0_30px_-5px_rgba(37,99,235,0.4)]",
-  };
+  const hoverClass = "group-hover:text-purple-600 dark:group-hover:text-emerald-400 transition-colors duration-300";
 
   return (
     <button
       onClick={onClick}
       disabled={!onClick}
-      className={`group relative overflow-hidden rounded-xl border border-border bg-background/40 p-3 text-left transition-all ${onClick ? themes[color] + " active:scale-95 shadow-sm" : ""}`}
+      className={`group relative overflow-hidden rounded-xl border border-border bg-background/40 p-3 text-left transition-all ${
+        onClick ? "hover:border-purple-500/40 dark:hover:border-emerald-500/40 hover:bg-muted/5 active:scale-95 shadow-sm" : ""
+      }`}
     >
-      <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground transition-colors group-hover:text-inherit">
+      <div className={cn("flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground transition-colors", hoverClass)}>
         <Icon className="h-3.5 w-3.5 shrink-0" /> {label}
       </div>
-      <div className="mt-1 font-display text-2xl font-black tabular-nums transition-transform group-hover:scale-105 group-hover:tracking-tight">{value.toLocaleString()}</div>
-      {subLabel && <div className="mt-0.5 text-[10px] font-medium text-muted-foreground/60 transition-colors group-hover:text-inherit">{subLabel}</div>}
+      <div className={cn("mt-1 font-display text-2xl font-black tabular-nums transition-all group-hover:scale-105", 
+        "text-purple-600 dark:text-purple-400", // Initial purple
+        hoverClass
+      )}>
+        {value.toLocaleString()}
+      </div>
+      {subLabel && (
+        <div className={cn("mt-0.5 text-[10px] font-medium text-muted-foreground/60 transition-colors", hoverClass)}>
+          {subLabel}
+        </div>
+      )}
 
       {/* Subtle background glow on hover */}
       {onClick && (
-        <div className={`absolute -right-4 -top-4 h-12 w-12 rounded-full opacity-0 blur-2xl transition-opacity group-hover:opacity-20 ${color === "brand" ? "bg-brand" : color === "amber" ? "bg-amber" : color === "purple" ? "bg-purple" : "bg-blue"
-          }`} />
+        <div className={cn(
+          "absolute -right-4 -top-4 h-12 w-12 rounded-full opacity-0 blur-2xl transition-opacity group-hover:opacity-20",
+          "bg-purple-600 dark:bg-emerald-500"
+        )} />
       )}
     </button>
   );

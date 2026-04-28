@@ -30,8 +30,10 @@ export function ThemeToggle() {
       whileTap={{ scale: 0.9 }}
       onClick={toggle}
       className={cn(
-        "relative flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card transition-all duration-300 hover:shadow-[0_8px_20px_-8px_rgba(168,85,247,0.4)] dark:hover:shadow-[0_8px_20px_-8px_rgba(20,184,166,0.4)]",
-        dark ? "hover:border-purple-500/50" : "hover:border-brand-1/50"
+        "relative flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card transition-all duration-300",
+        dark 
+          ? "hover:border-emerald-500/50 hover:shadow-[0_0_15px_rgba(16,185,129,0.4)]" 
+          : "hover:border-orange-500/50 hover:shadow-[0_0_15px_rgba(249,115,22,0.4)]"
       )}
       aria-label="Toggle theme"
     >
@@ -44,17 +46,24 @@ export function ThemeToggle() {
           transition={{ type: "spring", stiffness: 400, damping: 25 }}
           className={cn(
             "flex h-7 w-7 items-center justify-center rounded-full",
-            dark ? "bg-purple-600/10 text-purple-400" : "bg-yellow-400/10 text-yellow-600"
+            dark ? "bg-emerald-500/10" : "bg-orange-500/10"
           )}
         >
-          {dark ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+          {dark ? (
+            <Moon className="h-4 w-4 text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.6)]" />
+          ) : (
+            <div className="relative flex h-4 w-4 items-center justify-center">
+               <Sun className="h-4 w-4 text-yellow-400 drop-shadow-[0_0_5px_rgba(234,179,8,0.8)]" />
+               <div className="absolute inset-0 bg-gradient-to-tr from-red-500 via-orange-500 to-yellow-400 opacity-40 blur-[2px] rounded-full" />
+            </div>
+          )}
         </motion.div>
       </AnimatePresence>
       
       {/* Lower Edge Glow Glow */}
       <div className={cn(
         "absolute -bottom-1 left-1/2 h-1 w-4 -translate-x-1/2 rounded-full opacity-0 blur-md transition-opacity duration-500 group-hover:opacity-100",
-        dark ? "bg-purple-600" : "bg-yellow-400"
+        dark ? "bg-emerald-500" : "bg-orange-500"
       )} />
     </motion.button>
   );
