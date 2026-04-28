@@ -37,6 +37,7 @@ import { RepoCard } from "@/components/RepoCard";
 import { AnalyzeForm } from "@/components/AnalyzeForm";
 import { exportPdf } from "@/lib/pdf";
 import { Loader } from "@/components/Loader";
+import { cn } from "@/lib/utils";
 
 const SkeletonBlock = ({ className = "" }: { className?: string }) => (
   <div className={`animate-pulse rounded-xl bg-muted ${className}`} />
