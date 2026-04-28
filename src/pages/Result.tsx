@@ -184,7 +184,7 @@ const Result = () => {
               rel="noreferrer"
               className="hover:text-brand-1 hover:underline transition-colors"
             >
-              @{data?.user.login || username}
+              @{username || data?.user.login}
             </a>
           </h1>
         </div>
@@ -214,7 +214,7 @@ const Result = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <Loader />
+            <LoadingState simple />
           </motion.div>
         )}
 
