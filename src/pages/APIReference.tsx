@@ -6,7 +6,10 @@ export default function APIReference() {
     <div className="container py-12">
       <div className="mx-auto max-w-3xl">
         <div className="text-xs uppercase tracking-widest text-brand">Developers</div>
-        <h1 className="hover-pop mt-2 font-display text-4xl font-bold sm:text-5xl">API Reference</h1>
+        <h1 className="hover-pop mt-2 flex items-center gap-4 font-display text-4xl font-bold sm:text-5xl">
+          <Code2 className="h-10 w-10 text-brand-1" />
+          API Reference
+        </h1>
         <p className="mt-3 text-muted-foreground">Technical details on how GitInsight AI interacts with external services.</p>
 
         <section className="mt-12 space-y-10">

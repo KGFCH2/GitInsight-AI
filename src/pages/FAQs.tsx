@@ -62,7 +62,10 @@ export default function FAQs() {
     <div className="container py-12">
       <div className="mx-auto max-w-3xl">
         <div className="text-xs uppercase tracking-widest text-brand">Support</div>
-        <h1 className="hover-pop mt-2 font-display text-4xl font-bold sm:text-5xl">Frequently Asked Questions</h1>
+        <h1 className="hover-pop mt-2 flex items-center gap-4 font-display text-4xl font-bold sm:text-5xl">
+          <HelpCircle className="h-10 w-10 text-brand-1" />
+          Frequently Asked Questions
+        </h1>
         <p className="mt-3 text-muted-foreground">Everything you need to know about GitInsight AI.</p>
 
         <section className="mt-12">

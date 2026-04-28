@@ -185,7 +185,7 @@ const Result = () => {
               rel="noreferrer"
               className="hover:text-brand-1 hover:underline transition-colors"
             >
-              @{username || data?.user.login}
+              @{username}
             </a>
           </h1>
         </div>
@@ -511,11 +511,15 @@ const Result = () => {
                     ))}
                   </div>
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {data.repos
-                      .filter((r) => filter === "all" || r.classification === filter)
-                      .map((r, i) => (
-                        <RepoCard key={r.name} repo={r} index={i} />
-                      ))}
+                    {data.repos.filter((r) => filter === "all" || r.classification === filter).length > 0 ? (
+                      data.repos
+                        .filter((r) => filter === "all" || r.classification === filter)
+                        .map((r, i) => <RepoCard key={r.name} repo={r} index={i} />)
+                    ) : (
+                      <div className="col-span-full py-12 text-center text-muted-foreground border border-dashed border-border rounded-2xl bg-muted/5">
+                        <p className="text-sm italic">No Repos are there in this category till now...</p>
+                      </div>
+                    )}
                   </div>
                 </TabsContent>
                 <TabsContent value="badges" className="mt-6 space-y-6">
@@ -530,6 +534,7 @@ const Result = () => {
                             {a.includes("Pair") && <img src="https://github.githubassets.com/images/modules/profile/achievements/pair-extraordinaire-default.png" className="h-10 w-10" />}
                             {a.includes("Starstruck") && <img src="https://github.githubassets.com/images/modules/profile/achievements/starstruck-default.png" className="h-10 w-10" />}
                             {a.includes("Galaxy") && <img src="https://github.githubassets.com/images/modules/profile/achievements/galaxy-brain-default.png" className="h-10 w-10" />}
+                            {a.includes("Quickdraw") && <img src="https://github.githubassets.com/images/modules/profile/achievements/quickdraw-default.png" className="h-10 w-10" />}
                           </div>
                           <div className="text-[10px] font-black tracking-tight uppercase group-hover:text-brand-1">{a}</div>
                         </div>

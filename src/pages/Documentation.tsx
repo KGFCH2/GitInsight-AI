@@ -6,7 +6,10 @@ export default function Documentation() {
     <div className="container py-12">
       <div className="mx-auto max-w-3xl">
         <div className="text-xs uppercase tracking-widest text-brand">Resources</div>
-        <h1 className="hover-pop mt-2 font-display text-4xl font-bold sm:text-5xl">Documentation</h1>
+        <h1 className="hover-pop mt-2 flex items-center gap-4 font-display text-4xl font-bold sm:text-5xl">
+          <Book className="h-10 w-10 text-brand-1" />
+          Documentation
+        </h1>
         <p className="mt-3 text-muted-foreground">Comprehensive guide to understanding and using GitInsight AI.</p>
 
         <section id="start" className="mt-12 scroll-mt-24">

@@ -462,16 +462,15 @@ export function addToHistory(result: AnalysisResult) {
     });
     localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(0, 10)));
     
-    // Per-user full result caching
-    localStorage.setItem(CACHE_PREFIX + result.user.login.toLowerCase(), JSON.stringify(result));
+    // Per-user full result caching (Case-Sensitive as per user requirement)
+    localStorage.setItem(CACHE_PREFIX + result.user.login, JSON.stringify(result));
   } catch (e) {
     console.error("History error", e);
   }
 }
-
 export function getFullCache(login: string): AnalysisResult | null {
   try {
-    const raw = localStorage.getItem(CACHE_PREFIX + login.toLowerCase());
+    const raw = localStorage.getItem(CACHE_PREFIX + login);
     return raw ? JSON.parse(raw) : null;
   } catch {
     return null;
