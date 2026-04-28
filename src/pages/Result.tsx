@@ -176,7 +176,7 @@ const Result = () => {
       <div className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div className="flex-1">
           <div className="text-xs uppercase tracking-widest text-muted-foreground">Public Profile Report</div>
-          <h1 className="font-display text-2xl font-black italic tracking-tighter sm:text-4xl">
+          <h1 className="font-display text-xl font-black italic tracking-tighter sm:text-3xl">
             <a
               href={`https://github.com/${data?.user.login || username}`}
               target="_blank"
@@ -188,7 +188,7 @@ const Result = () => {
           </h1>
         </div>
         <div className="flex w-full max-w-lg flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
-          <AnalyzeForm defaultValue="" />
+          <AnalyzeForm defaultValue={data?.user.login || username} />
           {data && (
             <Button
               variant="outline"
