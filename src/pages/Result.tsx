@@ -142,13 +142,15 @@ const Result = () => {
       const iconPromises = (data.realAchievements || []).map(async (ach) => {
         const url = achievementMap[ach];
         if (!url) return null;
-        const b64 = await fetchB64(url);
-        return { ach, b64 };
+        // Use AllOrigins proxy to bypass CORS for GitHub assets
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+        const b64 = await fetchB64(proxyUrl);
+        return b64 ? { name: ach, b64 } : null;
       });
 
       const icons = await Promise.all(iconPromises);
       const iconData: Record<string, string> = {};
-      icons.forEach(i => { if (i?.b64) iconData[i.ach] = i.b64; });
+      icons.forEach(i => { if (i?.b64) iconData[i.name] = i.b64; });
 
       exportPdf(data, faviconB64 || undefined, iconData);
     } catch (e) {

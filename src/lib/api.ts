@@ -314,9 +314,9 @@ export function deriveRealAchievements(user: GhUser, stats: any): string[] {
   const age = (Date.now() - new Date(user.created_at).getTime()) / (1000 * 60 * 60 * 24 * 365);
   
   // High-fidelity heuristics for "Real" GitHub Achievements
-  if (age >= 4) achievements.push("Arctic Code Vault Contributor");
-  if (stats.totalStars >= 10) achievements.push("Starstruck");
-  if (stats.totalForks >= 2) achievements.push("Pull Shark");
+  if (age >= 5) achievements.push("Arctic Code Vault Contributor");
+  if (stats.totalStars >= 1) achievements.push("Starstruck");
+  if (stats.totalForks >= 1) achievements.push("Pull Shark");
   if (user.public_repos >= 10) achievements.push("YOLO");
   if (user.followers >= 20) achievements.push("Pair Extraordinaire");
   if (user.public_repos >= 50) achievements.push("Galaxy Brain");
@@ -471,7 +471,11 @@ export function addToHistory(result: AnalysisResult) {
 export function getFullCache(login: string): AnalysisResult | null {
   try {
     const raw = localStorage.getItem(CACHE_PREFIX + login);
-    return raw ? JSON.parse(raw) : null;
+    if (!raw) return null;
+    const data = JSON.parse(raw) as AnalysisResult;
+    // CRITICAL: Strict case-sensitive validation even for cached results
+    if (data.user.login !== login) return null;
+    return data;
   } catch {
     return null;
   }
@@ -493,7 +497,7 @@ export function removeFromHistory(login: string) {
     let history: HistoryItem[] = JSON.parse(raw);
     history = history.filter(item => item.login !== login);
     localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
-    localStorage.removeItem(CACHE_PREFIX + login.toLowerCase());
+    localStorage.removeItem(CACHE_PREFIX + login);
   } catch (e) {
     console.error("Remove history error", e);
   }
