@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Book, Code2, HelpCircle } from "lucide-react";
 
 export function Footer() {
   return (
@@ -29,9 +29,9 @@ export function Footer() {
             { to: "/privacy", label: "Privacy Policy" },
           ]} />
           <FooterCol title="Resources" links={[
-            { to: "/documentation", label: "Documentation" },
-            { to: "/api", label: "API Reference" },
-            { to: "/faqs", label: "FAQ" },
+            { to: "/documentation", label: "Documentation", icon: Book },
+            { to: "/api", label: "API Reference", icon: Code2 },
+            { to: "/faqs", label: "FAQ", icon: HelpCircle },
           ]} />
         </div>
 
@@ -44,14 +44,15 @@ export function Footer() {
   );
 }
 
-function FooterCol({ title, links }: { title: string; links: { to: string; label: string }[] }) {
+function FooterCol({ title, links }: { title: string; links: { to: string; label: string; icon?: any }[] }) {
   return (
     <div>
       <div className="mb-3 text-sm font-semibold">{title}</div>
       <ul className="space-y-2 text-sm">
         {links.map((l) => (
           <li key={l.to}>
-            <Link to={l.to} className="text-muted-foreground transition-colors hover:text-foreground">
+            <Link to={l.to} className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground group">
+              {l.icon && <l.icon className="h-3.5 w-3.5 transition-transform group-hover:scale-110" />}
               {l.label}
             </Link>
           </li>
