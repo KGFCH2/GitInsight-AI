@@ -176,7 +176,7 @@ const Result = () => {
       <div className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div className="flex-1">
           <div className="text-xs uppercase tracking-widest text-muted-foreground">Public Profile Report</div>
-          <h1 className="font-display text-4xl font-black italic tracking-tighter sm:text-6xl">
+          <h1 className="font-display text-3xl font-black italic tracking-tighter sm:text-5xl">
             <a 
               href={`https://github.com/${data?.user.login || username}`} 
               target="_blank" 
@@ -254,14 +254,14 @@ const Result = () => {
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex flex-col rounded-2xl border border-border bg-card-grad p-6 shadow-elev h-full"
+              className="flex flex-col rounded-2xl border border-border bg-card-grad p-5 shadow-elev h-full"
             >
               <div className="flex-1">
                 <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
                   <img
                     src={data.user.avatar}
                     alt={data.user.login}
-                    className="h-20 w-20 rounded-2xl border border-border object-cover"
+                    className="h-16 w-16 rounded-xl border border-border object-cover"
                     loading="lazy"
                   />
                   <div className="flex-1">
@@ -301,7 +301,7 @@ const Result = () => {
                   </div>
                 </div>
 
-                <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
                   <Stat 
                     label="Total Stars" 
                     value={data.starredRepos?.length || 0} 
@@ -339,7 +339,7 @@ const Result = () => {
                 </div>
               </div>
 
-              <div className="mt-auto flex flex-col gap-4 border-t border-border/40 pt-6">
+              <div className="mt-auto flex flex-col gap-3 border-t border-border/40 pt-5">
                 <div className="flex items-center gap-2 text-xs font-medium">
                   <div className="flex items-center gap-1 font-black text-[#f59e0b]">
                     <Star className="h-3.5 w-3.5 fill-current" /> {data.score.stats.totalStars} Stars Earned
