@@ -29,7 +29,7 @@ const History = () => {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="text-xs uppercase tracking-widest text-brand">Activity</div>
-            <h1 className="hover-pop mt-2 font-display text-4xl font-bold sm:text-5xl">Search History</h1>
+            <h1 className="text-gradient hover-pop mt-2 font-display text-4xl font-bold sm:text-5xl">Search History</h1>
             <p className="mt-3 text-muted-foreground">Your last 10 analyzed GitHub profiles.</p>
           </div>
           {history.length > 0 && (
