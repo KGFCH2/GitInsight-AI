@@ -237,7 +237,7 @@ const Home = () => {
                   {[
                     "Rank ambassadors by 0–100 score, XP and streaks",
                     "Recruiter-style first impressions & TL;DRs",
-                    "Per-repo classification: Strong / Improve / Archive",
+                    "Per-repo classification: Strong / Improve",
                     "Shareable reports, exportable JSON"
                   ].map((text, i) => (
                     <li key={i} className="flex items-center gap-3 text-sm">
