@@ -437,7 +437,7 @@ const Result = () => {
                 <TabsList className="mb-6 grid w-full grid-cols-2 lg:grid-cols-4">
                   <TabsTrigger value="ai" className="gap-2"><TrendingUp className="h-4 w-4" /> Strategic View</TabsTrigger>
                   <TabsTrigger value="recruiter" className="gap-2"><Users className="h-4 w-4" /> Recruiter Perspective</TabsTrigger>
-                  <TabsTrigger value="badges" className="gap-2"><Crown className="h-4 w-4" /> Achievements & Badges</TabsTrigger>
+                  <TabsTrigger value="badges" className="gap-2"><Crown className="h-4 w-4" /> Badges</TabsTrigger>
                   <TabsTrigger value="repos" className="gap-2"><Sparkles className="h-4 w-4" /> Public Repositories</TabsTrigger>
                 </TabsList>
 
@@ -473,8 +473,18 @@ const Result = () => {
                       </div>
                     </div>
                   </Card>
-                  {data.bestRepo && data.ai.readmeTips?.length > 0 && (
+                   {data.bestRepo && data.ai.readmeTips?.length > 0 && (
                     <Card title={`README tips for ${data.bestRepo.name}`} icon={Lightbulb}>
+                      <div className="mb-4 text-xs">
+                        <a 
+                          href={`${data.bestRepo.url}/blob/main/README.md`} 
+                          target="_blank" 
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1 text-brand-1 hover:underline font-bold"
+                        >
+                          View README source <ExternalLink className="h-3 w-3" />
+                        </a>
+                      </div>
                       <BulletList items={data.ai.readmeTips} iconType="tip" />
                     </Card>
                   )}
@@ -524,8 +534,11 @@ const Result = () => {
                   </div>
                 </TabsContent>
                 <TabsContent value="badges" className="mt-6 space-y-6">
-                  <Card title="AI Badges" icon={Sparkles}>
-                    <p className="mb-6 text-sm text-muted-foreground italic">Top 10 strategic badges based on your GitHub performance and AI analysis.</p>
+                   <Card title="AI Badges" icon={Sparkles}>
+                    <p className="mb-2 text-sm text-muted-foreground italic">Top 10 strategic badges based on your GitHub performance and AI analysis.</p>
+                    <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-brand/10 px-3 py-1 text-xs font-black text-brand-1">
+                      <Trophy className="h-3.5 w-3.5" /> You've earned {data.badges.length} badges!
+                    </div>
                     <BadgeGrid badges={data.badges} />
                   </Card>
                 </TabsContent>
@@ -735,16 +748,12 @@ function BulletList({
     const icons = [Sparkles, Zap, Target, Award, ShieldCheck, Gauge, Lightbulb];
     const IconComp = icons[i % icons.length];
 
-    // Color palette based on index for visual variety (Avoid purple)
-    const colors = ["text-brand-1", "text-brand-2", "text-brand-3", "text-amber", "text-orange-500", "text-rose-500", "text-success"];
-    const colorClass = colors[i % colors.length];
-
-    if (iconType === "success") return <IconComp className={`h-3.5 w-3.5 ${colorClass} brightness-125`} />;
+    if (iconType === "success") return <IconComp className="h-3.5 w-3.5 text-success brightness-125" />;
     if (iconType === "warning") return <IconComp className="h-3.5 w-3.5 text-warning brightness-125" />;
-    if (iconType === "step") return <IconComp className={`h-3.5 w-3.5 ${colorClass} brightness-125`} />;
-    if (iconType === "tip") return <IconComp className={`h-3.5 w-3.5 ${colorClass} brightness-125`} />;
-    if (iconType === "idea") return <IconComp className={`h-3.5 w-3.5 ${colorClass} brightness-125`} />;
-    return <div className={`h-1.5 w-1.5 rounded-full ${colorClass} shadow-glow`} />;
+    if (iconType === "step") return <IconComp className="h-3.5 w-3.5 text-brand-1 brightness-125" />;
+    if (iconType === "tip") return <IconComp className="h-3.5 w-3.5 text-brand-1 brightness-125" />;
+    if (iconType === "idea") return <IconComp className="h-3.5 w-3.5 text-brand-1 brightness-125" />;
+    return <div className="h-1.5 w-1.5 rounded-full bg-brand-1 shadow-glow" />;
   };
 
   return (
