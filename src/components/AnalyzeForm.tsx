@@ -62,7 +62,7 @@ export function AnalyzeForm({ defaultValue = "", large = false }: Props) {
             onChange={(e) => setValue(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && submit(e)}
             placeholder="GitHub username (e.g. KGFCH2)"
-            className="flex-1 h-10 min-w-0 border-none bg-transparent text-sm outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 shadow-none"
+            className="flex-[2] h-10 min-w-[220px] border-none bg-transparent text-sm outline-none focus:outline-none focus:ring-0 focus-visible:ring-0 shadow-none"
             spellCheck={false}
             autoComplete="off"
           />
