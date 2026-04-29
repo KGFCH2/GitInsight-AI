@@ -147,7 +147,7 @@ export function Navbar() {
               href="https://github.com/KGFCH2/GitInsight-AI"
               target="_blank"
               rel="noreferrer"
-              className="group icon-pop flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card/40 transition-all duration-200 hover:-translate-y-0.5"
+              className="group icon-pop flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card/40 shadow-glow shadow-brand/20 transition-all duration-200 hover:-translate-y-0.5"
               aria-label="GitHub"
             >
               <Github className="h-4 w-4 transition-all duration-300 group-hover:brightness-110" />
