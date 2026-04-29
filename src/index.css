@@ -16,8 +16,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 224 71% 4%;
 
-    --primary: 262 83% 58%;
-    --primary-foreground: 210 20% 98%;
+    --primary: 15 100% 50%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 240 20% 96%;
     --secondary-foreground: 224 71% 4%;
@@ -25,8 +25,8 @@
     --muted: 240 10% 94%;
     --muted-foreground: 240 5% 45%;
 
-    --accent: 280 80% 65%;
-    --accent-foreground: 210 20% 98%;
+    --accent: 25 100% 55%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 20% 98%;
@@ -61,7 +61,7 @@
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 262 83% 58%;
+    --sidebar-ring: 15 100% 50%;
   }
 
   .dark {
@@ -278,11 +278,11 @@
   }
 
   .glass-card:hover {
-    border-color: hsl(var(--border) / 0.6);
+    border-color: hsl(var(--brand-1) / 0.5);
     box-shadow:
-      0 0 1px hsl(280 100% 50% / 0.4),
-      0 0 8px hsl(280 100% 50% / 0.3),
-      inset 0 0 1px hsl(280 100% 50% / 0.2);
+      0 0 1px hsl(var(--brand-1) / 0.4),
+      0 0 8px hsl(var(--brand-1) / 0.25),
+      inset 0 0 1px hsl(var(--brand-1) / 0.15);
   }
 
   .glass-heading {
