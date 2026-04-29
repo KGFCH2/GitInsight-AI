@@ -3,12 +3,12 @@ import type { AnalysisResult } from "./types";
 
 // Premium Color palette (RGB)
 const C = {
-  brand: [99, 102, 241] as [number, number, number],      // Indigo
-  brandDark: [67, 56, 202] as [number, number, number],  // Dark Indigo
+  brand: [249, 115, 22] as [number, number, number],      // Orange
+  brandDark: [234, 88, 12] as [number, number, number],   // Dark Orange
   success: [16, 185, 129] as [number, number, number],    // Emerald
   warning: [245, 158, 11] as [number, number, number],    // Amber
-  danger: [239, 68, 68] as [number, number, number],      // Red
-  accent: [236, 72, 153] as [number, number, number],     // Pink
+  danger: [239, 68, 68] as [number, number, number],      // Red/Crimson
+  accent: [244, 63, 94] as [number, number, number],      // Rose
   ink: [15, 23, 42] as [number, number, number],          // Slate 900
   body: [51, 65, 85] as [number, number, number],         // Slate 700
   muted: [100, 116, 139] as [number, number, number],     // Slate 500
@@ -213,49 +213,6 @@ export function exportPdf(data: AnalysisResult, faviconB64?: string, achievement
 
   y += 95;
 
-  // Achievements
-  if (data.realAchievements && data.realAchievements.length > 0) {
-    sectionHeader("OFFICIAL GITHUB ACHIEVEMENTS", C.brand);
-    y -= 10;
-    const achW = (cardW - 10) / 2;
-    data.realAchievements.forEach((ach, i) => {
-      const col = i % 2;
-      const row = Math.floor(i / 2);
-      const ax = margin + col * (achW + 10);
-      const ay = y + row * 28;
-      
-      if (ay > H - margin - 40) { addFooter(); doc.addPage(); y = margin + 25; }
-
-      setFill(C.soft);
-      doc.roundedRect(ax, ay, achW, 22, 11, 11, "F");
-
-      const iconB64 = achievementIcons ? achievementIcons[ach] : null;
-      if (iconB64) {
-        try {
-          doc.addImage(iconB64, "PNG", ax + 3, ay + 3, 16, 16);
-        } catch {
-          // Fallback if image corrupted
-          setFill(C.brand);
-          doc.circle(ax + 11, ay + 11, 8, "F");
-          setText(C.white);
-          doc.setFontSize(5);
-          doc.text("A", ax + 9.5, ay + 12.5);
-        }
-      } else {
-        setFill(C.brand);
-        doc.circle(ax + 11, ay + 11, 8, "F");
-        setText(C.white);
-        doc.setFontSize(5);
-        doc.text("A", ax + 9.5, ay + 12.5);
-      }
-      
-      setText(C.body);
-      doc.setFont(FONT, "bold");
-      doc.setFontSize(7.5);
-      doc.text(ach.toUpperCase(), ax + 25, ay + 14);
-    });
-    y += Math.ceil(data.realAchievements.length / 2) * 28 + 15;
-  }
 
   // Audit
   sectionHeader("TECHNICAL DIMENSION AUDIT", C.brand);
@@ -310,7 +267,7 @@ export function exportPdf(data: AnalysisResult, faviconB64?: string, achievement
 
   // Badges
   if (data.badges.length && y < H - 80) {
-    sectionHeader("ACHIEVEMENTS & BADGES", C.brandDark);
+    sectionHeader("STRATEGIC BADGES", C.brandDark);
     let bx = margin;
     data.badges.slice(0, 12).forEach((b) => {
       doc.setFont(FONT, "bold");
