@@ -272,11 +272,11 @@ export function exportPdf(data: AnalysisResult, faviconB64?: string, achievement
     data.badges.slice(0, 12).forEach((b) => {
       doc.setFont(FONT, "bold");
       doc.setFontSize(7.5);
-      const tw = doc.getTextWidth(b) + 12;
+      const tw = doc.getTextWidth(b.name) + 12;
       if (bx + tw > W - margin) { bx = margin; y += 18; }
       roundedRect(bx, y, tw, 14, 7, C.success);
       setText(C.white);
-      doc.text(b, bx + 6, y + 9.5);
+      doc.text(b.name, bx + 6, y + 9.5);
       bx += tw + 5;
     });
   }

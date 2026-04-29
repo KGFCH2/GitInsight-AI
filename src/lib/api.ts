@@ -134,21 +134,37 @@ function computeScore(user: GhUser, repos: GhRepo[]) {
   };
 }
 
-function deriveBadges(user: GhUser, repos: GhRepo[], score: number): string[] {
-  const badges: string[] = [];
+function deriveBadges(user: GhUser, repos: GhRepo[], score: number): { name: string; description: string }[] {
+  const badges: { name: string; description: string }[] = [];
   const original = repos.filter((r) => !r.fork);
   const stars = original.reduce((s, r) => s + r.stargazers_count, 0);
   const langs = new Set(original.map((r) => r.language).filter(Boolean));
   const recent = original.filter((r) => (Date.now() - new Date(r.pushed_at).getTime()) / 86400000 < 30).length;
 
-  if (stars >= 100) badges.push("Star Collector");
-  if (stars >= 1000) badges.push("Open Source Hero");
-  if (langs.size >= 5) badges.push("Polyglot");
-  if (recent >= 3) badges.push("Consistent Contributor");
-  if (user.followers >= 50) badges.push("Community Builder");
-  if (original.length >= 20) badges.push("Prolific Creator");
-  if (score >= 75) badges.push("Elite Profile");
-  if (original.some((r) => r.stargazers_count >= 50)) badges.push("Top Repo Builder");
+  if (stars >= 100) {
+    badges.push({ name: "Star Collector", description: `Accumulated ${stars} total stars across original repositories.` });
+  }
+  if (stars >= 1000) {
+    badges.push({ name: "Open Source Hero", description: "Reached a massive milestone of 1,000+ stars on GitHub." });
+  }
+  if (langs.size >= 5) {
+    badges.push({ name: "Polyglot", description: `Proficient in ${langs.size} different programming languages.` });
+  }
+  if (recent >= 3) {
+    badges.push({ name: "Consistent Contributor", description: "Maintaining a high velocity with 3+ repos updated in the last 30 days." });
+  }
+  if (user.followers >= 50) {
+    badges.push({ name: "Community Builder", description: `Built a following of ${user.followers} developers who track your work.` });
+  }
+  if (original.length >= 20) {
+    badges.push({ name: "Prolific Creator", description: `Authored ${original.length} public, non-forked repositories.` });
+  }
+  if (score >= 75) {
+    badges.push({ name: "Elite Profile", description: "Ranks in the top tier of developers based on all-around performance metrics." });
+  }
+  if (original.some((r) => r.stargazers_count >= 50)) {
+    badges.push({ name: "Top Repo Builder", description: "Created at least one flagship repository with 50+ individual stars." });
+  }
   return badges;
 }
 
@@ -508,7 +524,6 @@ export async function analyzeProfile(username: string, force = false): Promise<A
     },
     score,
     badges,
-    realAchievements, // Task 4: Real achievements
     repos: classified,
     bestRepo,
     ai,

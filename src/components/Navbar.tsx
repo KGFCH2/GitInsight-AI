@@ -48,13 +48,17 @@ export function Navbar() {
   const handleAnalyzeClick = (e: React.MouseEvent) => {
     if (loc.pathname === "/analyze") {
       e.preventDefault();
-      // Stay on analyze page, just scroll to top and focus form
       window.scrollTo({ top: 0, behavior: "smooth" });
-      const form = document.querySelector("input[placeholder*='username' i]") as HTMLInputElement;
-      if (form) {
-        form.value = ""; // Clear the search bar
-        form.focus();
-      }
+      const inputs = document.querySelectorAll("input");
+      inputs.forEach(input => {
+        if (input.placeholder.toLowerCase().includes("username")) {
+          input.value = "";
+          // Trigger a change event so React state updates
+          const event = new Event("input", { bubbles: true });
+          input.dispatchEvent(event);
+          input.focus();
+        }
+      });
     }
   };
 
@@ -96,10 +100,7 @@ export function Navbar() {
               const handleLinkClick = (e: React.MouseEvent) => {
                 if (isHome) handleHomeClick();
                 if (isAnalyze) {
-                  // If coming from Result page, clear the search input
-                  if (isOnResult) {
-                    localStorage.removeItem("lastAnalyzedUser");
-                  }
+                  localStorage.removeItem("lastAnalyzedUser");
                   handleAnalyzeClick(e);
                 }
               };
