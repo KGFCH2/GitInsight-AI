@@ -420,12 +420,11 @@ export async function analyzeProfile(username: string, force = false): Promise<A
     if (cached) return cached;
   }
 
-  const [user, repos, starred, followers, actualAchievements] = await Promise.all([
+  const [user, repos, starred, followers] = await Promise.all([
     gh<GhUser>(`https://api.github.com/users/${cleaned}`, force),
     gh<GhRepo[]>(`https://api.github.com/users/${cleaned}/repos?per_page=100&sort=updated${force ? `&t=${Date.now()}` : ""}`, force),
     gh<GhRepo[]>(`https://api.github.com/users/${cleaned}/starred?per_page=100${force ? `&t=${Date.now()}` : ""}`, force),
     gh<{ login: string; avatar_url: string; html_url: string }[]>(`https://api.github.com/users/${cleaned}/followers?per_page=100${force ? `&t=${Date.now()}` : ""}`, force),
-    fetchAchievements(cleaned),
   ]);
 
   if (user.login !== cleaned) {
@@ -433,9 +432,7 @@ export async function analyzeProfile(username: string, force = false): Promise<A
   }
 
   const score = computeScore(user, repos);
-  const badges = deriveBadges(user, repos, score.total);
-  const derivedAchievements = deriveRealAchievements(user, repos);
-  const realAchievements = [...new Set([...actualAchievements, ...derivedAchievements])];
+  const badges = deriveBadges(user, repos, score.total).slice(0, 10);
 
   const classified: AnalyzedRepo[] = repos
     .map((r) => ({
