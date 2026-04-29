@@ -41,18 +41,18 @@
 
     --radius: 0.85rem;
 
-    /* Brand - Light Mode: Orange + Yellow + Red */
-    --brand-1: 15 95% 55%;
-    --brand-2: 35 100% 60%;
-    --brand-3: 50 100% 55%;
+    /* Brand - Light Mode: Orange + Yellow + Red (More visible) */
+    --brand-1: 15 100% 50%;  /* Rich Orange-Red */
+    --brand-2: 30 100% 50%;  /* Pure Orange */
+    --brand-3: 45 100% 50%;  /* Amber/Gold */
 
-    --gradient-hero: radial-gradient(ellipse at top, hsl(var(--brand-3) / 0.2), transparent 65%),
-      radial-gradient(ellipse at bottom right, hsl(var(--brand-1) / 0.15), transparent 65%),
+    --gradient-hero: radial-gradient(ellipse at top, hsl(var(--brand-3) / 0.25), transparent 70%),
+      radial-gradient(ellipse at bottom right, hsl(var(--brand-1) / 0.2), transparent 70%),
       linear-gradient(180deg, hsl(var(--background)), hsl(var(--background)));
     --gradient-brand: linear-gradient(135deg, hsl(var(--brand-1)), hsl(var(--brand-2)) 50%, hsl(var(--brand-3)));
-    --gradient-card: linear-gradient(160deg, hsl(var(--card)) 0%, hsl(35 20% 98%) 100%);
-    --shadow-glow: 0 12px 40px -12px hsl(var(--brand-1) / 0.3);
-    --shadow-elev: 0 20px 60px -20px hsl(35 40% 10% / 0.12);
+    --gradient-card: linear-gradient(160deg, hsl(var(--card)) 0%, hsl(20 30% 98%) 100%);
+    --shadow-glow: 0 12px 40px -12px hsl(var(--brand-1) / 0.35);
+    --shadow-elev: 0 20px 60px -20px hsl(20 40% 10% / 0.15);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -306,14 +306,18 @@
     -webkit-text-fill-color: initial;
   }
 
-  .navbar-glow {
-    box-shadow: 0 0 15px -3px hsl(var(--brand-1) / 0.3), 0 0 6px -2px hsl(var(--brand-1) / 0.2);
-    border: 1px solid hsl(var(--brand-1) / 0.2);
-  }
 }
 
 @layer components {
   .ring-brand {
     box-shadow: 0 0 0 1px hsl(var(--brand-1) / 0.4), 0 0 30px hsl(var(--brand-1) / 0.25);
   }
+}
+.navbar-glow {
+  box-shadow: 0 4px 20px -5px hsl(var(--brand-1) / 0.18), 0 0 15px -5px hsl(var(--brand-2) / 0.1);
+  border: 1px solid hsl(var(--brand-1) / 0.1);
+}
+.dark .navbar-glow {
+  box-shadow: 0 4px 20px -5px hsl(var(--brand-1) / 0.3), 0 0 15px -5px hsl(var(--brand-2) / 0.2);
+  border: 1px solid hsl(var(--brand-1) / 0.2);
 }
