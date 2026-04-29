@@ -79,9 +79,9 @@ const Home = () => {
               transition={{ duration: 1.2, ease: "easeInOut" }}
               className="absolute inset-0 h-full w-full"
             >
-              <img 
-                src={heroImages[imgIndex]} 
-                alt="Background" 
+              <img
+                src={heroImages[imgIndex]}
+                alt="Background"
                 className="h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/60 to-background" />
@@ -91,13 +91,13 @@ const Home = () => {
         </div>
 
         <div className="pointer-events-none absolute inset-0 z-10 grid-pattern opacity-30" />
-        
+
         <div className="container relative z-20 flex h-full items-center justify-center pt-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="mx-auto max-w-3xl text-center"
+            className="group mx-auto max-w-3xl text-center"
           >
             <div className="mx-auto mb-4 flex flex-wrap justify-center gap-3">
               <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-medium backdrop-blur">
@@ -108,10 +108,10 @@ const Home = () => {
                 <span>Enterprise-Ready • Scalable Analytics</span>
               </div>
             </div>
-            <h1 className="hover-pop font-display text-5xl font-bold leading-[1.05] tracking-tight text-foreground dark:text-white drop-shadow-lg sm:text-6xl md:text-7xl">
-              Score your <span className="text-brand">Ambassadors</span>
+            <h1 className="hover-pop font-display text-5xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-6xl md:text-7xl">
+              <span className="text-gradient">Score your <span className="text-foreground">Ambassadors</span></span>
               <br />
-              like a recruiter would.
+              <span className="text-gradient">like a recruiter would.</span>
             </h1>
             <p className="mx-auto mt-6 max-w-xl text-lg font-medium text-foreground/90 dark:text-white/90 drop-shadow-md">
               Get a profile score, AI feedback, repo-level analysis, and a clear improvement plan in under 2 minutes.
@@ -121,8 +121,8 @@ const Home = () => {
               <AnalyzeForm large />
               <div className="mt-4 flex justify-center gap-1.5">
                 {heroImages.map((_, i) => (
-                  <div 
-                    key={i} 
+                  <div
+                    key={i}
                     className={`h-1 rounded-full transition-all duration-500 ${i === imgIndex ? "w-8 bg-brand" : "w-2 bg-foreground/20 dark:bg-white/30"}`}
                   />
                 ))}
@@ -146,8 +146,8 @@ const Home = () => {
       {/* Features */}
       <section className="container py-20">
         <div className="mb-12 text-center">
-          <div className="text-xs font-semibold uppercase tracking-widest text-brand">Why GitInsight AI</div>
-          <h2 className="hover-pop mt-2 font-display text-3xl font-bold sm:text-4xl">Everything you need to level up</h2>
+          <div className="text-xs font-semibold uppercase tracking-widest text-brand">Why GitInsight AI!?</div>
+          <h2 className="text-gradient hover-pop mt-2 font-display text-3xl font-bold sm:text-4xl">Everything you need to level up</h2>
         </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((f, i) => (
@@ -157,9 +157,9 @@ const Home = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.05, duration: 0.4 }}
-              className="group rounded-2xl border border-border bg-card-grad p-6 transition-all hover:-translate-y-1 hover:border-brand-1/60 hover:shadow-glow"
+              className="group rounded-2xl glass-card p-6 transition-all hover:-translate-y-1"
             >
-              <div className="icon-pop mb-4 inline-flex h-11 w-11 items-center justify-center text-brand-1">
+              <div className="mb-4 inline-flex h-11 w-11 items-center justify-center text-brand-1 transition-all duration-300 group-hover:scale-110">
                 <f.icon className="h-7 w-7" />
               </div>
               <h3 className="font-display text-lg font-semibold">{f.title}</h3>
@@ -170,9 +170,10 @@ const Home = () => {
       </section>
 
       {/* For Organizations */}
-      <section className="bg-muted/30 py-24">
+      <section className="py-24">
         <div className="container">
-          <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
+          <div className="grid gap-16 lg:grid-cols-2 lg:items-start lg:gap-12">
+            {/* Content on Left */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -184,10 +185,6 @@ const Home = () => {
                   <Building2 className="h-4 w-4" />
                   For Organizations
                 </div>
-                <h2 className="hover-pop mt-6 flex items-center gap-3 font-display text-4xl font-bold leading-tight sm:text-5xl">
-                  <ShieldCheck className="h-10 w-10 shrink-0 text-brand-1" />
-                  Built for campus ambassador programs
-                </h2>
                 <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
                   GitInsight AI is an AI-powered evaluation system that helps organizations identify, rank, and improve campus ambassadors using GitHub performance metrics. Track ambassadors on a single leaderboard, spot rising stars, and ship targeted improvement plans.
                 </p>
@@ -200,51 +197,61 @@ const Home = () => {
                   { title: "Drive Retention", icon: Award, desc: "Award badges, streaks, and rewards that keep ambassadors motivated week over week." },
                   { title: "Measure ROI", icon: Target, desc: "Identify top performers and measure the impact of your community-led marketing." }
                 ].map((item, i) => (
-                  <div key={i} className="hover-pop group space-y-3 rounded-2xl border border-border bg-background p-5 shadow-sm transition-all hover:bg-gradient-to-br hover:from-brand/10 hover:to-brand-1/10 hover:shadow-glow">
-                    <div className="icon-pop flex h-10 w-10 items-center justify-center text-brand-1">
+                  <div key={i} className="group space-y-3 rounded-2xl glass-card p-5 transition-all hover:-translate-y-1">
+                    <div className="flex h-10 w-10 items-center justify-center text-brand-1 transition-all group-hover:scale-105">
                       <item.icon className="h-7 w-7" />
                     </div>
                     <div className="space-y-1">
-                      <div className="font-display font-bold text-brand group-hover:text-foreground">{item.title}</div>
-                      <p className="text-sm text-muted-foreground group-hover:text-foreground/80">{item.desc}</p>
+                      <div className="text-gradient-hover font-display font-bold">{item.title}</div>
+                      <p className="text-sm text-muted-foreground">{item.desc}</p>
                     </div>
                   </div>
                 ))}
               </div>
             </motion.div>
 
+            {/* Right Column - Heading + Dashboard */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="relative rounded-3xl border border-border bg-card-grad p-8 shadow-elev transition-all hover:bg-gradient-to-tl hover:from-brand/5 hover:to-brand-1/5 hover:shadow-glow"
+              className="space-y-6"
             >
-              <div className="mb-6 flex items-center justify-between border-b border-border pb-6">
-                <div className="font-display text-xl font-bold italic underline decoration-brand decoration-2 underline-offset-4">Ambassador Dashboard</div>
-                <div className="flex h-8 w-8 items-center justify-center text-brand-1">
-                  <BarChart3 className="icon-pop h-6 w-6" />
+              {/* Heading */}
+              <h2 className="text-gradient hover-pop flex items-center gap-3 font-display text-4xl font-bold leading-tight sm:text-5xl">
+                <ShieldCheck className="h-10 w-10 shrink-0 text-brand-1" />
+                Built for campus ambassador programs
+              </h2>
+
+              {/* Dashboard */}
+              <div className="relative rounded-3xl glass-card p-8 transition-all">
+                <div className="mb-6 flex items-center justify-between border-b border-border/50 pb-6">
+                  <div className="font-display text-xl font-bold italic underline decoration-brand decoration-2 underline-offset-4">Ambassador Dashboard</div>
+                  <div className="flex h-8 w-8 items-center justify-center text-brand-1 transition-all">
+                    <BarChart3 className="h-6 w-6" />
+                  </div>
                 </div>
-              </div>
-              <ul className="space-y-4">
-                {[
-                  "Rank ambassadors by 0–100 score, XP and streaks",
-                  "Recruiter-style first impressions & TL;DRs",
-                  "Per-repo classification: Strong / Improve / Archive",
-                  "Shareable reports, exportable JSON"
-                ].map((text, i) => (
-                  <li key={i} className="flex items-center gap-3 text-sm">
-                    <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-success/20 text-success">
-                      <Sparkles className="h-3 w-3" />
-                    </div>
-                    <span className="text-foreground/90">{text}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-8 rounded-2xl bg-muted/50 p-6 text-center border border-dashed border-border">
-                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Problem Statement</p>
-                <p className="mt-2 text-sm italic text-muted-foreground">
-                  "Turn a single ambassador cohort into an always-on, self-sustaining growth engine — making community-led marketing structured, scalable, and measurable."
-                </p>
+                <ul className="space-y-4">
+                  {[
+                    "Rank ambassadors by 0–100 score, XP and streaks",
+                    "Recruiter-style first impressions & TL;DRs",
+                    "Per-repo classification: Strong / Improve / Archive",
+                    "Shareable reports, exportable JSON"
+                  ].map((text, i) => (
+                    <li key={i} className="flex items-center gap-3 text-sm">
+                      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-success/20 text-success transition-all">
+                        <Sparkles className="h-3 w-3" />
+                      </div>
+                      <span className="text-foreground/90">{text}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-8 rounded-2xl bg-muted/30 p-6 text-center border border-dashed border-border/40">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Problem Statement</p>
+                  <p className="mt-2 text-sm italic text-muted-foreground">
+                    "Turn a single ambassador cohort into an always-on, self-sustaining growth engine — making community-led marketing structured, scalable, and measurable."
+                  </p>
+                </div>
               </div>
             </motion.div>
           </div>
@@ -253,11 +260,11 @@ const Home = () => {
 
       {/* CTA */}
       <section className="container pb-12">
-        <div className="overflow-hidden rounded-3xl border border-border bg-card-grad p-10 text-center shadow-elev sm:p-16">
-          <div className="icon-glow-pop mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-brand/10 shadow-glow transition-all duration-500">
-            <Target className="h-10 w-10 text-brand-1 brightness-125" />
+        <div className="group overflow-hidden rounded-3xl glass-card p-10 text-center sm:p-16">
+          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full icon-pop">
+            <Target className="h-10 w-10 text-brand-1" />
           </div>
-          <h2 className="hover-pop font-display text-3xl font-bold sm:text-4xl">
+          <h2 className="text-gradient hover-pop font-display text-3xl font-bold sm:text-4xl">
             Ready to see your score?
           </h2>
           <p className="mx-auto mt-3 max-w-md text-muted-foreground">
