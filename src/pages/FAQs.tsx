@@ -1,58 +1,98 @@
 import React, { useState } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { FileQuestion, BarChart3, ShieldCheck, Cpu, Users, TrendingUp, Download, Key, Tags, Lock, Zap, HelpCircle } from "lucide-react";
+import { FileQuestion, BarChart3, ShieldCheck, Cpu, Users, TrendingUp, Download, Key, Tags, Lock, Zap, HelpCircle, ExternalLink, Lightbulb, Gauge } from "lucide-react";
 
 const faqs = [
   {
-    q: "How is the profile score calculated?",
-    a: "We score across six dimensions: popularity (stars + forks), activity (recent commits), breadth (languages used), quality (descriptions, topics, licenses), community (followers), and tenure (account age). Total is capped at 100.",
+    q: "What exactly is GitInsight AI?",
+    a: "GitInsight AI is a premium developer-grade analytics platform that transforms your raw GitHub data into strategic career insights. It uses advanced heuristics and optional AI (Gemini/Groq) to score your profile, assign strategic badges, and provide actionable tips for repository improvement.",
+    icon: HelpCircle,
+  },
+  {
+    q: "How does the scoring system work?",
+    a: "Our engine evaluates five core dimensions: Popularity (stars/forks), Activity (commit frequency), Breadth (language diversity), Quality (documentation/README depth), and Community (followers/collaboration). These are weighted to produce a final score out of 100.",
     icon: BarChart3,
   },
   {
-    q: "Is my data stored?",
-    a: "No. We fetch your public GitHub data on-demand and pass it through our analyzer. Nothing is persisted on our servers.",
+    q: "Is my GitHub data safe with you?",
+    a: "Absolutely. GitInsight AI only accesses public information via the GitHub API. We do not store your personal data or code. All analysis is performed in real-time and remains within your current session.",
     icon: ShieldCheck,
   },
   {
-    q: "Which AI model powers the insights?",
-    a: "Google Gemini is the primary model. If unavailable, we fall back to Groq (Llama 3.3 70B). Both are called directly from your browser using your provided API keys.",
-    icon: Cpu,
-  },
-  {
-    q: "Can I analyze any GitHub user?",
-    a: "Yes — any public GitHub username. Private repos are not visible to us.",
-    icon: Users,
-  },
-  {
-    q: "How do I improve my score quickly?",
-    a: "Add descriptions, topics, and licenses to your top repos. Pin your best work. Push consistently. The Action Steps tab gives personalized advice.",
-    icon: TrendingUp,
-  },
-  {
-    q: "Can I export the report?",
-    a: "Yes — click the Export PDF button on any result page to download a polished report card.",
-    icon: Download,
-  },
-  {
-    q: "What happens if I don't provide an API key?",
-    a: "The app will still calculate your score and classify your repositories using deterministic logic, but you won't get AI-powered insights or the recruiter view.",
+    q: "Do I need to provide a GitHub Personal Access Token?",
+    a: "No, a token is not required for basic analysis. However, providing a token allows the platform to fetch data at a higher rate limit and enables advanced GraphQL features like actual profile achievements.",
     icon: Key,
   },
   {
-    q: "How does the 'Good / Improve / Archive' classification work?",
-    a: "Our algorithm analyzes repo age, recent activity, star count, and documentation completeness to categorize them. 'Good' repos are active and well-maintained.",
+    q: "What are AI Badges?",
+    a: "AI Badges are strategic titles assigned by our analysis engine based on your unique performance patterns. Examples include 'Architecture Veteran' for structured repos or 'Community Catalyst' for high-engagement developers.",
     icon: Tags,
   },
   {
-    q: "Can I use this for private repositories?",
-    a: "Currently, GitInsight AI only analyzes public data. Support for private repositories would require a GitHub OAuth flow which is not implemented in this version.",
+    q: "How are the 'README tips' generated?",
+    a: "We analyze the structure, length, and content of your repository's README file. Our AI then suggests specific improvements like adding installation steps, usage examples, or better visual screenshots to improve discoverability.",
+    icon: Lightbulb,
+  },
+  {
+    q: "Can I export or share my results?",
+    a: "Yes! You can export your full profile analysis as a professionally formatted PDF. You can also share your score and unique insight link directly to Twitter, LinkedIn, or via a clipboard link.",
+    icon: Download,
+  },
+  {
+    q: "Which AI models power the insights?",
+    a: "We currently support Google's Gemini 1.5 Pro and Groq's Llama 3 for deep analysis. If no API key is provided, the platform falls back to our robust rule-based heuristic engine.",
+    icon: Cpu,
+  },
+  {
+    q: "Is GitInsight AI free to use?",
+    a: "Yes, the core features of GitInsight AI are completely free. We believe in empowering developers to understand and showcase their impact without any barriers.",
+    icon: Zap,
+  },
+  {
+    q: "What determines the 'Best Repo' highlight?",
+    a: "Our algorithm identifies the repository with the highest combined impact score, factoring in stars, forks, recent activity, and the quality of documentation relative to its complexity.",
+    icon: BarChart3,
+  },
+  {
+    q: "Does it support private repositories?",
+    a: "Currently, GitInsight AI focuses on public contributions to ensure transparency and security. Support for private repo analysis via OAuth is a feature we are exploring for future updates.",
     icon: Lock,
   },
   {
-    q: "Is there a limit to how many profiles I can analyze?",
-    a: "The limit is primarily determined by your GitHub API token rate limits. For public tokens, it's quite generous, but you can always provide your own token for higher limits.",
+    q: "How do I improve my GitInsight score?",
+    a: "Focus on 'Quality over Quantity.' Improving your READMEs, using consistent commit messages, diversifying your tech stack, and engaging with the community (stars/forks) will naturally boost your score.",
+    icon: TrendingUp,
+  },
+  {
+    q: "What is the 'Ambassador' program mentioned?",
+    a: "The Ambassador dashboard is a specialized view for community leads to identify top contributors and high-impact developers within their specific ecosystem or organization.",
+    icon: Users,
+  },
+  {
+    q: "How often can I refresh my profile data?",
+    a: "You can refresh your data as often as you like! The platform will fetch the latest live data from GitHub each time you initiate a new search or click the refresh icon.",
     icon: Zap,
   },
+  {
+    q: "What are 'Project Ideas' in the result view?",
+    a: "Based on your strongest languages and interests, our AI suggests 5 personalized project ideas that could help you fill gaps in your portfolio or take your skills to the next level.",
+    icon: Lightbulb,
+  },
+  {
+    q: "Why is the username casing important?",
+    a: "GitHub usernames are unique and sometimes case-sensitive for specific API lookups. To ensure we fetch the exact profile you're looking for, we enforce case-accurate searches.",
+    icon: FileQuestion,
+  },
+  {
+    q: "Can I use GitInsight AI for recruitment?",
+    a: "Yes, the 'Recruiter Perspective' tab provides a high-level summary designed to help hiring managers quickly understand a developer's technical strengths and cultural fit.",
+    icon: Users,
+  },
+  {
+    q: "How can I contribute to this project?",
+    a: "GitInsight AI is an evolving platform. If you have suggestions or want to report a bug, please reach out via our official GitHub repository or contact the lead developer, Babin Bid.",
+    icon: ExternalLink,
+  }
 ];
 
 export default function FAQs() {
