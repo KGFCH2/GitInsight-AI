@@ -399,6 +399,11 @@ export function deriveRealAchievements(user: GhUser, repos: GhRepo[]): string[] 
   if (user.followers >= 20) {
     achievements.push("Pair Extraordinaire");
   }
+
+  // Pro Contributor — At least 5 public repositories
+  if (user.public_repos >= 5) {
+    achievements.push("Pro Contributor");
+  }
   
   return [...new Set(achievements)]; // Remove duplicates
 }
