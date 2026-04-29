@@ -196,12 +196,12 @@ const Result = () => {
           <Button
             variant="outline"
             size="icon"
-            className="group h-11 w-11 shrink-0 rounded-xl transition-all duration-300 hover:scale-105 hover:bg-muted/60 dark:border-border/60"
+            className="h-11 w-11 shrink-0 rounded-xl transition-all duration-300 hover:scale-105 hover:bg-muted/60 dark:border-border/60"
             onClick={() => loadData(true)}
             disabled={loading}
             title="Refresh latest data"
           >
-            <RefreshCw className={`h-4 w-4 transition-all duration-300 group-hover:rotate-180 ${loading ? "animate-spin text-brand" : "text-foreground/70 dark:text-foreground/90"}`} />
+            <RefreshCw className={`h-4 w-4 transition-all duration-300 hover:rotate-180 ${loading ? "animate-spin text-brand" : "text-foreground"}`} />
           </Button>
         </div>
       </div>
