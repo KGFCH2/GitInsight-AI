@@ -32,6 +32,9 @@ export function AnalyzeForm({ defaultValue = "", large = false }: Props) {
       return;
     }
 
+    // Save the analyzed username to localStorage for later retrieval
+    localStorage.setItem("lastAnalyzedUser", cleaned);
+
     if (cleaned.toLowerCase() === currentUsername?.toLowerCase()) {
       // If same user, just trigger a refresh by navigating to the same path with a hash or just let Result handle it
       // Actually, if I navigate to the same path, useEffect in Result won't trigger if it only depends on [username]
@@ -48,7 +51,7 @@ export function AnalyzeForm({ defaultValue = "", large = false }: Props) {
     <form onSubmit={submit} className="flex-1">
       <div
         className={
-          "group relative flex flex-col gap-2 rounded-2xl border border-border bg-card p-1.5 shadow-elev transition-all focus-within:ring-brand sm:flex-row sm:flex-nowrap sm:items-center sm:gap-1 " +
+          "group relative flex flex-col gap-2 rounded-2xl glass-card p-1.5 transition-all focus-within:ring-brand sm:flex-row sm:flex-nowrap sm:items-center sm:gap-1 " +
           (large ? "sm:p-2" : "")
         }
       >
