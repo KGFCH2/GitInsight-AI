@@ -63,7 +63,7 @@ export interface AiInsights {
 
 export interface AnalysisResult {
   user: AnalyzedUser;
-  score: { total: number; breakdown: ScoreBreakdown; stats: ScoreStats };
+  score: { total: number; breakdown: ScoreBreakdown; stats: ScoreStats; xp: number; streak: number };
   badges: { name: string; description: string }[];
   realAchievements?: string[];
   repos: AnalyzedRepo[];

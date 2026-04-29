@@ -25,6 +25,7 @@ import {
   ShieldCheck,
   Gauge,
   Trophy,
+  FileCode,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -268,6 +269,9 @@ const Result = () => {
                       loading="lazy"
                     />
                     <div className="flex-1">
+                      <div className="mb-2 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/60">
+                        Ambassador Report
+                      </div>
                       <div className="flex flex-wrap items-center gap-2">
                         <h2 className="text-gradient font-display text-2xl font-bold">
                           {data.user.name || data.user.login}
@@ -304,7 +308,21 @@ const Result = () => {
                     </div>
                   </div>
 
-                  <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+                    <Stat
+                      label="Ambassador XP"
+                      value={data.score.xp}
+                      icon={Zap}
+                      color="brand"
+                      subLabel="Points earned"
+                    />
+                    <Stat
+                      label="Activity Streak"
+                      value={data.score.streak}
+                      icon={Flame}
+                      color="amber"
+                      subLabel="Active repos"
+                    />
                     <Stat
                       label="Total Stars"
                       value={data.starredRepos?.length || 0}
@@ -321,7 +339,7 @@ const Result = () => {
                       color="brand"
                     />
                     <Stat
-                      label="Public Repos"
+                      label="Projects"
                       value={data.repos.length}
                       icon={Sparkles}
                       onClick={() => {
@@ -392,6 +410,21 @@ const Result = () => {
               >
                 <Download className="h-4 w-4" /> Export PDF
               </Button>
+              <Button
+                onClick={() => {
+                  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement("a");
+                  a.href = url;
+                  a.download = `gitinsight-${data.user.login}.json`;
+                  a.click();
+                }}
+                size="sm"
+                variant="outline"
+                className="gap-2 font-bold border-brand-1/40 hover:border-brand-1 hover:bg-brand-1/5"
+              >
+                <FileCode className="h-4 w-4" /> Export JSON
+              </Button>
             </div>
 
             {/* Best Repo */}
@@ -435,10 +468,10 @@ const Result = () => {
             <div className="mt-10">
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                 <TabsList className="mb-6 grid w-full grid-cols-2 lg:grid-cols-4">
-                  <TabsTrigger value="ai" className="gap-2 font-bold"><TrendingUp className="h-4 w-4" /> <span className="text-gradient">Strategic View</span></TabsTrigger>
-                  <TabsTrigger value="recruiter" className="gap-2 font-bold"><Users className="h-4 w-4" /> <span className="text-gradient">Recruiter Perspective</span></TabsTrigger>
+                  <TabsTrigger value="ai" className="gap-2 font-bold"><TrendingUp className="h-4 w-4" /> <span className="text-gradient">Main Growth View</span></TabsTrigger>
+                  <TabsTrigger value="recruiter" className="gap-2 font-bold"><Users className="h-4 w-4" /> <span className="text-gradient">What Recruiters See</span></TabsTrigger>
                   <TabsTrigger value="badges" className="gap-2 font-bold"><Crown className="h-4 w-4" /> <span className="text-gradient">Badges</span></TabsTrigger>
-                  <TabsTrigger value="repos" className="gap-2 font-bold"><Sparkles className="h-4 w-4" /> <span className="text-gradient">Public Repositories</span></TabsTrigger>
+                  <TabsTrigger value="repos" className="gap-2 font-bold"><Sparkles className="h-4 w-4" /> <span className="text-gradient">Project List</span></TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="ai" className="mt-6 space-y-6">
@@ -455,7 +488,7 @@ const Result = () => {
                       <BulletList items={data.ai.weaknesses} iconType="warning" />
                     </Card>
                   </div>
-                  <Card title="Dimension Analysis" icon={Gauge}>
+                  <Card title="Performance Scores" icon={Gauge}>
                     <div className="grid gap-6 sm:grid-cols-2">
                       <div className="space-y-1 group/item">
                         <div className="flex items-center gap-2 text-xs font-black uppercase text-success">
@@ -496,7 +529,7 @@ const Result = () => {
                 </TabsContent>
 
                 <TabsContent value="recruiter" className="mt-6">
-                  <Card title="Recruiter View" icon={Users}>
+                  <Card title="What recruiters think" icon={Users}>
                     <p className="leading-relaxed text-muted-foreground italic">
                       {data.ai.recruiterInsights || "No recruiter insights generated."}
                     </p>

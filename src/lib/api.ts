@@ -131,6 +131,8 @@ function computeScore(user: GhUser, repos: GhRepo[]) {
       recentlyActive,
       accountAgeYears: Math.round(accountAgeYears * 10) / 10,
     },
+    xp: total * 10 + original.length * 5, // XP formula
+    streak: recentlyActive, // Recent activity streak
   };
 }
 
