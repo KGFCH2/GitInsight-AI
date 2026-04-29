@@ -129,7 +129,7 @@ export default function FAQs() {
                 <AccordionContent className="px-5 text-sm text-muted-foreground">
                   <div className="flex gap-3 pb-4 pt-1">
                     <div className="w-8 shrink-0" aria-hidden="true" />
-                    <div>{f.a}</div>
+                    <div dangerouslySetInnerHTML={{ __html: f.a }} />
                   </div>
                 </AccordionContent>
               </AccordionItem>
