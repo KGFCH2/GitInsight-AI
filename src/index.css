@@ -41,18 +41,18 @@
 
     --radius: 0.85rem;
 
-    /* Brand */
-    --brand-1: 262 83% 58%;
-    --brand-2: 280 80% 65%;
-    --brand-3: 320 80% 70%;
+    /* Brand - Light Mode: Orange + Yellow + Red */
+    --brand-1: 15 95% 55%;
+    --brand-2: 35 100% 60%;
+    --brand-3: 50 100% 55%;
 
-    --gradient-hero: radial-gradient(ellipse at top, hsl(var(--brand-3) / 0.15), transparent 60%),
-      radial-gradient(ellipse at bottom right, hsl(var(--brand-1) / 0.12), transparent 60%),
+    --gradient-hero: radial-gradient(ellipse at top, hsl(var(--brand-3) / 0.2), transparent 65%),
+      radial-gradient(ellipse at bottom right, hsl(var(--brand-1) / 0.15), transparent 65%),
       linear-gradient(180deg, hsl(var(--background)), hsl(var(--background)));
-    --gradient-brand: linear-gradient(135deg, hsl(var(--brand-1)), hsl(var(--brand-2)) 60%, hsl(var(--brand-3)));
-    --gradient-card: linear-gradient(160deg, hsl(var(--card)) 0%, hsl(240 20% 98%) 100%);
-    --shadow-glow: 0 8px 30px -10px hsl(var(--brand-1) / 0.25);
-    --shadow-elev: 0 20px 60px -20px hsl(240 40% 10% / 0.12);
+    --gradient-brand: linear-gradient(135deg, hsl(var(--brand-1)), hsl(var(--brand-2)) 50%, hsl(var(--brand-3)));
+    --gradient-card: linear-gradient(160deg, hsl(var(--card)) 0%, hsl(35 20% 98%) 100%);
+    --shadow-glow: 0 12px 40px -12px hsl(var(--brand-1) / 0.3);
+    --shadow-elev: 0 20px 60px -20px hsl(35 40% 10% / 0.12);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -142,46 +142,107 @@
 }
 
 @layer utilities {
-  .bg-hero { background: var(--gradient-hero); }
-  .bg-brand { background: var(--gradient-brand); }
-  .bg-card-grad { background: var(--gradient-card); }
+  .bg-hero {
+    background: var(--gradient-hero);
+  }
+
+  .bg-brand {
+    background: var(--gradient-brand);
+  }
+
+  .bg-card-grad {
+    background: var(--gradient-card);
+  }
+
+  /* Heading animations - only glow for h1, h2, h3 */
   .hover-pop {
     transition: transform 220ms ease, text-shadow 220ms ease;
     transform-origin: center;
     will-change: transform;
   }
+
   .hover-pop:hover {
-    transform: translateY(-2px) scale(1.015);
-    text-shadow: 0 6px 18px hsl(var(--brand-1) / 0.22);
+    transform: translateY(-2px) scale(1.01);
+    text-shadow: 0 4px 12px hsl(var(--brand-1) / 0.18);
   }
+
+  /* Minimal shadow for headings only */
   .shadow-glow {
-    box-shadow: 0 0 20px -5px hsl(var(--brand-1) / 0.35);
+    box-shadow: 0 0 15px -8px hsl(var(--brand-1) / 0.2);
   }
+
+  /* Reduced glow for special elements */
   .shadow-glow-intense {
-    box-shadow: 0 0 30px -5px hsl(var(--brand-1) / 0.6), 0 0 15px -5px hsl(var(--brand-2) / 0.4);
+    box-shadow: 0 0 20px -8px hsl(var(--brand-1) / 0.3), 0 0 10px -8px hsl(var(--brand-2) / 0.2);
   }
-  .icon-glow-pop {
-    transition: all 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Subtle icon hover */
+  .icon-pop {
+    transition: all 200ms ease;
     transform-origin: center;
   }
-  .icon-glow-pop:hover {
-    transform: translateY(-5px) scale(1.15);
-    filter: drop-shadow(0 15px 25px hsl(var(--brand-1) / 0.55));
+
+  .icon-pop:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
   }
+
+  /* Icon glow with lower part transparent shadow */
+  .icon-glow {
+    @apply transition-all duration-300;
+  }
+  .icon-glow:hover {
+    @apply scale-110;
+    filter: drop-shadow(0 10px 15px hsl(var(--brand-1) / 0.4));
+  }
+
+  /* Trigger child icon-pop when parent is hovered */
+  .group:hover .icon-pop {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+  }
+
+  .icon-line-hover::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: currentColor;
+    transition: width 200ms ease;
+  }
+
+  .icon-line-hover:hover::after {
+    width: 100%;
+  }
+
+  .icon-line-hover:hover {
+    transform: translateY(-1px);
+  }
+
   .realistic-switch {
-    box-shadow: 
-      inset 0 2px 4px rgba(0,0,0,0.1),
-      inset 0 -2px 4px rgba(255,255,255,0.1),
-      0 4px 10px rgba(0,0,0,0.2);
+    box-shadow:
+      inset 0 2px 4px rgba(0, 0, 0, 0.1),
+      inset 0 -2px 4px rgba(255, 255, 255, 0.1),
+      0 4px 10px rgba(0, 0, 0, 0.2);
   }
+
   .text-brand {
     @apply bg-gradient-to-r from-brand-1 via-brand-2 to-brand-3 bg-clip-text text-transparent;
   }
+
   .icon-brand {
     @apply text-brand-1;
   }
-  .shadow-glow { box-shadow: var(--shadow-glow); }
-  .shadow-elev { box-shadow: var(--shadow-elev); }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .shadow-elev {
+    box-shadow: var(--shadow-elev);
+  }
 
   .grid-pattern {
     background-image:
@@ -191,11 +252,63 @@
     mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
   }
 
+  /* Glass-like transparent appearance */
   .glass {
-    background: hsl(var(--card) / 0.6);
+    background: hsl(var(--card) / 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid hsl(var(--border) / 0.4);
+  }
+
+  .glass-card {
+    background: hsl(var(--card) / 0.35);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid hsl(var(--border) / 0.6);
+    border: 1px solid hsl(var(--border) / 0.3);
+    transition: all 200ms ease;
+    position: relative;
+  }
+
+  .dark .glass-card:hover {
+    border-color: hsl(var(--border) / 0.6);
+    box-shadow:
+      0 0 1px hsl(132 100% 50% / 0.4),
+      0 0 8px hsl(132 100% 50% / 0.25),
+      inset 0 0 1px hsl(132 100% 50% / 0.2);
+  }
+
+  .glass-card:hover {
+    border-color: hsl(var(--border) / 0.6);
+    box-shadow:
+      0 0 1px hsl(280 100% 50% / 0.4),
+      0 0 8px hsl(280 100% 50% / 0.3),
+      inset 0 0 1px hsl(280 100% 50% / 0.2);
+  }
+
+  .glass-heading {
+    background: hsl(var(--background) / 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-brand-1 via-brand-2 to-brand-3 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-hover {
+    @apply bg-gradient-to-r from-brand-1 via-brand-2 to-brand-3 bg-clip-text text-transparent transition-all duration-300;
+  }
+  
+  .text-gradient-hover:hover,
+  .group:hover .text-gradient-hover {
+    background-image: none !important;
+    @apply text-foreground;
+    -webkit-text-fill-color: initial;
+  }
+
+  .navbar-glow {
+    box-shadow: 0 0 15px -3px hsl(var(--brand-1) / 0.3), 0 0 6px -2px hsl(var(--brand-1) / 0.2);
+    border: 1px solid hsl(var(--brand-1) / 0.2);
   }
 }
 
