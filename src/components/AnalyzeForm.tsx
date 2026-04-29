@@ -36,15 +36,12 @@ export function AnalyzeForm({ defaultValue = "", large = false }: Props) {
     localStorage.setItem("lastAnalyzedUser", cleaned);
 
     if (cleaned.toLowerCase() === currentUsername?.toLowerCase()) {
-      // If same user, just trigger a refresh by navigating to the same path with a hash or just let Result handle it
-      // Actually, if I navigate to the same path, useEffect in Result won't trigger if it only depends on [username]
-      // I'll add a timestamp to the navigate or just call a window reload if necessary, 
-      // but better to navigate to /result/user?refresh=...
       navigate(`/result/${encodeURIComponent(cleaned)}?t=${Date.now()}`);
     } else {
       setLoading(true);
       navigate(`/result/${encodeURIComponent(cleaned)}`);
     }
+    setValue(""); // Clear the input after initiating analysis
   };
 
   return (
