@@ -62,7 +62,7 @@ export default function FAQs() {
     <div className="container py-12">
       <div className="mx-auto max-w-3xl">
         <div className="text-xs uppercase tracking-widest text-brand">Support</div>
-        <h1 className="hover-pop mt-2 flex items-center gap-4 font-display text-4xl font-bold sm:text-5xl">
+        <h1 className="text-gradient hover-pop mt-2 flex items-center gap-4 font-display text-4xl font-bold sm:text-5xl">
           <HelpCircle className="h-10 w-10 text-brand-1" />
           Frequently Asked Questions
         </h1>
@@ -83,7 +83,7 @@ export default function FAQs() {
                     <div className="icon-pop flex h-8 w-8 shrink-0 items-center justify-center text-brand-1">
                       <f.icon className="h-5 w-5" />
                     </div>
-                    <span>{f.q}</span>
+                    <span className="text-gradient">{f.q}</span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="px-5 text-sm text-muted-foreground">
