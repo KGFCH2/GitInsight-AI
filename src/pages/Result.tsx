@@ -318,7 +318,7 @@ const Result = () => {
                       value={data.user.followers}
                       icon={Users}
                       onClick={() => setModalType("followers")}
-                      color="purple"
+                      color="brand"
                     />
                     <Stat
                       label="Public Repos"
@@ -337,7 +337,7 @@ const Result = () => {
                       value={data.score.stats.languageCount}
                       icon={TrendingUp}
                       onClick={() => setModalType("langs")}
-                      color="blue"
+                      color="brand"
                     />
                   </div>
                 </div>
@@ -575,9 +575,9 @@ const Result = () => {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-border bg-card shadow-2xl"
             >
-              <div className={`flex items-center justify-between border-b p-5 ${modalType === "stars" ? "bg-[#f59e0b] text-white" :
-                modalType === "followers" ? "bg-[#a855f7] text-white" :
-                  "bg-[#2563eb] text-white"
+              <div className={`flex items-center justify-between border-b p-5 ${modalType === "stars" ? "bg-brand-2 text-white" :
+                modalType === "followers" ? "bg-brand-1 text-white" :
+                  "bg-brand-3 text-white"
                 }`}>
                 <h3 className="flex items-center gap-2 font-display text-xl font-black italic tracking-tight">
                   {modalType === "stars" && <><Star className="h-6 w-6 fill-current" /> Starred Repositories</>}
@@ -688,7 +688,7 @@ function Stat({
     <button
       onClick={onClick}
       disabled={!onClick}
-      className={`group relative overflow-hidden rounded-xl border border-border bg-background/40 p-3 text-left transition-all ${onClick ? "hover:border-purple-500/40 dark:hover:border-emerald-500/40 hover:bg-muted/5 active:scale-95 shadow-sm" : ""
+      className={`group relative overflow-hidden rounded-xl border border-border bg-background/40 p-3 text-left transition-all ${onClick ? "hover:border-brand-1/40 dark:hover:border-brand-1/40 hover:bg-muted/5 active:scale-95 shadow-sm" : ""
         }`}
     >
       <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground transition-colors group-hover:text-brand-1 duration-300">
@@ -707,7 +707,7 @@ function Stat({
       {onClick && (
         <div className={cn(
           "absolute -right-4 -top-4 h-12 w-12 rounded-full opacity-0 blur-2xl transition-opacity group-hover:opacity-20",
-          "bg-purple-600 dark:bg-emerald-500"
+          "bg-brand-1 dark:bg-brand-1"
         )} />
       )}
     </button>
