@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import { Sparkles, Book, Code2, HelpCircle } from "lucide-react";
+import { Sparkles, Book, Code2, HelpCircle, Github, Linkedin, Mail, Search, History as HistoryIcon, ShieldCheck, FileText } from "lucide-react";
 
 export function Footer() {
   return (
     <footer className="mt-24 border-t border-border/60 bg-background/60">
       <div className="container py-12">
-        <div className="grid gap-10 md:grid-cols-4">
+        <div className="grid gap-10 md:grid-cols-5">
           <div>
             <div className="flex items-center gap-2.5">
               <div className="icon-pop flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-background">
@@ -21,18 +21,60 @@ export function Footer() {
           </div>
 
           <FooterCol title="Product" links={[
-            { to: "/analyze", label: "Analyze" },
-            { to: "/history", label: "History" },
+            { to: "/analyze", label: "Analyze", icon: Search },
+            { to: "/history", label: "History", icon: HistoryIcon },
           ]} />
           <FooterCol title="Legal" links={[
-            { to: "/terms", label: "Terms of Service" },
-            { to: "/privacy", label: "Privacy Policy" },
+            { to: "/terms", label: "Terms of Service", icon: ShieldCheck },
+            { to: "/privacy", label: "Privacy Policy", icon: FileText },
           ]} />
           <FooterCol title="Resources" links={[
             { to: "/documentation", label: "Documentation", icon: Book },
             { to: "/api", label: "API Reference", icon: Code2 },
             { to: "/faqs", label: "FAQ", icon: HelpCircle },
           ]} />
+
+          {/* Developer Profile */}
+          <div>
+            <div className="mb-3 text-sm font-semibold">Developer</div>
+            <div className="space-y-3">
+              <a 
+                href="https://github.com/KGFCH2" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="text-sm font-medium text-foreground hover:text-brand-1 hover:underline"
+              >
+                Babin Bid
+              </a>
+              <div className="flex flex-col gap-2">
+                <a 
+                  href="https://github.com/KGFCH2" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="group flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <Github className="h-4 w-4 transition-all duration-300 group-hover:scale-110" />
+                  <span className="text-xs">GitHub</span>
+                </a>
+                <a 
+                  href="https://www.linkedin.com/in/babinbid123/" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="group flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <Linkedin className="h-4 w-4 transition-all duration-300 group-hover:scale-110" />
+                  <span className="text-xs">LinkedIn</span>
+                </a>
+                <a 
+                  href="mailto:babinbid05@gmail.com"
+                  className="group flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <Mail className="h-4 w-4 transition-all duration-300 group-hover:scale-110" />
+                  <span className="text-xs">Email</span>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
@@ -44,7 +86,7 @@ export function Footer() {
   );
 }
 
-function FooterCol({ title, links }: { title: string; links: { to: string; label: string; icon?: any }[] }) {
+function FooterCol({ title, links }: { title: string; links: { to: string; label: string; icon?: React.ComponentType<{ className?: string }> }[] }) {
   return (
     <div>
       <div className="mb-3 text-sm font-semibold">{title}</div>
