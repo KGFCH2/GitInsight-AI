@@ -24,6 +24,7 @@ import {
   Award,
   ShieldCheck,
   Gauge,
+  Trophy,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -201,7 +202,7 @@ const Result = () => {
             disabled={loading}
             title="Refresh latest data"
           >
-            <RefreshCw className={`h-4 w-4 transition-all duration-300 hover:rotate-180 ${loading ? "animate-spin text-brand" : "text-foreground"}`} />
+            <RefreshCw className={`h-4 w-4 transition-all duration-300 hover:rotate-180 text-foreground ${loading ? "animate-spin" : ""}`} />
           </Button>
         </div>
       </div>
@@ -535,6 +536,8 @@ const Result = () => {
                             {a.includes("Starstruck") && <img src="https://github.githubassets.com/images/modules/profile/achievements/starstruck-default.png" className="h-10 w-10" />}
                             {a.includes("Galaxy") && <img src="https://github.githubassets.com/images/modules/profile/achievements/galaxy-brain-default.png" className="h-10 w-10" />}
                             {a.includes("Quickdraw") && <img src="https://github.githubassets.com/images/modules/profile/achievements/quickdraw-default.png" className="h-10 w-10" />}
+                            {a.includes("Contributor") && <img src="https://github.githubassets.com/images/modules/profile/achievements/pro-contributor-default.png" className="h-10 w-10" />}
+                            {!["Vault", "Shark", "YOLO", "Pair", "Starstruck", "Galaxy", "Quickdraw", "Contributor"].some(x => a.includes(x)) && <Trophy className="h-8 w-8 text-brand-1" />}
                           </div>
                           <div className="text-[10px] font-black tracking-tight uppercase group-hover:text-brand-1">{a}</div>
                         </div>
