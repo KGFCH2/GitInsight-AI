@@ -90,7 +90,7 @@ const faqs = [
   },
   {
     q: "How can I contribute to this project?",
-    a: "GitInsight AI is an evolving platform. If you have suggestions or want to report a bug, please reach out via our official GitHub repository or contact the lead developer, Babin Bid.",
+    a: "GitInsight AI is an evolving platform. If you have suggestions or want to report a bug, please reach out via our official GitHub repository or contact the lead developer, <a href='https://github.com/KGFCH2' target='_blank' rel='noreferrer' class='text-brand-1 hover:underline font-bold'>Babin Bid</a>.",
     icon: ExternalLink,
   }
 ];
