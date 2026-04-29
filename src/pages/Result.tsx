@@ -459,14 +459,14 @@ const Result = () => {
                     <div className="grid gap-6 sm:grid-cols-2">
                       <div className="space-y-1 group/item">
                         <div className="flex items-center gap-2 text-xs font-black uppercase text-success">
-                          <div className="h-1.5 w-1.5 rounded-full bg-success shadow-glow" />
+                          <div className="h-1.5 w-1.5 rounded-full bg-success shadow-glow animate-pulse" />
                           Popularity & Reach
                         </div>
                         <p className="text-sm text-muted-foreground leading-relaxed">Measures star count, forks, and follower velocity across all public contributions.</p>
                       </div>
                       <div className="space-y-1 group/item">
                         <div className="flex items-center gap-2 text-xs font-black uppercase text-warning">
-                          <div className="h-1.5 w-1.5 rounded-full bg-warning shadow-glow" />
+                          <div className="h-1.5 w-1.5 rounded-full bg-warning shadow-glow animate-pulse" />
                           Quality & Documentation
                         </div>
                         <p className="text-sm text-muted-foreground leading-relaxed">Evaluates README depth, repository topics, licensing, and homepage availability.</p>
@@ -524,31 +524,8 @@ const Result = () => {
                   </div>
                 </TabsContent>
                 <TabsContent value="badges" className="mt-6 space-y-6">
-                  <Card title="GitHub Achievements" icon={Award}>
-                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                      {data.realAchievements?.map(a => (
-                        <div key={a} className="group relative flex flex-col items-center justify-center rounded-2xl border border-border bg-muted/20 p-6 text-center transition-all hover:-translate-y-1 hover:border-brand-1/40 hover:bg-card hover:shadow-glow">
-                          <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-brand/10 p-2 shadow-inner group-hover:scale-105 group-hover:bg-brand/20 transition-all">
-                            {a.includes("Vault") && <img src="https://github.githubassets.com/images/modules/profile/achievements/arctic-code-vault-contributor-default.png" className="h-10 w-10" />}
-                            {a.includes("Shark") && <img src="https://github.githubassets.com/images/modules/profile/achievements/pull-shark-default.png" className="h-10 w-10" />}
-                            {a.includes("YOLO") && <img src="https://github.githubassets.com/images/modules/profile/achievements/yolo-default.png" className="h-10 w-10" />}
-                            {a.includes("Pair") && <img src="https://github.githubassets.com/images/modules/profile/achievements/pair-extraordinaire-default.png" className="h-10 w-10" />}
-                            {a.includes("Starstruck") && <img src="https://github.githubassets.com/images/modules/profile/achievements/starstruck-default.png" className="h-10 w-10" />}
-                            {a.includes("Galaxy") && <img src="https://github.githubassets.com/images/modules/profile/achievements/galaxy-brain-default.png" className="h-10 w-10" />}
-                            {a.includes("Quickdraw") && <img src="https://github.githubassets.com/images/modules/profile/achievements/quickdraw-default.png" className="h-10 w-10" />}
-                            {a.includes("Contributor") && <img src="https://github.githubassets.com/images/modules/profile/achievements/pro-contributor-default.png" className="h-10 w-10" />}
-                            {!["Vault", "Shark", "YOLO", "Pair", "Starstruck", "Galaxy", "Quickdraw", "Contributor"].some(x => a.includes(x)) && <Trophy className="h-8 w-8 text-brand-1" />}
-                          </div>
-                          <div className="text-[10px] font-black tracking-tight uppercase group-hover:text-brand-1">{a}</div>
-                        </div>
-                      ))}
-                      {(!data.realAchievements || data.realAchievements.length === 0) && (
-                        <p className="col-span-full py-10 text-center text-sm text-muted-foreground">Keep coding to unlock more achievements!</p>
-                      )}
-                    </div>
-                  </Card>
-
                   <Card title="AI Badges" icon={Sparkles}>
+                    <p className="mb-6 text-sm text-muted-foreground italic">Top 10 strategic badges based on your GitHub performance and AI analysis.</p>
                     <BadgeGrid badges={data.badges} />
                   </Card>
                 </TabsContent>
@@ -758,23 +735,35 @@ function BulletList({
     const icons = [Sparkles, Zap, Target, Award, ShieldCheck, Gauge, Lightbulb];
     const IconComp = icons[i % icons.length];
 
-    if (iconType === "success") return <IconComp className="h-3.5 w-3.5 text-success brightness-125" />;
+    // Color palette based on index for visual variety (Avoid purple)
+    const colors = ["text-brand-1", "text-brand-2", "text-brand-3", "text-amber", "text-orange-500", "text-rose-500", "text-success"];
+    const colorClass = colors[i % colors.length];
+
+    if (iconType === "success") return <IconComp className={`h-3.5 w-3.5 ${colorClass} brightness-125`} />;
     if (iconType === "warning") return <IconComp className="h-3.5 w-3.5 text-warning brightness-125" />;
-    if (iconType === "step") return <IconComp className="h-3.5 w-3.5 text-brand-1 brightness-125" />;
-    if (iconType === "tip") return <IconComp className="h-3.5 w-3.5 text-amber brightness-125" />;
-    if (iconType === "idea") return <IconComp className="h-3.5 w-3.5 text-blue-400 brightness-125" />;
-    return <div className="h-1.5 w-1.5 rounded-full bg-brand-1" />;
+    if (iconType === "step") return <IconComp className={`h-3.5 w-3.5 ${colorClass} brightness-125`} />;
+    if (iconType === "tip") return <IconComp className={`h-3.5 w-3.5 ${colorClass} brightness-125`} />;
+    if (iconType === "idea") return <IconComp className={`h-3.5 w-3.5 ${colorClass} brightness-125`} />;
+    return <div className={`h-1.5 w-1.5 rounded-full ${colorClass} shadow-glow`} />;
   };
 
   return (
     <ol className="space-y-4">
       {items.map((it, i) => (
-        <li key={i} className="flex gap-4 text-sm leading-relaxed group">
-          <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:translate-y-[-0.5px]">
+        <motion.li
+          key={i}
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: i * 0.05 }}
+          className="flex gap-4 text-sm leading-relaxed group cursor-default"
+        >
+          <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center transition-all duration-300 group-hover:scale-125 group-hover:rotate-12">
             {getIcon(i)}
           </div>
-          <span className="flex-1 text-foreground/80 group-hover:text-foreground group-hover:translate-x-1 transition-all duration-300">{it}</span>
-        </li>
+          <span className="flex-1 text-foreground/80 group-hover:text-foreground group-hover:translate-x-1 transition-all duration-300">
+            {it}
+          </span>
+        </motion.li>
       ))}
     </ol>
   );
