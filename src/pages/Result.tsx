@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -61,7 +61,7 @@ const Result = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const loadData = (isRefresh = false) => {
+  const loadData = useCallback((isRefresh = false) => {
     const params = new URLSearchParams(location.search);
     const fromHistory = params.get("from") === "history";
 
@@ -91,11 +91,11 @@ const Result = () => {
         setLoading(false);
         setIsRefreshing(false);
       });
-  };
+  }, [username, location.search]);
 
   useEffect(() => {
     loadData(false);
-  }, [username, location.search]);
+  }, [username, location.search, loadData]);
 
   const share = async () => {
     const url = window.location.href;
@@ -177,10 +177,10 @@ const Result = () => {
       </AnimatePresence>
 
       {/* Header */}
-      <div className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+      <div className="group mb-8 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div className="flex-1">
           <div className="text-xs uppercase tracking-widest text-muted-foreground">Public Profile Report</div>
-          <h1 className="font-display text-xl font-black italic tracking-tighter sm:text-3xl">
+          <h1 className="text-gradient font-display text-xl font-black italic tracking-tighter sm:text-3xl">
             <a
               href={`https://github.com/${data?.user.login || username}`}
               target="_blank"
@@ -192,19 +192,17 @@ const Result = () => {
           </h1>
         </div>
         <div className="flex w-full max-w-lg flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
-          <AnalyzeForm defaultValue={data?.user.login || username} />
-          {data && (
-            <Button
-              variant="outline"
-              size="icon"
-              className="group h-11 w-11 shrink-0 rounded-xl transition-all duration-500 hover:rotate-12 hover:scale-110 hover:border-brand/60 hover:bg-brand/10 hover:shadow-glow-intense dark:border-border/60"
-              onClick={() => loadData(true)}
-              disabled={loading}
-              title="Refresh latest data"
-            >
-              <RefreshCw className={`h-4 w-4 transition-all duration-500 group-hover:rotate-180 group-hover:scale-125 group-hover:text-brand-1 dark:group-hover:text-success ${loading ? "animate-spin text-brand" : "text-foreground/70 dark:text-foreground/90"}`} />
-            </Button>
-          )}
+          <AnalyzeForm defaultValue="" />
+          <Button
+            variant="outline"
+            size="icon"
+            className="group h-11 w-11 shrink-0 rounded-xl transition-all duration-300 hover:scale-105 hover:bg-muted/60 dark:border-border/60"
+            onClick={() => loadData(true)}
+            disabled={loading}
+            title="Refresh latest data"
+          >
+            <RefreshCw className={`h-4 w-4 transition-all duration-300 group-hover:rotate-180 ${loading ? "animate-spin text-brand" : "text-foreground/70 dark:text-foreground/90"}`} />
+          </Button>
         </div>
       </div>
 
@@ -227,7 +225,7 @@ const Result = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="flex flex-col items-center justify-center rounded-2xl border border-border bg-card-grad p-12 shadow-sm"
+            className="flex flex-col items-center justify-center rounded-2xl glass-card p-12"
           >
             <Loader2 className="h-10 w-10 animate-spin text-brand" />
             <p className="mt-4 text-sm font-medium text-muted-foreground">Updating latest GitHub data...</p>
@@ -258,7 +256,7 @@ const Result = () => {
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex flex-col rounded-2xl border border-border bg-card-grad p-6 shadow-elev h-full"
+                className="group flex flex-col rounded-2xl glass-card p-6 h-full"
               >
                 <div className="flex-1">
                   <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
@@ -270,7 +268,7 @@ const Result = () => {
                     />
                     <div className="flex-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <h2 className="font-display text-2xl font-bold">
+                        <h2 className="text-gradient font-display text-2xl font-bold">
                           {data.user.name || data.user.login}
                         </h2>
                         <a
@@ -356,7 +354,7 @@ const Result = () => {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="flex flex-col rounded-2xl border border-border bg-card-grad p-8 shadow-elev h-full"
+                className="flex flex-col rounded-2xl glass-card p-8 h-full"
               >
                 <div className="flex flex-col h-full lg:flex-row lg:items-center gap-10">
                   <div className="flex flex-col items-center justify-center flex-1">
@@ -397,7 +395,7 @@ const Result = () => {
 
             {/* Best Repo */}
             {data.bestRepo && (
-              <div className="mt-6 overflow-hidden rounded-2xl border border-brand-1/40 bg-card-grad p-6 shadow-glow">
+              <div className="mt-6 overflow-hidden rounded-2xl glass-card p-6">
                 <div className="mb-2 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-brand-1">
                   <Crown className="h-4 w-4" /> Best Repo Highlight
                 </div>
@@ -497,7 +495,7 @@ const Result = () => {
 
                 <TabsContent value="repos" id="repos-list" className="mt-6">
                   <div className="mb-4 flex flex-wrap gap-2">
-                    {(["all", "good", "improve", "archive"] as const).map((f) => (
+                    {(["all", "good", "improve"] as const).map((f) => (
                       <button
                         key={f}
                         onClick={() => setFilter(f)}
@@ -575,8 +573,8 @@ const Result = () => {
               className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-border bg-card shadow-2xl"
             >
               <div className={`flex items-center justify-between border-b p-5 ${modalType === "stars" ? "bg-[#f59e0b] text-white" :
-                  modalType === "followers" ? "bg-[#a855f7] text-white" :
-                    "bg-[#2563eb] text-white"
+                modalType === "followers" ? "bg-[#a855f7] text-white" :
+                  "bg-[#2563eb] text-white"
                 }`}>
                 <h3 className="flex items-center gap-2 font-display text-xl font-black italic tracking-tight">
                   {modalType === "stars" && <><Star className="h-6 w-6 fill-current" /> Starred Repositories</>}
@@ -683,27 +681,21 @@ function Stat({
   subLabel?: string;
   color?: "brand" | "amber" | "purple" | "blue";
 }) {
-  const hoverClass = "group-hover:text-purple-600 dark:group-hover:text-emerald-400 transition-colors duration-300";
-
   return (
     <button
       onClick={onClick}
       disabled={!onClick}
-      className={`group relative overflow-hidden rounded-xl border border-border bg-background/40 p-3 text-left transition-all ${
-        onClick ? "hover:border-purple-500/40 dark:hover:border-emerald-500/40 hover:bg-muted/5 active:scale-95 shadow-sm" : ""
-      }`}
+      className={`group relative overflow-hidden rounded-xl border border-border bg-background/40 p-3 text-left transition-all ${onClick ? "hover:border-purple-500/40 dark:hover:border-emerald-500/40 hover:bg-muted/5 active:scale-95 shadow-sm" : ""
+        }`}
     >
-      <div className={cn("flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground transition-colors", hoverClass)}>
+      <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground transition-colors group-hover:text-brand-1 duration-300">
         <Icon className="h-3.5 w-3.5 shrink-0" /> {label}
       </div>
-      <div className={cn("mt-1 font-display text-2xl font-black tabular-nums transition-all group-hover:scale-105", 
-        "text-purple-600 dark:text-purple-400", // Initial purple
-        hoverClass
-      )}>
+      <div className="mt-1 font-display text-2xl font-black tabular-nums text-foreground transition-all group-hover:scale-105 duration-300">
         {value.toLocaleString()}
       </div>
       {subLabel && (
-        <div className={cn("mt-0.5 text-[10px] font-medium text-muted-foreground/60 transition-colors", hoverClass)}>
+        <div className="mt-0.5 text-[10px] font-medium text-muted-foreground transition-colors group-hover:text-brand-1/70 duration-300">
           {subLabel}
         </div>
       )}
@@ -733,12 +725,12 @@ function Card({
   const accentClass =
     accent === "success" ? "text-success" : accent === "warning" ? "text-warning" : "text-brand-1";
   return (
-    <div className="group rounded-2xl border border-border bg-card-grad p-6 transition-all duration-300 hover:border-brand-1/30 hover:bg-muted/10 hover:shadow-glow">
+    <div className="group rounded-2xl glass-card p-6 transition-all duration-300 hover:-translate-y-1">
       <div className="mb-4 flex items-center gap-2">
-        <div className="flex h-8 w-8 items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:translate-y-[-1px]">
-          <Icon className={`h-5 w-5 ${accentClass} brightness-110`} />
+        <div className="flex h-8 w-8 items-center justify-center transition-all duration-300 group-hover:scale-105">
+          <Icon className={`h-5 w-5 ${accentClass}`} />
         </div>
-        <h3 className="font-display text-base font-semibold transition-colors group-hover:text-brand-1">{title}</h3>
+        <h3 className="font-display text-base font-semibold">{title}</h3>
       </div>
       {children}
     </div>
