@@ -234,7 +234,19 @@ async function callGroq(prompt: string): Promise<string | null> {
  * Heuristic fallback for when all AI models fail due to quota/network.
  * Generates a professional, contextual report based on GitHub metrics.
  */
-function generateHeuristicAi(data: any): AiInsights {
+function generateHeuristicAi(data: {
+  user: {
+    login: string;
+    name: string;
+    bio: string;
+    followers: number;
+    publicRepos: number;
+    accountAgeYears: number;
+  };
+  score: number;
+  topRepos: AnalyzedRepo[];
+  bestRepo: AnalyzedRepo;
+}): AiInsights {
   const isHigh = data.score >= 70;
   const isMedium = data.score >= 40;
   const login = data.user.login;
@@ -309,20 +321,86 @@ function safeParseJson(text: string): Record<string, unknown> | null {
   }
 }
 
-export function deriveRealAchievements(user: GhUser, stats: any): string[] {
+async function fetchAchievements(username: string): Promise<string[]> {
+  if (!GITHUB_TOKEN) return [];
+  try {
+    const query = `
+      query($login: String!) {
+        user(login: $login) {
+          achievements {
+            type
+          }
+        }
+      }
+    `;
+    const r = await fetch("https://api.github.com/graphql", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${GITHUB_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query, variables: { login: username } }),
+    });
+    if (!r.ok) return [];
+    const j = await r.json();
+    const list = j.data?.user?.achievements?.map((a: any) => {
+      // Map GraphQL types to human-readable names
+      const name = a.type.replace(/_/g, " ").toLowerCase();
+      return name.charAt(0).toUpperCase() + name.slice(1);
+    }) ?? [];
+    return list;
+  } catch (e) {
+    console.warn("GraphQL achievements fetch failed:", e);
+    return [];
+  }
+}
+
+export function deriveRealAchievements(user: GhUser, repos: GhRepo[]): string[] {
   const achievements: string[] = [];
-  const age = (Date.now() - new Date(user.created_at).getTime()) / (1000 * 60 * 60 * 24 * 365);
+  const now = Date.now();
+  const created = new Date(user.created_at);
+  const ageYears = (now - created.getTime()) / (1000 * 60 * 60 * 24 * 365);
   
-  // High-fidelity heuristics for "Real" GitHub Achievements
-  if (age >= 5) achievements.push("Arctic Code Vault Contributor");
-  if (stats.totalStars >= 1) achievements.push("Starstruck");
-  if (stats.totalForks >= 1) achievements.push("Pull Shark");
-  if (user.public_repos >= 10) achievements.push("YOLO");
-  if (user.followers >= 20) achievements.push("Pair Extraordinaire");
-  if (user.public_repos >= 50) achievements.push("Galaxy Brain");
-  if (user.public_repos >= 5) achievements.push("Quickdraw");
+  // Arctic Code Vault Contributor — Account created before Feb 2020 (5+ years)
+  if (ageYears >= 5 && created.getTime() < new Date("2020-02-13").getTime()) {
+    achievements.push("Arctic Code Vault Contributor");
+  }
   
-  return achievements;
+  // Starstruck — At least one repository with 16+ stars
+  const hasStarred = repos.some(r => r.stargazers_count >= 16);
+  if (hasStarred) {
+    achievements.push("Starstruck");
+  }
+  
+  // Galaxy Brain — At least one repository with 128+ stars (very rare)
+  const hasGalaxy = repos.some(r => r.stargazers_count >= 128);
+  if (hasGalaxy) {
+    achievements.push("Galaxy Brain");
+  }
+  
+  // Pull Shark — Has contributed to repositories with forks (3+ forks indicates pull requests)
+  const totalForks = repos.reduce((sum, r) => sum + r.forks_count, 0);
+  const hasContributions = repos.some(r => r.forks_count >= 3);
+  if (hasContributions || totalForks >= 5) {
+    achievements.push("Pull Shark");
+  }
+  
+  // YOLO — 10+ public repositories (indicates pushing to main directly)
+  if (user.public_repos >= 10) {
+    achievements.push("YOLO");
+  }
+  
+  // Quickdraw — 5+ repositories (indicates rapid action)
+  if (user.public_repos >= 5) {
+    achievements.push("Quickdraw");
+  }
+  
+  // Pair Extraordinaire — 20+ followers (indicates collaboration and contributions)
+  if (user.followers >= 20) {
+    achievements.push("Pair Extraordinaire");
+  }
+  
+  return [...new Set(achievements)]; // Remove duplicates
 }
 
 export async function analyzeProfile(username: string, force = false): Promise<AnalysisResult> {
@@ -337,11 +415,12 @@ export async function analyzeProfile(username: string, force = false): Promise<A
     if (cached) return cached;
   }
 
-  const [user, repos, starred, followers] = await Promise.all([
+  const [user, repos, starred, followers, actualAchievements] = await Promise.all([
     gh<GhUser>(`https://api.github.com/users/${cleaned}`, force),
     gh<GhRepo[]>(`https://api.github.com/users/${cleaned}/repos?per_page=100&sort=updated${force ? `&t=${Date.now()}` : ""}`, force),
     gh<GhRepo[]>(`https://api.github.com/users/${cleaned}/starred?per_page=100${force ? `&t=${Date.now()}` : ""}`, force),
     gh<{ login: string; avatar_url: string; html_url: string }[]>(`https://api.github.com/users/${cleaned}/followers?per_page=100${force ? `&t=${Date.now()}` : ""}`, force),
+    fetchAchievements(cleaned),
   ]);
 
   if (user.login !== cleaned) {
@@ -350,7 +429,8 @@ export async function analyzeProfile(username: string, force = false): Promise<A
 
   const score = computeScore(user, repos);
   const badges = deriveBadges(user, repos, score.total);
-  const realAchievements = deriveRealAchievements(user, score.stats);
+  const derivedAchievements = deriveRealAchievements(user, repos);
+  const realAchievements = [...new Set([...actualAchievements, ...derivedAchievements])];
 
   const classified: AnalyzedRepo[] = repos
     .map((r) => ({
