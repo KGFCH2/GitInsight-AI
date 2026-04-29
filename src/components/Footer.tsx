@@ -38,14 +38,6 @@ export function Footer() {
           <div>
             <div className="mb-3 text-sm font-semibold">Developer</div>
             <div className="space-y-3">
-              <a 
-                href="https://github.com/KGFCH2" 
-                target="_blank" 
-                rel="noreferrer" 
-                className="text-sm font-medium text-foreground hover:text-brand-1 hover:underline"
-              >
-                Babin Bid
-              </a>
               <div className="flex flex-col gap-2">
                 <a 
                   href="https://github.com/KGFCH2" 
