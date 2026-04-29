@@ -163,6 +163,10 @@
 
   .hover-pop:hover {
     transform: translateY(-2px) scale(1.01);
+  }
+
+  /* Only headings get the text glow shadow */
+  :is(h1, h2, h3, h4, h5, h6).hover-pop:hover {
     text-shadow: 0 4px 12px hsl(var(--brand-1) / 0.18);
   }
 
