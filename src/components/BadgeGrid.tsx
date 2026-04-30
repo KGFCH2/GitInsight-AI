@@ -114,16 +114,17 @@ export function BadgeGrid({ badges }: { badges: { name: string; description: str
               </Button>
             </div>
             <div className="flex gap-4">
-              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-brand/20 bg-muted/20 shadow-xl transition-all duration-300 hover:scale-110 hover:border-brand-1/50 hover:shadow-brand-1/20">
+              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-brand/40 bg-gradient-to-br from-brand-1/20 to-purple-500/20 shadow-xl transition-all duration-500 hover:scale-110 hover:border-brand-1 hover:shadow-brand-1/40 flex items-center justify-center p-1.5">
+                <div className="absolute inset-0 bg-brand-1/5 backdrop-blur-[2px]" />
                 {img ? (
                   <img 
                     src={img} 
                     alt={b.name} 
-                    className="h-full w-full object-cover transition-transform duration-300" 
+                    className="relative z-10 h-full w-full object-contain drop-shadow-lg transition-transform duration-300" 
                     style={{ filter }}
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-brand text-primary-foreground">
+                  <div className="relative z-10 flex h-full w-full items-center justify-center text-brand-1">
                     <Icon className="h-7 w-7" />
                   </div>
                 )}
