@@ -751,20 +751,20 @@ const Result = () => {
                      <p className="text-sm text-muted-foreground">Master your GitHub profile to unlock these 10 strategic ambassador badges.</p>
                      <div className="grid gap-4 sm:grid-cols-2">
                        {[
-                         { name: "Star Collector", req: "Accumulate 100+ total stars across your repos.", img: "/badge-star.png", filter: "" },
-                         { name: "Open Source Hero", req: "Reach a prestigious 1,000+ total stars.", img: "/badge-hero.png", filter: "hue-rotate(15deg) brightness(1.1)" },
-                         { name: "Polyglot", req: "Show proficiency in 5+ different languages.", img: "/badge-polyglot.png", filter: "hue-rotate(200deg)" },
-                         { name: "Consistent Contributor", req: "Maintain activity with 3+ repos updated in 30 days.", img: "/badge-consistent.png", filter: "hue-rotate(330deg)" },
-                         { name: "Community Builder", req: "Build an audience of 50+ followers.", img: "/badge-community.png", filter: "hue-rotate(250deg)" },
-                         { name: "Prolific Creator", req: "Successfully manage 20+ public repositories.", img: "/badge-prolific.png", filter: "hue-rotate(30deg)" },
-                         { name: "Elite Profile", req: "Achieve a total profile score of 75+.", img: "/badge-elite.png", filter: "hue-rotate(45deg) saturate(1.5)" },
-                         { name: "Top Repo Builder", req: "Build at least one 'flagship' repo with 50+ stars.", img: "/badge-toprepo.png", filter: "hue-rotate(180deg)" },
-                         { name: "Rising Star", req: "Score 50+ in your very first year on GitHub.", img: "/badge-rising.png", filter: "hue-rotate(280deg)" },
-                         { name: "Veteran Coder", req: "Maintain an active presence for 5+ years.", img: "/badge-veteran.png", filter: "hue-rotate(120deg) brightness(0.8)" },
+                         { name: "Star Collector", req: "Accumulate 100+ total stars across your repos.", img: "/badge-star.png" },
+                         { name: "Open Source Hero", req: "Reach a prestigious 1,000+ total stars.", img: "/badge-hero.png" },
+                         { name: "Polyglot", req: "Show proficiency in 5+ different languages.", img: "/badge-polyglot.png" },
+                         { name: "Consistent Contributor", req: "Maintain activity with 3+ repos updated in 30 days.", img: "/badge-consistent.png" },
+                         { name: "Community Builder", req: "Build an audience of 50+ followers.", img: "/badge-community.png" },
+                         { name: "Prolific Creator", req: "Successfully manage 20+ public repositories.", img: "/badge-prolific.png" },
+                         { name: "Elite Profile", req: "Achieve a total profile score of 75+.", img: "/badge-elite.png" },
+                         { name: "Top Repo Builder", req: "Build at least one 'flagship' repo with 50+ stars.", img: "/badge-toprepo.png" },
+                         { name: "Rising Star", req: "Score 50+ in your very first year on GitHub.", img: "/badge-rising.png" },
+                         { name: "Veteran Coder", req: "Maintain an active presence for 5+ years.", img: "/badge-veteran.png" },
                        ].map((b, i) => (
                          <div key={i} className="flex items-center gap-4 rounded-xl border border-border bg-muted/20 p-3">
-                           <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full border border-brand/20 bg-background shadow-sm">
-                             <img src={b.img} alt={b.name} className="h-full w-full object-cover" style={{ filter: b.filter }} />
+                           <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-brand/20 bg-background shadow-sm flex items-center justify-center">
+                             <img src={b.img} alt={b.name} className="h-full w-full object-contain" />
                            </div>
                            <div>
                              <div className="text-xs font-black uppercase text-brand-1">{b.name}</div>
