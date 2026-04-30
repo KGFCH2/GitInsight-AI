@@ -77,29 +77,68 @@ const AdminDashboard = () => {
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      
-      const reader = new FileReader();
-      reader.onloadstart = () => setIsRefreshing(true);
-      reader.onloadend = () => {
-        setIsRefreshing(false);
-        const b64 = reader.result as string;
+    if (!file) return;
+
+    setIsRefreshing(true);
+    const reader = new FileReader();
+    
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        // Maintain a professional profile size (400px) which is perfect for avatars
+        const MAX_DIM = 400;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_DIM) {
+            height *= MAX_DIM / width;
+            width = MAX_DIM;
+          }
+        } else {
+          if (height > MAX_DIM) {
+            width *= MAX_DIM / height;
+            height = MAX_DIM;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx?.drawImage(img, 0, 0, width, height);
+
+        // Optimization: Convert to JPEG at 0.8 quality to significantly reduce size
+        // while maintaining professional visual fidelity
+        const compressedB64 = canvas.toDataURL("image/jpeg", 0.8);
+        
         try {
-          const updated = updateAdminProfile({ profileImage: b64 });
+          const updated = updateAdminProfile({ profileImage: compressedB64 });
           if (updated) {
             setAdmin(updated);
-            toast.success("Profile image updated successfully");
+            toast.success("Profile image optimized and saved successfully");
           }
         } catch (err) {
-          toast.error("Failed to save image. It might be too large for storage.");
+          console.error("Storage error:", err);
+          toast.error("Storage limit reached. Please clear your analysis history.");
         }
-      };
-      reader.onerror = () => {
         setIsRefreshing(false);
-        toast.error("Error reading file");
       };
-      reader.readAsDataURL(file);
-    }
+      
+      img.onerror = () => {
+        setIsRefreshing(false);
+        toast.error("Invalid image format");
+      };
+      
+      img.src = event.target?.result as string;
+    };
+
+    reader.onerror = () => {
+      setIsRefreshing(false);
+      toast.error("Error reading file");
+    };
+
+    reader.readAsDataURL(file);
   };
 
   const filteredAmbassadors = ambassadors
