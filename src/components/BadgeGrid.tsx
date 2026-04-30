@@ -38,6 +38,19 @@ const ICONS: Record<string, typeof Star> = {
   "Veteran Coder": ShieldCheck,
 };
 
+const BADGE_FILTERS: Record<string, string> = {
+  "Star Collector": "",
+  "Open Source Hero": "hue-rotate(15deg) brightness(1.1)",
+  "Polyglot": "hue-rotate(200deg)",
+  "Consistent Contributor": "hue-rotate(330deg)",
+  "Community Builder": "hue-rotate(250deg)",
+  "Prolific Creator": "hue-rotate(30deg)",
+  "Elite Profile": "hue-rotate(45deg) saturate(1.5)",
+  "Top Repo Builder": "hue-rotate(180deg)",
+  "Rising Star": "hue-rotate(280deg)",
+  "Veteran Coder": "hue-rotate(120deg) brightness(0.8)",
+};
+
 export function BadgeGrid({ badges }: { badges: { name: string; description: string }[] }) {
   if (!badges.length) {
     return (
@@ -51,6 +64,7 @@ export function BadgeGrid({ badges }: { badges: { name: string; description: str
       {badges.map((b, i) => {
         const Icon = ICONS[b.name] ?? Award;
         const img = BADGE_IMAGES[b.name];
+        const filter = BADGE_FILTERS[b.name] || "";
         return (
           <motion.div
             key={b.name}
@@ -62,7 +76,12 @@ export function BadgeGrid({ badges }: { badges: { name: string; description: str
             <div className="flex gap-4">
               <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-brand/20 bg-muted/20 shadow-xl transition-all duration-300 group-hover:scale-110 group-hover:border-brand-1/50 group-hover:shadow-brand-1/20">
                 {img ? (
-                  <img src={img} alt={b.name} className="h-full w-full object-cover" />
+                  <img 
+                    src={img} 
+                    alt={b.name} 
+                    className="h-full w-full object-cover" 
+                    style={{ filter }}
+                  />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-brand text-primary-foreground">
                     <Icon className="h-7 w-7" />

@@ -492,10 +492,10 @@ const Result = () => {
             <div className="mt-10">
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                 <TabsList className="mb-6 grid w-full grid-cols-2 lg:grid-cols-4">
-                  <TabsTrigger value="ai" className="gap-2 font-bold"><TrendingUp className="h-4 w-4" /> <span className="text-gradient">Main Growth View</span></TabsTrigger>
-                  <TabsTrigger value="recruiter" className="gap-2 font-bold"><Users className="h-4 w-4" /> <span className="text-gradient">What Recruiters See</span></TabsTrigger>
-                  <TabsTrigger value="badges" className="gap-2 font-bold"><Crown className="h-4 w-4" /> <span className="text-gradient">Badges</span></TabsTrigger>
-                  <TabsTrigger value="repos" className="gap-2 font-bold"><Sparkles className="h-4 w-4" /> <span className="text-gradient">Project List</span></TabsTrigger>
+                  <TabsTrigger value="ai" className="gap-2 font-bold"><TrendingUp className="h-4 w-4" /> Main Growth View</TabsTrigger>
+                  <TabsTrigger value="recruiter" className="gap-2 font-bold"><Users className="h-4 w-4" /> What Recruiters See</TabsTrigger>
+                  <TabsTrigger value="badges" className="gap-2 font-bold"><Crown className="h-4 w-4" /> Badges</TabsTrigger>
+                  <TabsTrigger value="repos" className="gap-2 font-bold"><Sparkles className="h-4 w-4" /> Project List</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="ai" className="mt-6 space-y-6">
