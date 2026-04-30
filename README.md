@@ -1,5 +1,14 @@
 # 💎 GitInsight AI — Premium GitHub Profile Analyzer
 
+```text
+   ____ _ _   ___           _       _     _          _    ___ 
+  / ___(_) |_|_ _|_ __  ___(_) __ _| |__ | |_       / \  |_ _|
+ | |  _| | __|| || '_ \/ __| |/ _` | '_ \| __|     / _ \  | | 
+ | |_| | | |_ | || | | \__ \ | (_| | | | | |_     / ___ \  | | 
+  \____|_|\__|___|_| |_|___/_|\__, |_| |_|\__|   /_/   \_\___|
+                              |___/                            
+```
+
 <p align="center">
   <img src="https://img.shields.io/badge/version-2.1.0-orange?style=for-the-badge" alt="Version" />
   <img src="https://img.shields.io/badge/license-MIT-blue?style=for-the-badge" alt="License" />
@@ -56,6 +65,20 @@ For deep technical dives, refer to our specialized documentation:
 - 🏗️ [ARCHITECTURE.md](./ARCHITECTURE.md) — System design, data flow, and image optimization logic.
 - 🧠 [CORE_LOGIC.md](./CORE_LOGIC.md) — Scoring algorithms, metric weighting, and AI prompts.
 - 📝 [INSTRUCTIONS.md](./INSTRUCTIONS.md) — Individual file principles and operational guides.
+
+---
+
+### 📂 Project Structure
+
+- 📁 `src/` — Main application source code
+  - 🧩 `components/` — Reusable UI modules
+  - 📄 `pages/` — Top-level view controllers
+  - 🎨 `index.css` — Global styles & design system
+- 📁 `public/` — Static assets & global icons
+- 🏗️ `ARCHITECTURE.md` — System design & optimization logic
+- 🧠 `CORE_LOGIC.md` — Scoring algorithms & AI engine
+- 📝 `INSTRUCTIONS.md` — Development & file principles
+- ⚙️ `package.json` — Dependency management
 
 ---
 
