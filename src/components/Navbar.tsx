@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink as RNavLink, useLocation, useParams } from "react-router-dom";
-import { BookOpen, Github, History as HistoryIcon, Home as HomeIcon, Search, HelpCircle, BarChart3 } from "lucide-react";
+import { BookOpen, Github, History as HistoryIcon, Home as HomeIcon, Search, HelpCircle, BarChart3, Menu, X as CloseIcon } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
+import { AnimatePresence, motion } from "framer-motion";
 
 const links = [
   { to: "/", label: "Home", icon: HomeIcon },
@@ -15,6 +16,7 @@ export function Navbar() {
   const loc = useLocation();
   const { username: resultUsername } = useParams();
   const [scrolled, setScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [lastUser, setLastUser] = useState<string | null>(null);
   const isOnResult = loc.pathname.startsWith("/result/");
 
@@ -142,19 +144,57 @@ export function Navbar() {
             )}
           </nav>
 
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-            <a
-              href="https://github.com/KGFCH2/GitInsight-AI"
-              target="_blank"
-              rel="noreferrer"
-              className="group icon-pop flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card/40 transition-all duration-300 hover:-translate-y-1 hover:border-brand-1/50 hover:shadow-[0_0_15px_rgba(249,115,22,0.4)]"
-              aria-label="GitHub"
+            {/* Mobile Hamburger */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-border md:hidden"
+              aria-label="Toggle Menu"
             >
-              <Github className="h-4 w-4 transition-all duration-300 group-hover:scale-110 group-hover:text-brand-1 drop-shadow-[0_0_8px_rgba(249,115,22,0.5)]" />
-            </a>
+              {isOpen ? <CloseIcon className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Menu Overlay */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="overflow-hidden bg-background/95 backdrop-blur-md md:hidden"
+            >
+              <div className="container flex flex-col gap-1 p-4 border-t border-border/50">
+                {links.map((l) => (
+                  <RNavLink
+                    key={l.to}
+                    to={l.to}
+                    onClick={() => setIsOpen(false)}
+                    className={({ isActive }) =>
+                      cn(
+                        "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-colors",
+                        isActive ? "bg-brand/10 text-brand-1" : "text-muted-foreground hover:bg-muted/50"
+                      )
+                    }
+                  >
+                    <l.icon className="h-4 w-4" />
+                    {l.label}
+                  </RNavLink>
+                ))}
+                {isOnResult && resultUsername && (
+                  <RNavLink
+                    to={`/result/${resultUsername}`}
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-muted-foreground hover:bg-muted/50"
+                  >
+                    <BarChart3 className="h-4 w-4" />
+                    Current: @{resultUsername}
+                  </RNavLink>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
     </div>
   );
