@@ -1,10 +1,6 @@
 # 💎 GitInsight AI — Premium GitHub Profile Analyzer
 
 <p align="center">
-  <img src="./public/banner.png" alt="GitInsight AI Banner" width="100%" />
-</p>
-
-<p align="center">
   <img src="https://img.shields.io/badge/version-2.1.0-orange?style=for-the-badge" alt="Version" />
   <img src="https://img.shields.io/badge/license-MIT-blue?style=for-the-badge" alt="License" />
   <img src="https://img.shields.io/badge/react-18.x-61DAFB?style=for-the-badge&logo=react" alt="React" />
