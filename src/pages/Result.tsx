@@ -145,10 +145,44 @@ const Result = () => {
         "Veteran Coder": "/badge-veteran.png",
       };
 
+      const badgeFilters: Record<string, string> = {
+        "Star Collector": "none",
+        "Open Source Hero": "hue-rotate(15deg) brightness(1.1)",
+        "Polyglot": "hue-rotate(200deg)",
+        "Consistent Contributor": "hue-rotate(330deg)",
+        "Community Builder": "hue-rotate(250deg)",
+        "Prolific Creator": "hue-rotate(30deg)",
+        "Elite Profile": "hue-rotate(45deg) saturate(1.5)",
+        "Top Repo Builder": "hue-rotate(180deg)",
+        "Rising Star": "hue-rotate(280deg)",
+        "Veteran Coder": "hue-rotate(120deg) brightness(0.8)",
+      };
+
+      const fetchProcessedB64 = async (url: string, filter: string): Promise<string | null> => {
+        try {
+          const resp = await fetch(url);
+          const blob = await resp.blob();
+          const img = await new Promise<HTMLImageElement>((resolve) => {
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.src = URL.createObjectURL(blob);
+          });
+          const canvas = document.createElement("canvas");
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext("2d");
+          if (!ctx) return null;
+          ctx.filter = filter;
+          ctx.drawImage(img, 0, 0);
+          return canvas.toDataURL("image/png");
+        } catch { return null; }
+      };
+
       const badgePromises = data.badges.map(async (b) => {
         const path = badgeAssetMap[b.name];
         if (!path) return null;
-        const b64 = await fetchB64(path);
+        const filter = badgeFilters[b.name] || "none";
+        const b64 = await fetchProcessedB64(path, filter);
         return b64 ? { name: b.name, b64 } : null;
       });
 
@@ -415,40 +449,39 @@ const Result = () => {
                       ]}
                     />
                   </div>
+                <div className="mt-auto grid grid-cols-2 gap-2 pt-6 lg:grid-cols-3">
+                  <Button
+                    onClick={handleShare}
+                    size="sm"
+                    className="gap-2 bg-blue-600 font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-blue-700"
+                  >
+                    <Share2 className="h-4 w-4" /> Share
+                  </Button>
+                  <Button
+                    onClick={handleExport}
+                    size="sm"
+                    className="gap-2 bg-emerald-600 font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-400"
+                  >
+                    <Download className="h-4 w-4" /> Export PDF
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement("a");
+                      a.href = url;
+                      a.download = `gitinsight-${data.user.login}.json`;
+                      a.click();
+                    }}
+                    size="sm"
+                    className="gap-2 bg-amber-600 font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-amber-700 dark:bg-amber-500 dark:hover:bg-amber-400"
+                  >
+                    <FileCode className="h-4 w-4" /> Export JSON
+                  </Button>
                 </div>
               </motion.div>
             </div>
 
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Button
-                onClick={share}
-                size="sm"
-                className="gap-2 bg-blue-600 font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400"
-              >
-                <Share2 className="h-4 w-4" /> Share
-              </Button>
-              <Button
-                onClick={handleExport}
-                size="sm"
-                className="gap-2 bg-emerald-600 font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-400"
-              >
-                <Download className="h-4 w-4" /> Export PDF
-              </Button>
-              <Button
-                onClick={() => {
-                  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement("a");
-                  a.href = url;
-                  a.download = `gitinsight-${data.user.login}.json`;
-                  a.click();
-                }}
-                size="sm"
-                className="gap-2 bg-amber-600 font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-amber-700 dark:bg-amber-500 dark:hover:bg-amber-400"
-              >
-                <FileCode className="h-4 w-4" /> Export JSON
-              </Button>
-            </div>
 
             {/* Best Repo */}
             {data.bestRepo && (

@@ -275,24 +275,32 @@ export function exportPdf(
     sectionHeader("STRATEGIC BADGES", C.brandDark);
     let bx = margin;
     data.badges.slice(0, 10).forEach((b) => {
-      doc.setFont(FONT, "bold");
-      doc.setFontSize(7.5);
       const bImg = badgeIcons?.[b.name];
-      const tw = doc.getTextWidth(b.name) + (bImg ? 22 : 12);
+      const radius = 18;
+      const diameter = radius * 2;
+      const padding = 6;
       
-      if (bx + tw > W - margin) { bx = margin; y += 20; }
+      if (bx + diameter + 60 > W - margin) { bx = margin; y += diameter + 15; }
       
-      roundedRect(bx, y, tw, 16, 8, C.success);
       if (bImg) {
-        // Try to draw circular badge icon
         try {
-          doc.addImage(bImg, "PNG", bx + 4, y + 3, 10, 10);
-        } catch { /* skip if error */ }
+          // Draw circular image by using circle mask (jsPDF doesn't have clipping, but we can draw a circle over background)
+          // Actually, we'll just draw the image larger and place name next to it
+          doc.addImage(bImg, "PNG", bx, y, diameter, diameter);
+        } catch { /* skip */ }
       }
       
-      setText(C.white);
-      doc.text(b.name, bx + (bImg ? 16 : 6), y + 10.5);
-      bx += tw + 5;
+      doc.setFont(FONT, "bold");
+      doc.setFontSize(8);
+      setText(C.brandDark);
+      doc.text(b.name, bx + diameter + 5, y + 15);
+      
+      doc.setFont(FONT, "normal");
+      doc.setFontSize(6);
+      setText(C.muted);
+      doc.text(b.description.substring(0, 40) + "...", bx + diameter + 5, y + 25);
+
+      bx += diameter + 80;
     });
   }
 
