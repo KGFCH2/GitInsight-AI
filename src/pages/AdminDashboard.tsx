@@ -110,9 +110,18 @@ const AdminDashboard = () => {
               <ShieldCheck className="h-10 w-10 text-brand-1" />
             )}
           </div>
-          <label className="absolute -bottom-2 -right-2 p-2 bg-brand text-white rounded-lg shadow-lg cursor-pointer hover:scale-110 transition-transform">
+          <label 
+            htmlFor="admin-avatar-upload"
+            className="absolute -bottom-2 -right-2 p-2 bg-brand text-white rounded-lg shadow-lg cursor-pointer hover:scale-110 transition-transform"
+          >
             <Camera className="h-4 w-4" />
-            <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} />
+            <input 
+              id="admin-avatar-upload"
+              type="file" 
+              className="hidden" 
+              accept="image/*" 
+              onChange={handleImageUpload} 
+            />
           </label>
         </div>
 
@@ -175,7 +184,7 @@ const AdminDashboard = () => {
                 onClick={handleFullRefresh} 
                 disabled={isRefreshing}
                 size="icon" 
-                className="h-10 w-10 rounded-xl bg-brand text-white shadow-glow"
+                className="h-10 w-10 rounded-xl bg-brand text-white dark:text-black shadow-glow"
               >
                 <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
               </Button>
