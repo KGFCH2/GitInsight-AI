@@ -397,7 +397,7 @@ const Result = () => {
                       color="brand"
                     />
                     <Stat
-                      label="Projects"
+                      label="Repos"
                       value={data.repos.length}
                       icon={Sparkles}
                       onClick={() => {
@@ -528,7 +528,7 @@ const Result = () => {
                   <TabsTrigger value="ai" className="gap-2 font-bold"><TrendingUp className="h-4 w-4" /> Main Growth View</TabsTrigger>
                   <TabsTrigger value="recruiter" className="gap-2 font-bold"><Users className="h-4 w-4" /> What Recruiters See</TabsTrigger>
                   <TabsTrigger value="badges" className="gap-2 font-bold"><Crown className="h-4 w-4" /> Badges</TabsTrigger>
-                  <TabsTrigger value="repos" className="gap-2 font-bold"><Sparkles className="h-4 w-4" /> Project List</TabsTrigger>
+                  <TabsTrigger value="repos" className="gap-2 font-bold"><Sparkles className="h-4 w-4" /> Repository List</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="ai" className="mt-6 space-y-6">
@@ -579,7 +579,7 @@ const Result = () => {
                     </Card>
                   )}
                   {data.ai.projectIdeas?.length > 0 && (
-                    <Card title="Project Ideas" icon={Sparkles} iconColor="text-cyan-500">
+                    <Card title="Repository Ideas" icon={Sparkles} iconColor="text-cyan-500">
                       <BulletList items={data.ai.projectIdeas} iconType="idea" />
                     </Card>
                   )}
