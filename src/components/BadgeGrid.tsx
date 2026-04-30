@@ -54,6 +54,19 @@ const BADGE_FILTERS: Record<string, string> = {
   "Veteran Coder": "hue-rotate(120deg) brightness(0.8)",
 };
 
+const BADGE_THEMES: Record<string, { bg: string; border: string; glow: string }> = {
+  "Star Collector": { bg: "from-amber-400/20 to-orange-500/20", border: "border-amber-500/50", glow: "shadow-amber-500/20" },
+  "Open Source Hero": { bg: "from-emerald-400/20 to-teal-500/20", border: "border-emerald-500/50", glow: "shadow-emerald-500/20" },
+  "Polyglot": { bg: "from-blue-400/20 to-cyan-500/20", border: "border-blue-500/50", glow: "shadow-blue-500/20" },
+  "Consistent Contributor": { bg: "from-rose-400/20 to-red-500/20", border: "border-rose-500/50", glow: "shadow-rose-500/20" },
+  "Community Builder": { bg: "from-indigo-400/20 to-violet-500/20", border: "border-indigo-500/50", glow: "shadow-indigo-500/20" },
+  "Prolific Creator": { bg: "from-purple-400/20 to-fuchsia-500/20", border: "border-purple-500/50", glow: "shadow-purple-500/20" },
+  "Elite Profile": { bg: "from-sky-400/20 to-blue-600/20", border: "border-sky-500/50", glow: "shadow-sky-500/20" },
+  "Top Repo Builder": { bg: "from-slate-400/20 to-gray-600/20", border: "border-slate-500/50", glow: "shadow-slate-500/20" },
+  "Rising Star": { bg: "from-yellow-400/20 to-amber-600/20", border: "border-yellow-500/50", glow: "shadow-yellow-500/20" },
+  "Veteran Coder": { bg: "from-orange-400/20 to-red-700/20", border: "border-orange-600/50", glow: "shadow-orange-600/20" },
+};
+
 export function BadgeGrid({ badges }: { badges: { name: string; description: string }[] }) {
   const handleDownload = async (badgeName: string) => {
     const imgUrl = BADGE_IMAGES[badgeName];
@@ -66,7 +79,6 @@ export function BadgeGrid({ badges }: { badges: { name: string; description: str
       const link = document.createElement("a");
       link.href = url;
       
-      // Extract filename from path (e.g., /badge-star.png -> badge-star.png)
       const filename = imgUrl.split("/").pop() || `${badgeName.toLowerCase().replace(/\s+/g, "-")}.png`;
       
       link.download = filename;
@@ -83,7 +95,7 @@ export function BadgeGrid({ badges }: { badges: { name: string; description: str
 
   if (!badges.length) {
     return (
-      <div className="rounded-xl border border-dashed border-border bg-card/40 p-6 text-center text-sm text-muted-foreground">
+      <div className="rounded-xl border border-border bg-card/40 p-6 text-center text-sm text-muted-foreground">
         No badges yet — keep contributing to unlock achievements.
       </div>
     );
@@ -94,6 +106,7 @@ export function BadgeGrid({ badges }: { badges: { name: string; description: str
         const Icon = ICONS[b.name] ?? Award;
         const img = BADGE_IMAGES[b.name];
         const filter = BADGE_FILTERS[b.name] || "";
+        const theme = BADGE_THEMES[b.name] ?? { bg: "from-brand-1/20 to-brand-2/20", border: "border-brand-1/40", glow: "shadow-brand-1/20" };
         return (
           <motion.div
             key={b.name}
@@ -114,17 +127,17 @@ export function BadgeGrid({ badges }: { badges: { name: string; description: str
               </Button>
             </div>
             <div className="flex gap-4">
-              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-brand/40 bg-gradient-to-br from-brand-1/20 to-purple-500/20 shadow-xl transition-all duration-500 hover:scale-110 hover:border-brand-1 hover:shadow-brand-1/40 flex items-center justify-center p-1.5">
-                <div className="absolute inset-0 bg-brand-1/5 backdrop-blur-[2px]" />
+              <div className={`relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 ${theme.border} bg-gradient-to-br ${theme.bg} ${theme.glow} shadow-xl transition-all duration-500 hover:scale-110 hover:shadow-2xl flex items-center justify-center p-1.5`}>
+                <div className="absolute inset-0 bg-white/5 backdrop-blur-[1px]" />
                 {img ? (
                   <img 
                     src={img} 
                     alt={b.name} 
-                    className="relative z-10 h-full w-full object-contain drop-shadow-lg transition-transform duration-300" 
+                    className="relative z-10 h-full w-full object-contain drop-shadow-xl transition-transform duration-300" 
                     style={{ filter }}
                   />
                 ) : (
-                  <div className="relative z-10 flex h-full w-full items-center justify-center text-brand-1">
+                  <div className="relative z-10 flex h-full w-full items-center justify-center text-foreground">
                     <Icon className="h-7 w-7" />
                   </div>
                 )}
