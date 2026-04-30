@@ -178,10 +178,10 @@ export function exportPdf(
 
   const gridX = cx + 55;
   const stats = [
-    { l: "STARS", v: data.score.stats.totalStars, c: C.warning, i: "star" as const },
-    { l: "FORKS", v: data.score.stats.totalForks, c: C.brand, i: "fork" as const },
-    { l: "REPOS", v: data.score.stats.originalRepoCount, c: C.success, i: "box" as const },
-    { l: "LANGS", v: data.score.stats.languageCount, c: C.accent, i: "code" as const }
+    { l: "STARS", v: data.score.stats.totalStars, c: C.warning, i: "star" as const, sl: "All Stars Earned by users" },
+    { l: "FORKS", v: data.score.stats.totalForks, c: C.brand, i: "fork" as const, sl: "All Forked Repos" },
+    { l: "REPOS", v: data.score.stats.originalRepoCount, c: C.success, i: "box" as const, sl: "Only Own Repos, excluding Forked" },
+    { l: "LANGS", v: data.score.stats.languageCount, c: C.accent, i: "code" as const, sl: "Most Used Languages" }
   ];
   const sw = (cardW - 110) / 4;
   stats.forEach((st, i) => {
@@ -198,8 +198,12 @@ export function exportPdf(
     doc.text(valStr, blockCenter + 5 - doc.getTextWidth(valStr) / 2, y + 37);
 
     doc.setFontSize(7);
-    setText(C.muted);
+    setText(C.ink);
     doc.text(st.l, blockCenter + 5 - doc.getTextWidth(st.l) / 2, y + 49);
+
+    doc.setFontSize(5.5);
+    setText(C.muted);
+    doc.text(st.sl, blockCenter + 5 - doc.getTextWidth(st.sl) / 2, y + 57);
   });
 
   y += 95;
