@@ -26,6 +26,7 @@ import {
   Gauge,
   Trophy,
   FileCode,
+  Flame,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -138,10 +139,10 @@ const Result = () => {
         "Consistent Contributor": "/badge-consistent.png",
         "Community Builder": "/badge-community.png",
         "Prolific Creator": "/badge-prolific.png",
-        "Elite Profile": "/badge-hero.png",
-        "Top Repo Builder": "/badge-star.png",
-        "Rising Star": "/badge-polyglot.png",
-        "Veteran Coder": "/badge-community.png",
+        "Elite Profile": "/badge-elite.png",
+        "Top Repo Builder": "/badge-toprepo.png",
+        "Rising Star": "/badge-rising.png",
+        "Veteran Coder": "/badge-veteran.png",
       };
 
       const badgePromises = data.badges.map(async (b) => {

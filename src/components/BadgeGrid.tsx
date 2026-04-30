@@ -3,10 +3,12 @@ import {
   Code2,
   Flame,
   Rocket,
+  ShieldCheck,
   Sparkles,
   Star,
   Trophy,
   Users,
+  Zap,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -17,10 +19,10 @@ const BADGE_IMAGES: Record<string, string> = {
   "Consistent Contributor": "/badge-consistent.png",
   "Community Builder": "/badge-community.png",
   "Prolific Creator": "/badge-prolific.png",
-  "Elite Profile": "/badge-hero.png",
-  "Top Repo Builder": "/badge-star.png",
-  "Rising Star": "/badge-polyglot.png",
-  "Veteran Coder": "/badge-community.png",
+  "Elite Profile": "/badge-elite.png",
+  "Top Repo Builder": "/badge-toprepo.png",
+  "Rising Star": "/badge-rising.png",
+  "Veteran Coder": "/badge-veteran.png",
 };
 
 const ICONS: Record<string, typeof Star> = {
