@@ -11,14 +11,14 @@ This diagram illustrates how data travels from the GitHub API through our logic 
 ```mermaid
 graph TD
     %% Node Definitions
-    User((👤 Developer))
-    Frontend[Vite + React SPA]
-    GitHubAPI[🌐 GitHub REST API]
-    DataProcessor[⚙️ lib/api.ts]
-    ScoreEngine[🔢 Scoring Engine]
-    AI_Model[🤖 AI Analysis Model]
-    UI[✨ Result Dashboard]
-    PDF[📄 PDF Export Engine]
+    User(( "👤 Developer" ))
+    Frontend["Vite + React SPA"]
+    GitHubAPI["🌐 GitHub REST API"]
+    DataProcessor["⚙️ lib/api.ts"]
+    ScoreEngine["🔢 Scoring Engine"]
+    AI_Model["🤖 AI Analysis Model"]
+    UI["✨ Result Dashboard"]
+    PDF["📄 PDF Export Engine"]
 
     %% Flow
     User -->|Username| Frontend
@@ -33,8 +33,8 @@ graph TD
     %% Styling
     style User fill:#f97316,stroke:#fff,stroke-width:2px,color:#fff
     style Frontend fill:#6366f1,stroke:#fff,stroke-width:2px,color:#fff
-    style GitHubAPI fill:#0f172a,stroke:#fff,stroke-width:2px,color:#fff
-    style DataProcessor fill:#334155,stroke:#fff,stroke-width:1px,color:#fff
+    style GitHubAPI fill:#1e293b,stroke:#fff,stroke-width:2px,color:#fff
+    style DataProcessor fill:#475569,stroke:#fff,stroke-width:1px,color:#fff
     style ScoreEngine fill:#10b981,stroke:#fff,stroke-width:1px,color:#fff
     style AI_Model fill:#8b5cf6,stroke:#fff,stroke-width:1px,color:#fff
     style UI fill:#ec4899,stroke:#fff,stroke-width:2px,color:#fff
@@ -50,16 +50,16 @@ The application follows a modular structure where UI components are decoupled fr
 ```mermaid
 graph LR
     subgraph "✨ UI Layer (Presentational)"
-        App[App.tsx]
-        Pages[Pages /Result, /Admin, /Home]
-        Components[Components /BadgeGrid, /ScoreRing, /RepoCard]
+        App["📱 App.tsx"]
+        Pages["📄 Pages /Result, /Admin, /Home"]
+        Components["🧩 Components /BadgeGrid, /ScoreRing, /RepoCard"]
     end
 
     subgraph "🧠 Logic Layer (Functional)"
-        API[lib/api.ts]
-        PDF_Logic[lib/pdf.ts]
-        Types[lib/types.ts]
-        Utils[lib/utils.ts]
+        API["⚙️ lib/api.ts"]
+        PDF_Logic["📄 lib/pdf.ts"]
+        Types["🏷️ lib/types.ts"]
+        Utils["🛠️ lib/utils.ts"]
     end
 
     App --> Pages
@@ -68,13 +68,13 @@ graph LR
     Pages -.-> PDF_Logic
 
     %% Styling
-    style App fill:#4f46e5,color:#fff
-    style Pages fill:#818cf8,color:#fff
-    style Components fill:#c7d2fe,color:#000
-    style API fill:#059669,color:#fff
-    style PDF_Logic fill:#d97706,color:#fff
-    style Types fill:#4b5563,color:#fff
-    style Utils fill:#9ca3af,color:#000
+    style App fill:#4f46e5,stroke:#fff,color:#fff
+    style Pages fill:#818cf8,stroke:#fff,color:#fff
+    style Components fill:#c7d2fe,stroke:#4f46e5,color:#1e1b4b
+    style API fill:#059669,stroke:#fff,color:#fff
+    style PDF_Logic fill:#d97706,stroke:#fff,color:#fff
+    style Types fill:#4b5563,stroke:#fff,color:#fff
+    style Utils fill:#9ca3af,stroke:#000,color:#000
 ```
 
 ---
@@ -85,10 +85,10 @@ To manage the **5MB LocalStorage limit** while allowing professional avatars, we
 
 ```mermaid
 sequenceDiagram
-    participant A as 👤 Admin User
-    participant B as 📂 File Input
-    participant C as 🎨 HTML5 Canvas
-    participant D as 💾 LocalStorage
+    participant A as "👤 Admin User"
+    participant B as "📂 File Input"
+    participant C as "🎨 HTML5 Canvas"
+    participant D as "💾 LocalStorage"
 
     A->>B: Uploads High-Res Photo (e.g. 5MB)
     B->>C: Pass Raw File
