@@ -49,13 +49,6 @@
 
 ---
 
-### 📄 Professional Audit Mockup
-
-<p align="center">
-  <img src="./public/audit-mockup.png" alt="GitInsight Audit Mockup" width="80%" />
-</p>
-
----
 
 ### 📖 Internal Resources
 
