@@ -55,7 +55,7 @@ const Result = () => {
   const [showTop, setShowTop] = useState(false);
   const { username = "" } = useParams();
   const location = useLocation();
-  const [modalType, setModalType] = useState<"stars" | "followers" | "langs" | null>(null);
+  const [modalType, setModalType] = useState<"stars" | "followers" | "langs" | "badge-guide" | null>(null);
   const [activeTab, setActiveTab] = useState("ai");
 
   useEffect(() => {
@@ -332,7 +332,7 @@ const Result = () => {
                     </div>
                   </div>
 
-                  <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+                  <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
                     <Stat
                       label="Ambassador XP"
                       value={data.score.xp}
@@ -444,8 +444,7 @@ const Result = () => {
                   a.click();
                 }}
                 size="sm"
-                variant="outline"
-                className="gap-2 font-bold border-brand-1/40 hover:border-brand-1 hover:bg-brand-1/5"
+                className="gap-2 bg-amber-600 font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-amber-700 dark:bg-amber-500 dark:hover:bg-amber-400"
               >
                 <FileCode className="h-4 w-4" /> Export JSON
               </Button>
@@ -596,8 +595,16 @@ const Result = () => {
                     <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-brand/10 px-3 py-1 text-xs font-black text-brand-1">
                       <Trophy className="h-3.5 w-3.5" /> You've earned {data.badges.length} badges!
                     </div>
-                    <BadgeGrid badges={data.badges} />
-                  </Card>
+                     <BadgeGrid badges={data.badges} />
+                     <div className="mt-8 border-t border-border/40 pt-6">
+                       <button 
+                         onClick={() => setModalType("badge-guide")}
+                         className="inline-flex items-center gap-2 text-sm font-bold text-brand-1 hover:underline"
+                       >
+                         <Target className="h-4 w-4" /> View all Badges & Find How to Get them
+                       </button>
+                     </div>
+                   </Card>
                 </TabsContent>
               </Tabs>
             </div>
@@ -630,6 +637,7 @@ const Result = () => {
                   {modalType === "stars" && <><Star className="h-6 w-6 fill-current" /> Starred Repositories</>}
                   {modalType === "followers" && <><Users className="h-6 w-6" /> Followers List</>}
                   {modalType === "langs" && <><TrendingUp className="h-6 w-6" /> Language Breakdown</>}
+                  {modalType === "badge-guide" && <><Target className="h-6 w-6" /> Badge Guide</>}
                 </h3>
                 <Button
                   variant="ghost"
@@ -686,28 +694,52 @@ const Result = () => {
                   </div>
                 )}
                 {modalType === "langs" && (
-                  <div className="space-y-4">
-                    {data?.score.stats.langDetails?.map((l, i) => (
-                      <div key={i} className="space-y-1.5">
-                        <div className="flex justify-between text-sm">
-                          <span className="font-semibold">{l.name}</span>
-                          <span className="text-muted-foreground">{l.percentage}% ({l.count} repos)</span>
-                        </div>
-                        <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: `${l.percentage}%` }}
-                            className="h-full bg-brand"
-                          />
-                        </div>
-                      </div>
-                    ))}
-                    {(!data?.score.stats.langDetails || data.score.stats.langDetails.length === 0) && (
-                      <p className="py-8 text-center text-sm text-muted-foreground">No language data available.</p>
-                    )}
-                  </div>
-                )}
-              </div>
+                   <div className="space-y-4">
+                     {data?.score.stats.langDetails?.map((l, i) => (
+                       <div key={i} className="space-y-1.5">
+                         <div className="flex justify-between text-sm">
+                           <span className="font-semibold">{l.name}</span>
+                           <span className="text-muted-foreground">{l.percentage}% ({l.count} repos)</span>
+                         </div>
+                         <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                           <motion.div
+                             initial={{ width: 0 }}
+                             animate={{ width: `${l.percentage}%` }}
+                             className="h-full bg-brand"
+                           />
+                         </div>
+                       </div>
+                     ))}
+                     {(!data?.score.stats.langDetails || data.score.stats.langDetails.length === 0) && (
+                       <p className="py-8 text-center text-sm text-muted-foreground">No language data available.</p>
+                     )}
+                   </div>
+                 )}
+                 {modalType === "badge-guide" && (
+                   <div className="space-y-6">
+                     <p className="text-sm text-muted-foreground">Master your GitHub profile to unlock these 10 strategic ambassador badges.</p>
+                     <div className="grid gap-4 sm:grid-cols-2">
+                       {[
+                         { name: "Star Collector", req: "Accumulate 100+ total stars across your repos." },
+                         { name: "Open Source Hero", req: "Reach a prestigious 1,000+ total stars." },
+                         { name: "Polyglot", req: "Show proficiency in 5+ different languages." },
+                         { name: "Consistent Contributor", req: "Maintain activity with 3+ repos updated in 30 days." },
+                         { name: "Community Builder", req: "Build an audience of 50+ followers." },
+                         { name: "Prolific Creator", req: "Successfully manage 20+ public repositories." },
+                         { name: "Elite Profile", req: "Achieve a total profile score of 75+." },
+                         { name: "Top Repo Builder", req: "Build at least one 'flagship' repo with 50+ stars." },
+                         { name: "Rising Star", req: "Score 50+ in your very first year on GitHub." },
+                         { name: "Veteran Coder", req: "Maintain an active presence for 5+ years." },
+                       ].map((b, i) => (
+                         <div key={i} className="rounded-xl border border-border bg-muted/20 p-3">
+                           <div className="text-xs font-black uppercase text-brand-1">{b.name}</div>
+                           <div className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{b.req}</div>
+                         </div>
+                       ))}
+                     </div>
+                   </div>
+                 )}
+               </div>
             </motion.div>
           </div>
         )}
@@ -735,10 +767,10 @@ function Stat({
     <button
       onClick={onClick}
       disabled={!onClick}
-      className={`group relative overflow-hidden rounded-xl border border-border bg-background/40 p-3 text-left transition-all ${onClick ? "hover:border-brand-1/40 dark:hover:border-brand-1/40 hover:bg-muted/5 active:scale-95 shadow-sm" : ""
+      className={`group relative overflow-hidden rounded-xl border border-border bg-background/40 p-4 text-left transition-all ${onClick ? "hover:border-brand-1/40 dark:hover:border-brand-1/40 hover:bg-muted/5 active:scale-95 shadow-sm" : ""
         }`}
     >
-      <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground transition-colors group-hover:text-brand-1 duration-300">
+      <div className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider text-muted-foreground transition-colors group-hover:text-brand-1 duration-300">
         <Icon className="h-3.5 w-3.5 shrink-0" /> {label}
       </div>
       <div className="mt-1 font-display text-2xl font-black tabular-nums text-foreground transition-all group-hover:scale-105 duration-300">

@@ -2,17 +2,19 @@
 
 > Professional GitHub Profile Analytics & Ambassador Ranking Platform.
 
-GitInsight AI is a powerful evaluation system that helps organizations identify, rank, and improve campus ambassadors using GitHub performance metrics. Get a **0–100 profile score**, AI-generated recruiter-style insights, repo-level classification (Strong / Improve / Archive), badges, and exportable reports.
+GitInsight AI is a powerful evaluation system that helps organizations identify, rank, and improve campus ambassadors using GitHub performance metrics. Get a **0–100 profile score**, AI-generated recruiter-style insights, repo-level classification (Strong / Improve), badges, and exportable reports.
 
 ---
 
 ## ✨ Ambassador Dashboard
+
 - **Rank ambassadors** by 0–100 score, XP and streaks
 - **Recruiter-style** first impressions & TL;DRs
-- **Per-repo classification**: Strong / Improve / Archive
+- **Per-repo classification**: Strong / Improve
 - **Shareable reports**, exportable JSON
 
 ### 🎯 Problem Statement
+
 > "Turn a single ambassador cohort into an always-on, self-sustaining growth engine — making community-led marketing structured, scalable, and measurable."
 
 ---
@@ -22,7 +24,7 @@ GitInsight AI is a powerful evaluation system that helps organizations identify,
 1. **📊 0–100 Profile Score** — Transparent 6-dimension breakdown of popularity, activity, breadth, quality, community, and tenure.
 2. **🤖 AI Insights** — Summary, strengths, weaknesses, and action steps (powered by **Multi-Key Gemini** & Groq fallback).
 3. **💼 Recruiter View** — Hireability paragraph from a professional recruiter's perspective.
-4. **📁 Repo Quality Classifier** — Every repository tagged as Strong / Improve / Archive with visual badges.
+4. **📁 Repo Quality Classifier** — Every repository tagged as Strong / Improve with visual badges.
 5. **🌟 Best Repo Highlight** — Detailed README improvement tips and innovative project ideas.
 6. **🏆 Interactive Dashboards** — Clickable stat tiles for deep dives into starred repos, followers, and languages.
 7. **📄 PDF Export** — Download your results as a polished, color-themed report with real GitHub Achievement logos.
@@ -106,6 +108,18 @@ npm run build
 ```
 
 The build artifacts will be located in the `dist/` directory.
+
+---
+
+## 📊 Metrics Calculation
+
+GitInsight AI uses a transparent logic to calculate ambassador performance:
+
+| Metric | Calculation Logic |
+| :--- | :--- |
+| **Ambassador Score** | Weighted average of 6 dimensions (Popularity, Quality, Activity, etc.) |
+| **Ambassador XP** | `(Total Score * 10) + (Original Repositories * 5)` |
+| **Activity Streak** | Count of repositories updated/pushed within the last 30 days |
 
 ---
 
