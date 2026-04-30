@@ -101,6 +101,22 @@ npm run dev
 ```
 
 ---
+
+### 🚀 Deployment
+
+GitInsight AI is optimized for **Vercel** but can be deployed to any static hosting provider.
+
+#### Vercel Setup:
+1. **Build Command**: `npm run build`
+2. **Output Directory**: `dist`
+3. **Framework Preset**: `Vite`
+4. **Environment Variables**:
+   - `APP_GITHUB_TOKEN`: Your GitHub Personal Access Token.
+   - `APP_GEMINI_API_KEY`: Your primary Google Gemini API Key.
+   - `APP_GROQ_API_KEY`: (Optional) Fallback Groq API Key.
+
+---
+
 <p align="center">
   <i>Created with passion by <b>Babin Bid</b> — GitInsight AI Engineering</i>
 </p>
