@@ -663,18 +663,18 @@ const Result = () => {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-border bg-card shadow-2xl"
             >
-              <div className="flex items-center justify-between border-b p-5 bg-brand-1 text-white">
+              <div className="flex items-center justify-between border-b p-5 bg-white dark:bg-black text-black dark:text-white">
                 <h3 className="flex items-center gap-2 font-display text-xl font-black italic tracking-tight">
-                  {modalType === "stars" && <><Star className="h-6 w-6 fill-current" /> Starred Repositories</>}
-                  {modalType === "followers" && <><Users className="h-6 w-6" /> Followers List</>}
-                  {modalType === "langs" && <><TrendingUp className="h-6 w-6" /> Language Breakdown</>}
-                  {modalType === "badge-guide" && <><Target className="h-6 w-6" /> Badge Guide</>}
+                  {modalType === "stars" && <><Star className="h-6 w-6 fill-current text-brand-1" /> Starred Repositories</>}
+                  {modalType === "followers" && <><Users className="h-6 w-6 text-brand-1" /> Followers List</>}
+                  {modalType === "langs" && <><TrendingUp className="h-6 w-6 text-brand-1" /> Language Breakdown</>}
+                  {modalType === "badge-guide" && <><Target className="h-6 w-6 text-brand-1" /> Badge Guide</>}
                 </h3>
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => setModalType(null)}
-                  className="h-10 w-10 rounded-full bg-white text-[#ef4444] shadow-lg hover:bg-red-50 hover:text-red-600"
+                  className="h-10 w-10 rounded-full bg-black dark:bg-white text-white dark:text-black shadow-lg hover:opacity-80"
                 >
                   <X className="h-6 w-6 stroke-[3]" />
                 </Button>
@@ -688,15 +688,15 @@ const Result = () => {
                         href={r.url}
                         target="_blank"
                         rel="noreferrer"
-                        className="flex items-center justify-between rounded-xl border border-l-4 border-l-[#f59e0b] bg-card p-4 transition-all hover:bg-[#f59e0b]/5 hover:shadow-md"
+                        className="flex items-center justify-between rounded-xl border border-l-4 border-l-brand-1 bg-card p-4 transition-all hover:bg-brand-1/5 hover:shadow-md"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="rounded-lg bg-[#f59e0b]/10 p-2 text-[#f59e0b]">
+                          <div className="rounded-lg bg-brand-1/10 p-2 text-brand-1">
                             <Star className="h-4 w-4 fill-current" />
                           </div>
-                          <span className="font-bold">{r.name}</span>
+                          <span className="font-bold text-gradient">{r.name}</span>
                         </div>
-                        <span className="flex items-center gap-1 font-display text-lg font-black text-[#f59e0b]">
+                        <span className="flex items-center gap-1 font-display text-lg font-black text-gradient">
                           {r.stars}
                         </span>
                       </a>
@@ -711,15 +711,15 @@ const Result = () => {
                         href={f.url}
                         target="_blank"
                         rel="noreferrer"
-                        className="flex flex-col items-center gap-3 rounded-2xl border border-l-4 border-l-[#f59e0b] bg-card p-4 transition-all hover:bg-[#f59e0b]/5 hover:shadow-md"
+                        className="flex flex-col items-center gap-3 rounded-2xl border border-l-4 border-l-brand-1 bg-card p-4 transition-all hover:bg-brand-1/5 hover:shadow-md"
                       >
                         <div className="relative">
-                          <img src={f.avatar} alt={f.login} className="h-16 w-16 rounded-full border-2 border-[#f59e0b]/30 shadow-sm" />
-                          <div className="absolute -bottom-1 -right-1 rounded-full bg-[#f59e0b] p-1 text-white shadow-sm">
+                          <img src={f.avatar} alt={f.login} className="h-16 w-16 rounded-full border-2 border-brand-1/30 shadow-sm" />
+                          <div className="absolute -bottom-1 -right-1 rounded-full bg-brand-1 p-1 text-white shadow-sm">
                             <Users className="h-3 w-3" />
                           </div>
                         </div>
-                        <span className="text-xs font-black text-[#f59e0b]">@{f.login}</span>
+                        <span className="text-xs font-black text-gradient">@{f.login}</span>
                       </a>
                     ))}
                   </div>
@@ -729,14 +729,14 @@ const Result = () => {
                      {data?.score.stats.langDetails?.map((l, i) => (
                        <div key={i} className="space-y-1.5">
                          <div className="flex justify-between text-sm">
-                           <span className="font-semibold">{l.name}</span>
+                           <span className="font-semibold text-gradient">{l.name}</span>
                            <span className="text-muted-foreground">{l.percentage}% ({l.count} repos)</span>
                          </div>
                          <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
                            <motion.div
                              initial={{ width: 0 }}
                              animate={{ width: `${l.percentage}%` }}
-                             className="h-full bg-[#f59e0b]"
+                             className="h-full bg-gradient-to-r from-brand-1 to-brand-2"
                            />
                          </div>
                        </div>
