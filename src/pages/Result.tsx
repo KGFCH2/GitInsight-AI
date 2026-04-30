@@ -567,12 +567,12 @@ const Result = () => {
                     <Card title={`README tips for ${data.bestRepo.name}`} icon={Lightbulb} iconColor="text-amber-500">
                       <div className="mb-4 text-xs">
                         <a 
-                          href={`${data.bestRepo.url}/blob/main/README.md`} 
+                          href={data.bestRepo.url} 
                           target="_blank" 
                           rel="noreferrer"
                           className="inline-flex items-center gap-1 text-brand-1 hover:underline font-bold"
                         >
-                          View README source <ExternalLink className="h-3 w-3" />
+                          Visit Repository <ExternalLink className="h-3 w-3" />
                         </a>
                       </div>
                       <BulletList items={data.ai.readmeTips} iconType="tip" />
