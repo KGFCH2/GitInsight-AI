@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink as RNavLink, useLocation, useParams } from "react-router-dom";
-import { BookOpen, Github, History as HistoryIcon, Home as HomeIcon, Search, HelpCircle, BarChart3, Menu, X as CloseIcon } from "lucide-react";
+import { BookOpen, Github, History as HistoryIcon, Home as HomeIcon, Search, HelpCircle, BarChart3, Menu, X as CloseIcon, ShieldCheck } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
@@ -144,10 +144,29 @@ export function Navbar() {
             )}
           </nav>
 
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Link
+              to="/admin"
+              className="group icon-pop flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card/40 transition-all duration-300 hover:-translate-y-1 hover:border-brand-1/50 hover:shadow-[0_0_15px_rgba(249,115,22,0.4)]"
+              title="Admin Terminal"
+            >
+              <ShieldCheck className="h-4 w-4 transition-all duration-300 group-hover:scale-110 group-hover:text-brand-1 drop-shadow-[0_0_8px_rgba(249,115,22,0.5)]" />
+            </Link>
+            <a
+              href="https://github.com/KGFCH2/GitInsight-AI"
+              target="_blank"
+              rel="noreferrer"
+              className="group icon-pop flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card/40 transition-all duration-300 hover:-translate-y-1 hover:border-brand-1/50 hover:shadow-[0_0_15px_rgba(249,115,22,0.4)]"
+              aria-label="GitHub"
+            >
+              <Github className="h-4 w-4 transition-all duration-300 group-hover:scale-110 group-hover:text-brand-1 drop-shadow-[0_0_8px_rgba(249,115,22,0.5)]" />
+            </a>
+            
             {/* Mobile Hamburger */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-border md:hidden"
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-border md:hidden ml-1"
               aria-label="Toggle Menu"
             >
               {isOpen ? <CloseIcon className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
