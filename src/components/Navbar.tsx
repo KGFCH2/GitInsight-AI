@@ -3,6 +3,7 @@ import { Link, NavLink as RNavLink, useLocation, useParams } from "react-router-
 import { BookOpen, Github, History as HistoryIcon, Home as HomeIcon, Search, HelpCircle, BarChart3, Menu, X as CloseIcon, ShieldCheck } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
+import { getActiveAdmin } from "@/lib/api";
 import { AnimatePresence, motion } from "framer-motion";
 
 const links = [
@@ -147,7 +148,7 @@ export function Navbar() {
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <Link
-              to="/admin"
+              to={getActiveAdmin() ? "/admin/dashboard" : "/admin"}
               className="group icon-pop flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card/40 transition-all duration-300 hover:-translate-y-1 hover:border-brand-1/50 hover:shadow-[0_0_15px_rgba(249,115,22,0.4)]"
               title="Admin Terminal"
             >

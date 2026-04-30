@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -15,13 +15,19 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { signupAdmin, loginAdmin } from "@/lib/api";
+import { signupAdmin, loginAdmin, getActiveAdmin } from "@/lib/api";
 
 const AdminAuth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+ 
+   useEffect(() => {
+     if (getActiveAdmin()) {
+       navigate("/admin/dashboard");
+     }
+   }, [navigate]);
 
   const [formData, setFormData] = useState({
     username: "",
