@@ -674,7 +674,7 @@ const Result = () => {
                   variant="ghost"
                   size="icon"
                   onClick={() => setModalType(null)}
-                  className="h-10 w-10 rounded-full bg-black dark:bg-white text-white dark:text-black shadow-lg hover:bg-green-500 dark:hover:bg-green-500 hover:text-white dark:hover:text-black transition-colors"
+                  className="h-10 w-10 rounded-full bg-black dark:bg-white text-white dark:text-black shadow-lg hover:bg-orange-500 dark:hover:bg-green-500 hover:text-white dark:hover:text-black transition-colors"
                 >
                   <X className="h-6 w-6 stroke-[3]" />
                 </Button>
