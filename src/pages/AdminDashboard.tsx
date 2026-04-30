@@ -296,22 +296,38 @@ const AdminDashboard = () => {
              </div>
            </Card>
 
-           <Card title="Previous Operations" icon={Search}>
+           <Card 
+             title="Previous Operations" 
+             icon={Search}
+             className="group/card"
+           >
               <div className="space-y-2 mt-2">
-                {history.length > 0 ? history.map((h, i) => (
-                  <button
-                    key={h.login}
-                    onClick={() => navigate(`/result/${h.login}`)}
-                    className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-muted/50 transition-colors text-left group"
-                  >
-                    <img src={h.avatar} className="h-8 w-8 rounded-lg" alt="" />
-                    <div className="flex-1 overflow-hidden">
-                      <div className="text-xs font-bold truncate">@{h.login}</div>
-                      <div className="text-[10px] text-muted-foreground italic">Score: {h.score}</div>
-                    </div>
-                    <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-brand-1" />
-                  </button>
-                )) : (
+                {history.length > 0 ? (
+                  <>
+                    {history.slice(0, 5).map((h, i) => (
+                      <button
+                        key={h.login}
+                        onClick={() => navigate(`/result/${h.login}`)}
+                        className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-muted/50 transition-colors text-left group"
+                      >
+                        <img src={h.avatar} className="h-8 w-8 rounded-lg" alt="" />
+                        <div className="flex-1 overflow-hidden">
+                          <div className="text-xs font-bold truncate">@{h.login}</div>
+                          <div className="text-[10px] text-muted-foreground italic">Score: {h.score}</div>
+                        </div>
+                        <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-brand-1" />
+                      </button>
+                    ))}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => navigate("/history")}
+                      className="w-full mt-2 text-[10px] font-black uppercase italic tracking-wider text-brand-1 hover:bg-brand-1/5"
+                    >
+                      <HistoryIcon className="h-3 w-3 mr-1.5" /> Full History Console
+                    </Button>
+                  </>
+                ) : (
                   <p className="text-[10px] text-muted-foreground italic text-center py-4">No recent operations stored.</p>
                 )}
               </div>
