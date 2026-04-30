@@ -27,6 +27,8 @@ import {
   Trophy,
   FileCode,
   Flame,
+  GitFork,
+  Code2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -366,53 +368,41 @@ const Result = () => {
                     </div>
                   </div>
 
-                  <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
                     <Stat
-                      label="Ambassador XP"
-                      value={data.score.xp}
-                      icon={Zap}
-                      color="brand"
-                      subLabel="Points earned"
-                    />
-                    <Stat
-                      label="Activity Streak"
-                      value={data.score.streak}
-                      icon={Flame}
-                      color="amber"
-                      subLabel="Active repos"
-                    />
-                    <Stat
-                      label="Total Stars"
-                      value={data.starredRepos?.length || 0}
+                      label="Stars"
+                      value={data.score.stats.totalStars}
                       icon={Star}
                       onClick={() => setModalType("stars")}
-                      subLabel="Starred by user"
+                      subLabel="All Stars Earned by users"
                       color="amber"
                     />
                     <Stat
-                      label="Followers"
-                      value={data.user.followers}
-                      icon={Users}
-                      onClick={() => setModalType("followers")}
+                      label="Forks"
+                      value={data.score.stats.totalForks}
+                      icon={GitFork}
+                      subLabel="All Forked Repos"
                       color="brand"
                     />
                     <Stat
-                      label="Projects"
-                      value={data.repos.length}
-                      icon={Sparkles}
+                      label="Repos"
+                      value={data.score.stats.originalRepoCount}
+                      icon={FileCode}
                       onClick={() => {
                         setActiveTab("repos");
                         setTimeout(() => {
                           document.getElementById("repos-list")?.scrollIntoView({ behavior: "smooth" });
                         }, 100);
                       }}
+                      subLabel="Only Own Repos, excluding Forked"
                       color="brand"
                     />
                     <Stat
-                      label="Top Languages"
+                      label="Langs"
                       value={data.score.stats.languageCount}
-                      icon={TrendingUp}
+                      icon={Code2}
                       onClick={() => setModalType("langs")}
+                      subLabel="Most Used Languages"
                       color="brand"
                     />
                   </div>
@@ -528,7 +518,7 @@ const Result = () => {
                   <TabsTrigger value="ai" className="gap-2 font-bold"><TrendingUp className="h-4 w-4" /> Main Growth View</TabsTrigger>
                   <TabsTrigger value="recruiter" className="gap-2 font-bold"><Users className="h-4 w-4" /> What Recruiters See</TabsTrigger>
                   <TabsTrigger value="badges" className="gap-2 font-bold"><Crown className="h-4 w-4" /> Badges</TabsTrigger>
-                  <TabsTrigger value="repos" className="gap-2 font-bold"><Sparkles className="h-4 w-4" /> Project List</TabsTrigger>
+                  <TabsTrigger value="repos" className="gap-2 font-bold"><Sparkles className="h-4 w-4" /> Repository List</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="ai" className="mt-6 space-y-6">
@@ -579,7 +569,7 @@ const Result = () => {
                     </Card>
                   )}
                   {data.ai.projectIdeas?.length > 0 && (
-                    <Card title="Project Ideas" icon={Sparkles} iconColor="text-cyan-500">
+                    <Card title="Repository Ideas" icon={Sparkles} iconColor="text-cyan-500">
                       <BulletList items={data.ai.projectIdeas} iconType="idea" />
                     </Card>
                   )}

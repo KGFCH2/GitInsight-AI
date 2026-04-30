@@ -74,8 +74,8 @@ const faqs = [
     icon: Zap,
   },
   {
-    q: "What are 'Project Ideas' in the result view?",
-    a: "Based on your strongest languages and interests, our AI suggests 5 personalized project ideas that could help you fill gaps in your portfolio or take your skills to the next level.",
+    q: "What are 'Repository Ideas' in the result view?",
+    a: "Based on your strongest languages and interests, our AI suggests 5 personalized repository ideas that could help you fill gaps in your portfolio or take your skills to the next level.",
     icon: Lightbulb,
   },
   {
@@ -89,7 +89,7 @@ const faqs = [
     icon: Users,
   },
   {
-    q: "How can I contribute to this project?",
+    q: "How can I contribute to this repository?",
     a: "GitInsight AI is an evolving platform. If you have suggestions or want to report a bug, please reach out via our official GitHub repository or contact the lead developer, <a href='https://github.com/KGFCH2' target='_blank' rel='noreferrer' class='text-brand-1 hover:underline font-bold'>Babin Bid</a>.",
     icon: ExternalLink,
   }
