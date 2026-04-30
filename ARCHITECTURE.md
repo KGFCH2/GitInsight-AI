@@ -1,46 +1,111 @@
-# System Architecture — GitInsight AI
+# 🏗️ System Architecture — GitInsight AI
 
-GitInsight AI is designed as a high-performance, client-side heavy web application. It prioritizes data privacy, premium aesthetics (Glassmorphism), and efficient local storage management.
+GitInsight AI is engineered as a high-performance, client-side heavy Single Page Application (SPA). It prioritizes **data privacy**, **premium aesthetics**, and **local storage optimization**.
 
-## 1. High-Level System Flow
+---
+
+## 1. 🌐 Global Data Flow
+
+This diagram illustrates how data travels from the GitHub API through our logic engines to the final UI.
 
 ```mermaid
 graph TD
-    User((Developer)) -->|Analysis Request| Frontend[Vite + React SPA]
-    Frontend -->|Fetch API| GitHubAPI[GitHub REST API]
-    GitHubAPI -->|JSON Data| DataProcessor[lib/api.ts]
-    DataProcessor -->|Raw Stats| ScoreEngine[Scoring Engine]
-    DataProcessor -->|Contextual Data| AI_Model[AI Analysis Model]
-    ScoreEngine -->|Final Score| UI[Result Dashboard]
-    AI_Model -->|Insights| UI
-    UI -->|Export| PDF[PDF Reporting Engine]
-    Admin((Platform Commander)) -->|Secure Login| AdminDashboard[Commander Terminal]
-    AdminDashboard -->|Manage| Registry[Ambassador Registry]
-    AdminDashboard -->|Optimize| Compressor[Image Optimization Engine]
+    %% Node Definitions
+    User((👤 Developer))
+    Frontend[Vite + React SPA]
+    GitHubAPI[🌐 GitHub REST API]
+    DataProcessor[⚙️ lib/api.ts]
+    ScoreEngine[🔢 Scoring Engine]
+    AI_Model[🤖 AI Analysis Model]
+    UI[✨ Result Dashboard]
+    PDF[📄 PDF Export Engine]
+
+    %% Flow
+    User -->|Username| Frontend
+    Frontend -->|GET Request| GitHubAPI
+    GitHubAPI -->|JSON Payload| DataProcessor
+    DataProcessor -->|Refined Stats| ScoreEngine
+    DataProcessor -->|Contextual Data| AI_Model
+    ScoreEngine -->|Calculated Score| UI
+    AI_Model -->|Natural Language Insights| UI
+    UI -->|Vector Rendering| PDF
+
+    %% Styling
+    style User fill:#f97316,stroke:#fff,stroke-width:2px,color:#fff
+    style Frontend fill:#6366f1,stroke:#fff,stroke-width:2px,color:#fff
+    style GitHubAPI fill:#0f172a,stroke:#fff,stroke-width:2px,color:#fff
+    style DataProcessor fill:#334155,stroke:#fff,stroke-width:1px,color:#fff
+    style ScoreEngine fill:#10b981,stroke:#fff,stroke-width:1px,color:#fff
+    style AI_Model fill:#8b5cf6,stroke:#fff,stroke-width:1px,color:#fff
+    style UI fill:#ec4899,stroke:#fff,stroke-width:2px,color:#fff
+    style PDF fill:#64748b,stroke:#fff,stroke-width:1px,color:#fff
 ```
 
-## 2. Advanced Component Systems
+---
 
-- **Glassmorphism UI**: Uses a custom `glass-card` utility for premium depth and transparency.
-- **Dynamic Terminology**: The platform dynamically maps all project entities to "Repositories" to align with professional industry standards.
-- **State Management**: Orchestrated via React hooks with strategic `localStorage` persistence for results, history, and admin profiles.
+## 2. 📁 Operational Component Hierarchy
 
-## 3. Storage & Performance Optimization
+The application follows a modular structure where UI components are decoupled from the core business logic.
 
-### Triple-Layer Image Compression
-To stay within the 5MB `localStorage` limit while allowing high-resolution admin uploads, the platform utilizes:
-1.  **Spatial Resampling**: Downscales all uploads to a maximum dimension of `400px` using HTML5 Canvas.
-2.  **Format Transformation**: Automatically converts heavy formats (PNG, RAW) into lightweight `image/jpeg`.
-3.  **Quality Quantization**: Applies a `0.8` quality factor during export, reducing file size by up to 95% without visible loss in fidelity.
+```mermaid
+graph LR
+    subgraph "✨ UI Layer (Presentational)"
+        App[App.tsx]
+        Pages[Pages /Result, /Admin, /Home]
+        Components[Components /BadgeGrid, /ScoreRing, /RepoCard]
+    end
 
-### Reporting Engine
-The `lib/pdf.ts` module handles the generation of professional Audit Reports. It utilizes custom vector drawing (stars, forks) and multi-layered typography to present complex engineering metrics in a clear, recruiters-ready format.
+    subgraph "🧠 Logic Layer (Functional)"
+        API[lib/api.ts]
+        PDF_Logic[lib/pdf.ts]
+        Types[lib/types.ts]
+        Utils[lib/utils.ts]
+    end
 
-## 4. Data Persistence Model
+    App --> Pages
+    Pages --> Components
+    Components -.-> API
+    Pages -.-> PDF_Logic
 
-- **Analysis Results**: Cached using a dual `memory + storage` approach.
-- **Ambassador Registry**: A persistent list of top contributors synchronized via local state.
-- **History Console**: A full operational log of all analyzed profiles, accessible through the Admin Terminal.
+    %% Styling
+    style App fill:#4f46e5,color:#fff
+    style Pages fill:#818cf8,color:#fff
+    style Components fill:#c7d2fe,color:#000
+    style API fill:#059669,color:#fff
+    style PDF_Logic fill:#d97706,color:#fff
+    style Types fill:#4b5563,color:#fff
+    style Utils fill:#9ca3af,color:#000
+```
 
 ---
-*Created by Babin Bid — GitInsight AI Engineering*
+
+## 3. 🖼️ Image Optimization Logic (Commander Terminal)
+
+To manage the **5MB LocalStorage limit** while allowing professional avatars, we use a sophisticated compression pipeline:
+
+```mermaid
+sequenceDiagram
+    participant A as 👤 Admin User
+    participant B as 📂 File Input
+    participant C as 🎨 HTML5 Canvas
+    participant D as 💾 LocalStorage
+
+    A->>B: Uploads High-Res Photo (e.g. 5MB)
+    B->>C: Pass Raw File
+    Note over C: Spatial Resampling<br/>(Resize to 400px)
+    Note over C: Format Shift<br/>(Convert to JPEG)
+    Note over C: Bitrate Quantization<br/>(0.8 Quality)
+    C->>D: Save Optimized Base64 (~50KB)
+    D-->>A: Visual Confirmation
+```
+
+### 🛠️ Optimization Specs:
+- **Spatial**: Max dimension fixed at `400px`.
+- **Format**: Forced `image/jpeg` to eliminate PNG alpha-channel overhead.
+- **Bitrate**: `80%` quality (indistinguishable from 100% for avatars).
+- **Result**: Up to **99% reduction** in storage footprint.
+
+---
+<p align="center">
+  <i>Created by <b>Babin Bid</b> — GitInsight AI Engineering</i>
+</p>

@@ -1,45 +1,89 @@
-# GitInsight AI — Premium GitHub Profile Analyzer
+# 💎 GitInsight AI — Premium GitHub Profile Analyzer
 
-GitInsight AI is a gamified, AI-powered platform designed to help developers showcase their impact, analyze their growth, and connect with recruiters through data-driven insights. It transforms raw GitHub data into a professional, strategic career asset.
+<p align="center">
+  <img src="./public/banner.png" alt="GitInsight AI Banner" width="100%" />
+</p>
 
-## 🚀 Core Features
+<p align="center">
+  <img src="https://img.shields.io/badge/version-2.1.0-orange?style=for-the-badge" alt="Version" />
+  <img src="https://img.shields.io/badge/license-MIT-blue?style=for-the-badge" alt="License" />
+  <img src="https://img.shields.io/badge/react-18.x-61DAFB?style=for-the-badge&logo=react" alt="React" />
+  <img src="https://img.shields.io/badge/vite-latest-646CFF?style=for-the-badge&logo=vite" alt="Vite" />
+</p>
 
-- **Multi-Dimensional Scoring**: A precise 0-100 score evaluating Popularity, Activity, Quality, Breadth, Community, and Tenure.
-*   **Repository-Centric Analysis**: Intelligent classification of "Own Repositories" vs "Forked Repositories" for accurate impact measurement.
-- **Recruiter Perspective**: Exclusive AI insights (Gemini/Groq) detailing how a technical recruiter perceives your profile.
-- **Ambassador Dashboard**: A secure "Commander-in-Chief" terminal for community leads to track progress, rank ambassadors, and manage the registry.
-- **Elite Badge System**: 10 high-fidelity 3D badges awarded for milestones like "Star Collector," "Polyglot," and "Elite Profile."
-- **Professional PDF Audit**: One-click professional reports with detailed metric sublabels, ideal for inclusion in job applications.
-- **Admin Optimization**: Advanced client-side image compression (Auto-resize to 400px, JPEG 80% quality) for efficient profile management.
+---
 
-## 📊 Key Metrics Explained
+### 🌟 Overview
 
-*   **Stars**: "All Stars Earned by users" — Total stars across the entire public presence.
-*   **Forks**: "All Forked Repos" — Measure of community contribution and reach.
-*   **Repositories**: "Only Own Repos, excluding Forked" — A true measure of original engineering output.
-*   **Languages**: "Most Used Languages" — Tech stack diversity and specialization.
+**GitInsight AI** is a high-fidelity, gamified platform that transforms raw GitHub metadata into a strategic professional asset. Designed for developers who want to quantify their impact and community leaders who manage technical ecosystems, it provides deep, AI-driven audits of engineering growth.
 
-## 🛠️ Technology Stack
+---
 
-- **Frontend**: React 18, Vite, TypeScript
-- **Styling**: Vanilla CSS, Tailwind CSS, Framer Motion (Glassmorphism & High-Fidelity Animations)
-- **Icons**: Lucide React (Star, GitFork, Code2, etc.)
-- **AI Engine**: Google Gemini 1.5 Pro / Groq Llama 3
-- **Reporting**: Custom jsPDF Implementation
+### 🚀 Core Features
 
-## 📖 Documentation
+- 🎯 **Precision Scoring**: A proprietary 0-100 algorithm evaluating Popularity, Activity, Quality, Breadth, Community, and Tenure.
+- 📦 **Repository-Centric Analytics**: Intelligent separation of "Original Works" vs "Forked Contributions" for high-accuracy impact assessment.
+- 🤖 **Recruiter Intelligence**: Direct AI insights (Gemini/Groq) that summarize your career value from a technical hiring perspective.
+- 🛡️ **Commander Terminal**: A secure administrative dashboard for ecosystem leads to manage ambassador registries and track community XP.
+- 🏆 **Achievement Ecosystem**: 10 high-fidelity 3D badges awarded for significant engineering milestones.
+- 📄 **Professional Audit Reports**: One-click, recruiter-ready PDF exports with multi-layered metric descriptions.
+- 🖼️ **Admin Image Optimization**: Automatic client-side compression (400px resize, JPEG optimization) for high-performance profile management.
 
-For detailed technical and operational info, see:
-- [ARCHITECTURE.md](./ARCHITECTURE.md) — System design, data flow, and image optimization logic.
-- [CORE_LOGIC.md](./CORE_LOGIC.md) — Scoring algorithms, metric weighting, and AI prompts.
-- [INSTRUCTIONS.md](./INSTRUCTIONS.md) — Step-by-step guide for developers and platform commanders.
+---
 
-## 🏁 Quick Start
+### 📊 Metric Intelligence
+
+| Metric | Sublabel | Objective |
+| :--- | :--- | :--- |
+| **Stars** | 🌟 All Stars Earned by users | Measures global reach and community validation |
+| **Forks** | 🍴 All Forked Repos | Tracks collaborative impact and code reuse |
+| **Repos** | 📁 Only Own Repos, excluding Forked | Quantifies original creative engineering output |
+| **Langs** | 💻 Most Used Languages | Analyzes tech stack diversity and specialization |
+
+---
+
+### 🛠️ Technology Stack
+
+- **Core**: React 18 (SPA), Vite, TypeScript
+- **Styling**: Vanilla CSS + Tailwind CSS (Premium Glassmorphism Design System)
+- **Animation**: Framer Motion (High-fidelity transitions & 3D hover effects)
+- **Icons**: Lucide React
+- **Engine**: Google Gemini 1.5 Pro / Groq Llama 3
+- **Reporting**: Custom jsPDF Vector Engine
+
+---
+
+### 📄 Professional Audit Mockup
+
+<p align="center">
+  <img src="./public/audit-mockup.png" alt="GitInsight Audit Mockup" width="80%" />
+</p>
+
+---
+
+### 📖 Internal Resources
+
+For deep technical dives, refer to our specialized documentation:
+- 🏗️ [ARCHITECTURE.md](./ARCHITECTURE.md) — System design, data flow, and image optimization logic.
+- 🧠 [CORE_LOGIC.md](./CORE_LOGIC.md) — Scoring algorithms, metric weighting, and AI prompts.
+- 📝 [INSTRUCTIONS.md](./INSTRUCTIONS.md) — Individual file principles and operational guides.
+
+---
+
+### 🏁 Quick Start
 
 ```bash
+# Clone the repository
+git clone https://github.com/KGFCH2/GitInsight-AI.git
+
+# Install dependencies
 npm install
+
+# Launch development environment
 npm run dev
 ```
 
 ---
-*Created by Babin Bid — GitInsight AI Engineering*
+<p align="center">
+  <i>Created with passion by <b>Babin Bid</b> — GitInsight AI Engineering</i>
+</p>
