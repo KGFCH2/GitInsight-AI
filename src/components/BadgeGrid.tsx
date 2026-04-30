@@ -52,9 +52,9 @@ export function BadgeGrid({ badges }: { badges: { name: string; description: str
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      
+
       const filename = imgUrl.split("/").pop() || `${badgeName.toLowerCase().replace(/\s+/g, "-")}.png`;
-      
+
       link.download = filename;
       document.body.appendChild(link);
       link.click();
@@ -99,20 +99,19 @@ export function BadgeGrid({ badges }: { badges: { name: string; description: str
               </Button>
             </div>
             <div className="flex gap-4">
-              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-border/50 bg-muted/20 shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-brand-1/20 flex items-center justify-center">
+              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-border/50 bg-muted/20 shadow-lg transition-all duration-500 group-hover:scale-105 group-hover:border-brand-1/50 flex items-center justify-center">
                 {img ? (
-                  <motion.img 
-                    src={img} 
-                    alt={b.name} 
-                    className="h-full w-full object-contain p-1" 
-                    whileHover={{ 
-                      y: [0, -5, 0],
-                      transition: { duration: 2, repeat: Infinity, ease: "easeInOut" }
-                    }}
+                  <img
+                    src={img}
+                    alt={b.name}
+                    className="h-full w-full object-contain relative z-10 transition-transform duration-500 group-hover:-translate-y-1.5"
                   />
                 ) : (
-                  <Icon className="h-8 w-8 text-brand-1" />
+                  <Icon className="h-8 w-8 text-brand-1 relative z-10 transition-transform duration-500 group-hover:-translate-y-1.5" />
                 )}
+                {/* Dynamic Lower Edge Glow */}
+                <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-brand-1/40 via-brand-1/5 to-transparent opacity-0 blur-lg transition-opacity duration-500 group-hover:opacity-100" />
+                <div className="absolute inset-x-0 bottom-0 h-[2px] bg-brand-1 opacity-0 transition-opacity duration-500 group-hover:opacity-100 shadow-[0_-4px_12px_rgba(249,115,22,0.6)]" />
               </div>
               <div className="flex flex-col justify-center gap-1">
                 <div className="text-sm font-black uppercase tracking-tight text-gradient">{b.name}</div>
