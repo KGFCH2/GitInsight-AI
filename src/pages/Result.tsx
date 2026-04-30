@@ -27,8 +27,6 @@ import {
   Trophy,
   FileCode,
   Flame,
-  GitFork,
-  Code2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -368,41 +366,53 @@ const Result = () => {
                     </div>
                   </div>
 
-                  <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
                     <Stat
-                      label="Stars"
-                      value={data.score.stats.totalStars}
+                      label="Ambassador XP"
+                      value={data.score.xp}
+                      icon={Zap}
+                      color="brand"
+                      subLabel="Points earned"
+                    />
+                    <Stat
+                      label="Activity Streak"
+                      value={data.score.streak}
+                      icon={Flame}
+                      color="amber"
+                      subLabel="Active repos"
+                    />
+                    <Stat
+                      label="Total Stars"
+                      value={data.starredRepos?.length || 0}
                       icon={Star}
                       onClick={() => setModalType("stars")}
-                      subLabel="All Stars Earned by users"
+                      subLabel="Starred by user"
                       color="amber"
                     />
                     <Stat
-                      label="Forks"
-                      value={data.score.stats.totalForks}
-                      icon={GitFork}
-                      subLabel="All Forked Repos"
+                      label="Followers"
+                      value={data.user.followers}
+                      icon={Users}
+                      onClick={() => setModalType("followers")}
                       color="brand"
                     />
                     <Stat
-                      label="Repos"
-                      value={data.score.stats.originalRepoCount}
-                      icon={FileCode}
+                      label="Projects"
+                      value={data.repos.length}
+                      icon={Sparkles}
                       onClick={() => {
                         setActiveTab("repos");
                         setTimeout(() => {
                           document.getElementById("repos-list")?.scrollIntoView({ behavior: "smooth" });
                         }, 100);
                       }}
-                      subLabel="Only Own Repos, excluding Forked"
                       color="brand"
                     />
                     <Stat
-                      label="Langs"
+                      label="Top Languages"
                       value={data.score.stats.languageCount}
-                      icon={Code2}
+                      icon={TrendingUp}
                       onClick={() => setModalType("langs")}
-                      subLabel="Most Used Languages"
                       color="brand"
                     />
                   </div>
@@ -518,7 +528,7 @@ const Result = () => {
                   <TabsTrigger value="ai" className="gap-2 font-bold"><TrendingUp className="h-4 w-4" /> Main Growth View</TabsTrigger>
                   <TabsTrigger value="recruiter" className="gap-2 font-bold"><Users className="h-4 w-4" /> What Recruiters See</TabsTrigger>
                   <TabsTrigger value="badges" className="gap-2 font-bold"><Crown className="h-4 w-4" /> Badges</TabsTrigger>
-                  <TabsTrigger value="repos" className="gap-2 font-bold"><Sparkles className="h-4 w-4" /> Repository List</TabsTrigger>
+                  <TabsTrigger value="repos" className="gap-2 font-bold"><Sparkles className="h-4 w-4" /> Project List</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="ai" className="mt-6 space-y-6">
@@ -553,12 +563,12 @@ const Result = () => {
                       </div>
                     </div>
                   </Card>
-                   {data.bestRepo && data.ai.readmeTips?.length > 0 && (
+                  {data.bestRepo && data.ai.readmeTips?.length > 0 && (
                     <Card title={`README tips for ${data.bestRepo.name}`} icon={Lightbulb} iconColor="text-amber-500">
                       <div className="mb-4 text-xs">
-                        <a 
-                          href={data.bestRepo.url} 
-                          target="_blank" 
+                        <a
+                          href={data.bestRepo.url}
+                          target="_blank"
                           rel="noreferrer"
                           className="inline-flex items-center gap-1 text-brand-1 hover:underline font-bold"
                         >
@@ -569,7 +579,7 @@ const Result = () => {
                     </Card>
                   )}
                   {data.ai.projectIdeas?.length > 0 && (
-                    <Card title="Repository Ideas" icon={Sparkles} iconColor="text-cyan-500">
+                    <Card title="Project Ideas" icon={Sparkles} iconColor="text-cyan-500">
                       <BulletList items={data.ai.projectIdeas} iconType="idea" />
                     </Card>
                   )}
@@ -614,21 +624,21 @@ const Result = () => {
                   </div>
                 </TabsContent>
                 <TabsContent value="badges" className="mt-6 space-y-6">
-                   <Card title="AI Badges" icon={Sparkles}>
+                  <Card title="AI Badges" icon={Sparkles}>
                     <p className="mb-2 text-sm text-muted-foreground italic">Top 10 strategic badges based on your GitHub performance and AI analysis.</p>
                     <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-brand/10 px-3 py-1 text-xs font-black text-brand-1">
                       <Trophy className="h-3.5 w-3.5" /> You've earned {data.badges.length} badges!
                     </div>
-                     <BadgeGrid badges={data.badges} />
-                     <div className="mt-8 border-t border-border/40 pt-6">
-                       <button 
-                         onClick={() => setModalType("badge-guide")}
-                         className="inline-flex items-center gap-2 text-sm font-bold text-brand-1 hover:underline"
-                       >
-                         <Target className="h-4 w-4" /> View all Badges & Find How to Get them
-                       </button>
-                     </div>
-                   </Card>
+                    <BadgeGrid badges={data.badges} />
+                    <div className="mt-8 border-t border-border/40 pt-6">
+                      <button
+                        onClick={() => setModalType("badge-guide")}
+                        className="inline-flex items-center gap-2 text-sm font-bold text-brand-1 hover:underline"
+                      >
+                        <Target className="h-4 w-4" /> View all Badges & Find How to Get them
+                      </button>
+                    </div>
+                  </Card>
                 </TabsContent>
               </Tabs>
             </div>
@@ -715,57 +725,57 @@ const Result = () => {
                   </div>
                 )}
                 {modalType === "langs" && (
-                   <div className="space-y-4">
-                     {data?.score.stats.langDetails?.map((l, i) => (
-                       <div key={i} className="space-y-1.5">
-                         <div className="flex justify-between text-sm">
-                           <span className="font-semibold text-gradient">{l.name}</span>
-                           <span className="text-muted-foreground">{l.percentage}% ({l.count} repos)</span>
-                         </div>
-                         <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-                           <motion.div
-                             initial={{ width: 0 }}
-                             animate={{ width: `${l.percentage}%` }}
-                             className="h-full bg-gradient-to-r from-brand-1 to-brand-2"
-                           />
-                         </div>
-                       </div>
-                     ))}
-                     {(!data?.score.stats.langDetails || data.score.stats.langDetails.length === 0) && (
-                       <p className="py-8 text-center text-sm text-muted-foreground">No language data available.</p>
-                     )}
-                   </div>
-                 )}
-                 {modalType === "badge-guide" && (
-                   <div className="space-y-6">
-                     <p className="text-sm text-muted-foreground">Master your GitHub profile to unlock these 10 strategic ambassador badges.</p>
-                     <div className="grid gap-4 sm:grid-cols-2">
-                       {[
-                         { name: "Star Collector", req: "Accumulate 100+ total stars across your repos.", img: "/badge-star.png" },
-                         { name: "Open Source Hero", req: "Reach a prestigious 1,000+ total stars.", img: "/badge-hero.png" },
-                         { name: "Polyglot", req: "Show proficiency in 5+ different languages.", img: "/badge-polyglot.png" },
-                         { name: "Consistent Contributor", req: "Maintain activity with 3+ repos updated in 30 days.", img: "/badge-consistent.png" },
-                         { name: "Community Builder", req: "Build an audience of 50+ followers.", img: "/badge-community.png" },
-                         { name: "Prolific Creator", req: "Successfully manage 20+ public repositories.", img: "/badge-prolific.png" },
-                         { name: "Elite Profile", req: "Achieve a total profile score of 75+.", img: "/badge-elite.png" },
-                         { name: "Top Repo Builder", req: "Build at least one 'flagship' repo with 50+ stars.", img: "/badge-toprepo.png" },
-                         { name: "Rising Star", req: "Score 50+ in your very first year on GitHub.", img: "/badge-rising.png" },
-                         { name: "Veteran Coder", req: "Maintain an active presence for 5+ years.", img: "/badge-veteran.png" },
-                       ].map((b, i) => (
-                         <div key={i} className="flex items-center gap-4 rounded-xl border border-border bg-muted/20 p-3">
-                           <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-brand/20 bg-background shadow-sm flex items-center justify-center">
-                             <img src={b.img} alt={b.name} className="h-full w-full object-contain" />
-                           </div>
-                           <div>
-                             <div className="text-xs font-black uppercase text-brand-1">{b.name}</div>
-                             <div className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{b.req}</div>
-                           </div>
-                         </div>
-                       ))}
-                     </div>
-                   </div>
-                 )}
-               </div>
+                  <div className="space-y-4">
+                    {data?.score.stats.langDetails?.map((l, i) => (
+                      <div key={i} className="space-y-1.5">
+                        <div className="flex justify-between text-sm">
+                          <span className="font-semibold text-gradient">{l.name}</span>
+                          <span className="text-muted-foreground">{l.percentage}% ({l.count} repos)</span>
+                        </div>
+                        <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${l.percentage}%` }}
+                            className="h-full bg-gradient-to-r from-brand-1 to-brand-2"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                    {(!data?.score.stats.langDetails || data.score.stats.langDetails.length === 0) && (
+                      <p className="py-8 text-center text-sm text-muted-foreground">No language data available.</p>
+                    )}
+                  </div>
+                )}
+                {modalType === "badge-guide" && (
+                  <div className="space-y-6">
+                    <p className="text-sm text-muted-foreground">Master your GitHub profile to unlock these 10 strategic ambassador badges.</p>
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      {[
+                        { name: "Star Collector", req: "Accumulate 100+ total stars across your repos.", img: "/badge-star.png" },
+                        { name: "Open Source Hero", req: "Reach a prestigious 1,000+ total stars.", img: "/badge-hero.png" },
+                        { name: "Polyglot", req: "Show proficiency in 5+ different languages.", img: "/badge-polyglot.png" },
+                        { name: "Consistent Contributor", req: "Maintain activity with 3+ repos updated in 30 days.", img: "/badge-consistent.png" },
+                        { name: "Community Builder", req: "Build an audience of 50+ followers.", img: "/badge-community.png" },
+                        { name: "Prolific Creator", req: "Successfully manage 20+ public repositories.", img: "/badge-prolific.png" },
+                        { name: "Elite Profile", req: "Achieve a total profile score of 75+.", img: "/badge-elite.png" },
+                        { name: "Top Repo Builder", req: "Build at least one 'flagship' repo with 50+ stars.", img: "/badge-toprepo.png" },
+                        { name: "Rising Star", req: "Score 50+ in your very first year on GitHub.", img: "/badge-rising.png" },
+                        { name: "Veteran Coder", req: "Maintain an active presence for 5+ years.", img: "/badge-veteran.png" },
+                      ].map((b, i) => (
+                        <div key={i} className="flex items-center gap-4 rounded-xl border border-border bg-muted/20 p-3">
+                          <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-brand/20 bg-background shadow-sm flex items-center justify-center">
+                            <img src={b.img} alt={b.name} className="h-full w-full object-contain" />
+                          </div>
+                          <div>
+                            <div className="text-xs font-black uppercase text-brand-1">{b.name}</div>
+                            <div className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{b.req}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </motion.div>
           </div>
         )}
