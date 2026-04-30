@@ -78,10 +78,6 @@ const AdminDashboard = () => {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 2 * 1024 * 1024) {
-        toast.error("Image too large (Max 2MB)");
-        return;
-      }
       
       const reader = new FileReader();
       reader.onloadstart = () => setIsRefreshing(true);
