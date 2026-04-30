@@ -16,6 +16,8 @@ import FAQs from "./pages/FAQs";
 import APIReference from "./pages/APIReference";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import AdminAuth from "./pages/AdminAuth";
+import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -69,6 +71,8 @@ const App = () => {
                       <Route path="/api" element={<APIReference />} />
                       <Route path="/privacy" element={<Privacy />} />
                       <Route path="/terms" element={<Terms />} />
+                      <Route path="/admin" element={<AdminAuth />} />
+                      <Route path="/admin/dashboard" element={<AdminDashboard />} />
                       <Route path="*" element={<NotFound />} />
                     </Route>
                   </Routes>

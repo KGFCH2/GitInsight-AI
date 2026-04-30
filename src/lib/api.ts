@@ -515,7 +515,7 @@ export async function analyzeProfile(username: string, force = false): Promise<A
     });
   }
 
-  return {
+  const final: AnalysisResult = {
     user: {
       login: user.login,
       name: user.name,
@@ -539,6 +539,91 @@ export async function analyzeProfile(username: string, force = false): Promise<A
     starredRepos: starred.map(r => ({ name: r.name, url: r.html_url, stars: r.stargazers_count })),
     followersList: followers.map(f => ({ login: f.login, avatar: f.avatar_url, url: f.html_url })),
   };
+
+  registerAmbassador(final);
+  return final;
+}
+
+// AMBASSADOR REGISTRY
+export function registerAmbassador(data: AnalysisResult) {
+  try {
+    const raw = localStorage.getItem("gitinsight_ambassadors");
+    const ambassadors = raw ? JSON.parse(raw) : [];
+    const index = ambassadors.findIndex((a: any) => a.login.toLowerCase() === data.user.login.toLowerCase());
+    
+    const entry = {
+      login: data.user.login,
+      name: data.user.name || data.user.login,
+      avatar: data.user.avatar,
+      score: data.score.total,
+      xp: data.score.xp,
+      streak: data.score.streak,
+      badges: data.badges.length,
+      lastUpdate: Date.now()
+    };
+
+    if (index >= 0) ambassadors[index] = entry;
+    else ambassadors.push(entry);
+    
+    localStorage.setItem("gitinsight_ambassadors", JSON.stringify(ambassadors));
+  } catch (e) {
+    console.error("Ambassador registry error", e);
+  }
+}
+
+export function getAmbassadors() {
+  try {
+    const raw = localStorage.getItem("gitinsight_ambassadors");
+    const list = raw ? JSON.parse(raw) : [];
+    return list.sort((a: any, b: any) => b.xp - a.xp);
+  } catch {
+    return [];
+  }
+}
+
+// ADMIN AUTHENTICATION
+export function signupAdmin(admin: any) {
+  const admins = JSON.parse(localStorage.getItem("gitinsight_admins") || "[]");
+  const exists = admins.some((a: any) => a.usermail.toLowerCase() === admin.usermail.toLowerCase());
+  if (exists) throw new Error("Email already registered");
+  
+  const newAdmin = { ...admin, usermail: admin.usermail.toLowerCase() };
+  admins.push(newAdmin);
+  localStorage.setItem("gitinsight_admins", JSON.stringify(admins));
+  localStorage.setItem("gitinsight_admin_active", JSON.stringify(newAdmin));
+  return newAdmin;
+}
+
+export function loginAdmin(email: string, pass: string) {
+  const admins = JSON.parse(localStorage.getItem("gitinsight_admins") || "[]");
+  const admin = admins.find((a: any) => a.usermail.toLowerCase() === email.toLowerCase() && a.userpassword === pass);
+  if (!admin) throw new Error("Invalid credentials");
+  
+  localStorage.setItem("gitinsight_admin_active", JSON.stringify(admin));
+  return admin;
+}
+
+export function logoutAdmin() {
+  localStorage.removeItem("gitinsight_admin_active");
+}
+
+export function getActiveAdmin() {
+  const raw = localStorage.getItem("gitinsight_admin_active");
+  return raw ? JSON.parse(raw) : null;
+}
+
+export function updateAdminProfile(updates: any) {
+  const active = getActiveAdmin();
+  if (!active) return;
+  
+  const updated = { ...active, ...updates };
+  localStorage.setItem("gitinsight_admin_active", JSON.stringify(updated));
+  
+  const admins = JSON.parse(localStorage.getItem("gitinsight_admins") || "[]");
+  const idx = admins.findIndex((a: any) => a.usermail === updated.usermail);
+  if (idx >= 0) admins[idx] = updated;
+  localStorage.setItem("gitinsight_admins", JSON.stringify(admins));
+  return updated;
 }
 
 const RESULT_KEY = "gitinsight:last";
