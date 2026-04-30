@@ -127,7 +127,7 @@ const AdminDashboard = () => {
 
         <div className="text-center md:text-left flex-1">
           <div className="flex items-center justify-center md:justify-start gap-2">
-            <h2 className="text-2xl font-display font-black italic text-gradient uppercase tracking-tight">
+            <h2 className="text-3xl font-display font-black text-gradient tracking-normal">
               {admin?.username}
             </h2>
             <div className="px-2 py-0.5 rounded bg-brand/10 text-[10px] font-black text-brand-1 uppercase border border-brand/20">
