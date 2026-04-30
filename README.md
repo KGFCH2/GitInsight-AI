@@ -1,9 +1,6 @@
 # 💎 GitInsight AI — Premium GitHub Profile Analyzer
 
 <p align="center">
-  <img src="assets/images/gitinsight-ai.png" alt="GitInsight AI" />
-</p>
-
 
 ```text
     ██████╗ ██╗████████╗██╗███╗   ██╗███████╗██╗ ██████╗ ██╗  ██╗████████╗
@@ -14,6 +11,7 @@
    ╚═════╝ ╚═╝   ╚═╝   ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   
 
 ```
+</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/version-2.1.0-orange?style=for-the-badge" alt="Version" />
