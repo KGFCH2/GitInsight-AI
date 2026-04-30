@@ -810,7 +810,7 @@ function Stat({
         <Icon className="h-3.5 w-3.5 shrink-0" /> {label}
       </div>
       <div className="mt-1 font-display text-2xl font-black tabular-nums text-foreground transition-all group-hover:scale-105 duration-300">
-        {value.toLocaleString()}
+        {value?.toLocaleString() ?? "0"}
       </div>
       {subLabel && (
         <div className="mt-0.5 text-[10px] font-medium text-muted-foreground transition-colors group-hover:text-brand-1/70 duration-300">
