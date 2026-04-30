@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -39,6 +39,7 @@ const AdminDashboard = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [history, setHistory] = useState<any[]>([]);
   const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const active = getActiveAdmin();
@@ -76,12 +77,29 @@ const AdminDashboard = () => {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error("Image too large (Max 2MB)");
+        return;
+      }
+      
       const reader = new FileReader();
+      reader.onloadstart = () => setIsRefreshing(true);
       reader.onloadend = () => {
+        setIsRefreshing(false);
         const b64 = reader.result as string;
-        const updated = updateAdminProfile({ profileImage: b64 });
-        setAdmin(updated);
-        toast.success("Profile image updated");
+        try {
+          const updated = updateAdminProfile({ profileImage: b64 });
+          if (updated) {
+            setAdmin(updated);
+            toast.success("Profile image updated successfully");
+          }
+        } catch (err) {
+          toast.error("Failed to save image. It might be too large for storage.");
+        }
+      };
+      reader.onerror = () => {
+        setIsRefreshing(false);
+        toast.error("Error reading file");
       };
       reader.readAsDataURL(file);
     }
@@ -110,19 +128,21 @@ const AdminDashboard = () => {
               <ShieldCheck className="h-10 w-10 text-brand-1" />
             )}
           </div>
-          <label 
-            htmlFor="admin-avatar-upload"
-            className="absolute -bottom-2 -right-2 p-2 bg-brand text-white rounded-lg shadow-lg cursor-pointer hover:scale-110 transition-transform"
+          <button 
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="absolute -bottom-2 -right-2 p-2 bg-brand text-white rounded-lg shadow-lg cursor-pointer hover:scale-110 transition-transform z-20"
+            title="Upload Profile Image"
           >
             <Camera className="h-4 w-4" />
-            <input 
-              id="admin-avatar-upload"
-              type="file" 
-              className="hidden" 
-              accept="image/*" 
-              onChange={handleImageUpload} 
-            />
-          </label>
+          </button>
+          <input 
+            ref={fileInputRef}
+            type="file" 
+            className="hidden" 
+            accept="image/*" 
+            onChange={handleImageUpload} 
+          />
         </div>
 
         <div className="text-center md:text-left flex-1">
