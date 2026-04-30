@@ -167,7 +167,13 @@ function deriveBadges(user: GhUser, repos: GhRepo[], score: number): { name: str
   if (original.some((r) => r.stargazers_count >= 50)) {
     badges.push({ name: "Top Repo Builder", description: "Created at least one flagship repository with 50+ individual stars." });
   }
-  return badges;
+  if (score >= 50 && (Date.now() - new Date(user.created_at).getTime()) / 31536000000 < 1) {
+    badges.push({ name: "Rising Star", description: "Achieved a high profile score in your very first year on GitHub." });
+  }
+  if ((Date.now() - new Date(user.created_at).getTime()) / 31536000000 >= 5) {
+    badges.push({ name: "Veteran Coder", description: "Maintaining an active GitHub presence for over 5 years." });
+  }
+  return badges.slice(0, 10);
 }
 
 async function callGemini(prompt: string): Promise<string | null> {

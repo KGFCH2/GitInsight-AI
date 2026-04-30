@@ -131,6 +131,30 @@ const Result = () => {
 
       const faviconB64 = await fetchB64("/favicon.png");
 
+      const badgeAssetMap: Record<string, string> = {
+        "Star Collector": "/badge-star.png",
+        "Open Source Hero": "/badge-hero.png",
+        "Polyglot": "/badge-polyglot.png",
+        "Consistent Contributor": "/badge-consistent.png",
+        "Community Builder": "/badge-community.png",
+        "Prolific Creator": "/badge-prolific.png",
+        "Elite Profile": "/badge-hero.png",
+        "Top Repo Builder": "/badge-star.png",
+        "Rising Star": "/badge-polyglot.png",
+        "Veteran Coder": "/badge-community.png",
+      };
+
+      const badgePromises = data.badges.map(async (b) => {
+        const path = badgeAssetMap[b.name];
+        if (!path) return null;
+        const b64 = await fetchB64(path);
+        return b64 ? { name: b.name, b64 } : null;
+      });
+
+      const badgeResults = await Promise.all(badgePromises);
+      const badgeData: Record<string, string> = {};
+      badgeResults.forEach(i => { if (i?.b64) badgeData[i.name] = i.b64; });
+
       const achievementMap: Record<string, string> = {
         "Arctic Code Vault Contributor": "https://github.githubassets.com/images/modules/profile/achievements/arctic-code-vault-contributor-default.png",
         "Pull Shark": "https://github.githubassets.com/images/modules/profile/achievements/pull-shark-default.png",
@@ -144,7 +168,6 @@ const Result = () => {
       const iconPromises = (data.realAchievements || []).map(async (ach) => {
         const url = achievementMap[ach];
         if (!url) return null;
-        // Use AllOrigins proxy to bypass CORS for GitHub assets
         const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
         const b64 = await fetchB64(proxyUrl);
         return b64 ? { name: ach, b64 } : null;
@@ -154,7 +177,7 @@ const Result = () => {
       const iconData: Record<string, string> = {};
       icons.forEach(i => { if (i?.b64) iconData[i.name] = i.b64; });
 
-      exportPdf(data, faviconB64 || undefined, iconData);
+      exportPdf(data, faviconB64 || undefined, iconData, badgeData);
     } catch (e) {
       console.warn("Failed to load assets for PDF", e);
       exportPdf(data);

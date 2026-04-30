@@ -23,7 +23,12 @@ const classColor: Record<string, [number, number, number]> = {
   archive: C.muted,
 };
 
-export function exportPdf(data: AnalysisResult, faviconB64?: string, achievementIcons?: Record<string, string>) {
+export function exportPdf(
+  data: AnalysisResult, 
+  faviconB64?: string, 
+  achievementIcons?: Record<string, string>,
+  badgeIcons?: Record<string, string>
+) {
   // Using 'times' as the closest built-in serif font for 'Cambria Math'
   const FONT = "times";
   const doc = new jsPDF({ unit: "pt", format: "a4" });
@@ -269,14 +274,24 @@ export function exportPdf(data: AnalysisResult, faviconB64?: string, achievement
   if (data.badges.length && y < H - 80) {
     sectionHeader("STRATEGIC BADGES", C.brandDark);
     let bx = margin;
-    data.badges.slice(0, 12).forEach((b) => {
+    data.badges.slice(0, 10).forEach((b) => {
       doc.setFont(FONT, "bold");
       doc.setFontSize(7.5);
-      const tw = doc.getTextWidth(b.name) + 12;
-      if (bx + tw > W - margin) { bx = margin; y += 18; }
-      roundedRect(bx, y, tw, 14, 7, C.success);
+      const bImg = badgeIcons?.[b.name];
+      const tw = doc.getTextWidth(b.name) + (bImg ? 22 : 12);
+      
+      if (bx + tw > W - margin) { bx = margin; y += 20; }
+      
+      roundedRect(bx, y, tw, 16, 8, C.success);
+      if (bImg) {
+        // Try to draw circular badge icon
+        try {
+          doc.addImage(bImg, "PNG", bx + 4, y + 3, 10, 10);
+        } catch { /* skip if error */ }
+      }
+      
       setText(C.white);
-      doc.text(b.name, bx + 6, y + 9.5);
+      doc.text(b.name, bx + (bImg ? 16 : 6), y + 10.5);
       bx += tw + 5;
     });
   }

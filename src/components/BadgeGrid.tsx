@@ -17,8 +17,10 @@ const BADGE_IMAGES: Record<string, string> = {
   "Consistent Contributor": "/badge-consistent.png",
   "Community Builder": "/badge-community.png",
   "Prolific Creator": "/badge-prolific.png",
-  "Elite Profile": "/badge-prolific.png", // Fallback reuse
-  "Top Repo Builder": "/badge-star.png", // Fallback reuse
+  "Elite Profile": "/badge-hero.png",
+  "Top Repo Builder": "/badge-star.png",
+  "Rising Star": "/badge-polyglot.png",
+  "Veteran Coder": "/badge-community.png",
 };
 
 const ICONS: Record<string, typeof Star> = {
@@ -30,6 +32,8 @@ const ICONS: Record<string, typeof Star> = {
   "Prolific Creator": Rocket,
   "Elite Profile": Sparkles,
   "Top Repo Builder": Award,
+  "Rising Star": Zap,
+  "Veteran Coder": ShieldCheck,
 };
 
 export function BadgeGrid({ badges }: { badges: { name: string; description: string }[] }) {
