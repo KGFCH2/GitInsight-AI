@@ -152,7 +152,7 @@ const AdminDashboard = () => {
             variant="outline" 
             size="sm" 
             onClick={handleLogout}
-            className="rounded-xl border-red-500/20 text-red-500 hover:bg-red-500/10"
+            className="rounded-xl border-red-500/20 text-red-500 hover:bg-red-500/10 hover:text-black dark:hover:text-white"
           >
             <LogOut className="h-4 w-4 mr-2" /> Log Out
           </Button>
