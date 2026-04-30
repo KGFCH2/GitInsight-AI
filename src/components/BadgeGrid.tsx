@@ -99,12 +99,16 @@ export function BadgeGrid({ badges }: { badges: { name: string; description: str
               </Button>
             </div>
             <div className="flex gap-4">
-              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-border/50 bg-muted/20 shadow-lg transition-transform duration-300 group-hover:scale-110 flex items-center justify-center">
+              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-border/50 bg-muted/20 shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-brand-1/20 flex items-center justify-center">
                 {img ? (
-                  <img 
+                  <motion.img 
                     src={img} 
                     alt={b.name} 
-                    className="h-full w-full object-contain" 
+                    className="h-full w-full object-contain p-1" 
+                    whileHover={{ 
+                      y: [0, -5, 0],
+                      transition: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                    }}
                   />
                 ) : (
                   <Icon className="h-8 w-8 text-brand-1" />
