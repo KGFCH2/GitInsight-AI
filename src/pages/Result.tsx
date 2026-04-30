@@ -449,9 +449,10 @@ const Result = () => {
                       ]}
                     />
                   </div>
+                </div>
                 <div className="mt-auto grid grid-cols-2 gap-2 pt-6 lg:grid-cols-3">
                   <Button
-                    onClick={handleShare}
+                    onClick={share}
                     size="sm"
                     className="gap-2 bg-blue-600 font-bold text-white shadow-lg transition-transform hover:scale-105 hover:bg-blue-700"
                   >
@@ -662,10 +663,7 @@ const Result = () => {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-border bg-card shadow-2xl"
             >
-              <div className={`flex items-center justify-between border-b p-5 ${modalType === "stars" ? "bg-brand-2 text-white" :
-                modalType === "followers" ? "bg-brand-1 text-white" :
-                  "bg-brand-3 text-white"
-                }`}>
+              <div className="flex items-center justify-between border-b p-5 bg-brand-1 text-white">
                 <h3 className="flex items-center gap-2 font-display text-xl font-black italic tracking-tight">
                   {modalType === "stars" && <><Star className="h-6 w-6 fill-current" /> Starred Repositories</>}
                   {modalType === "followers" && <><Users className="h-6 w-6" /> Followers List</>}
@@ -713,15 +711,15 @@ const Result = () => {
                         href={f.url}
                         target="_blank"
                         rel="noreferrer"
-                        className="flex flex-col items-center gap-3 rounded-2xl border border-l-4 border-l-[#a855f7] bg-card p-4 transition-all hover:bg-[#a855f7]/5 hover:shadow-md"
+                        className="flex flex-col items-center gap-3 rounded-2xl border border-l-4 border-l-[#f59e0b] bg-card p-4 transition-all hover:bg-[#f59e0b]/5 hover:shadow-md"
                       >
                         <div className="relative">
-                          <img src={f.avatar} alt={f.login} className="h-16 w-16 rounded-full border-2 border-[#a855f7]/30 shadow-sm" />
-                          <div className="absolute -bottom-1 -right-1 rounded-full bg-[#a855f7] p-1 text-white shadow-sm">
+                          <img src={f.avatar} alt={f.login} className="h-16 w-16 rounded-full border-2 border-[#f59e0b]/30 shadow-sm" />
+                          <div className="absolute -bottom-1 -right-1 rounded-full bg-[#f59e0b] p-1 text-white shadow-sm">
                             <Users className="h-3 w-3" />
                           </div>
                         </div>
-                        <span className="text-xs font-black text-[#a855f7]">@{f.login}</span>
+                        <span className="text-xs font-black text-[#f59e0b]">@{f.login}</span>
                       </a>
                     ))}
                   </div>
@@ -738,7 +736,7 @@ const Result = () => {
                            <motion.div
                              initial={{ width: 0 }}
                              animate={{ width: `${l.percentage}%` }}
-                             className="h-full bg-brand"
+                             className="h-full bg-[#f59e0b]"
                            />
                          </div>
                        </div>
@@ -753,20 +751,25 @@ const Result = () => {
                      <p className="text-sm text-muted-foreground">Master your GitHub profile to unlock these 10 strategic ambassador badges.</p>
                      <div className="grid gap-4 sm:grid-cols-2">
                        {[
-                         { name: "Star Collector", req: "Accumulate 100+ total stars across your repos." },
-                         { name: "Open Source Hero", req: "Reach a prestigious 1,000+ total stars." },
-                         { name: "Polyglot", req: "Show proficiency in 5+ different languages." },
-                         { name: "Consistent Contributor", req: "Maintain activity with 3+ repos updated in 30 days." },
-                         { name: "Community Builder", req: "Build an audience of 50+ followers." },
-                         { name: "Prolific Creator", req: "Successfully manage 20+ public repositories." },
-                         { name: "Elite Profile", req: "Achieve a total profile score of 75+." },
-                         { name: "Top Repo Builder", req: "Build at least one 'flagship' repo with 50+ stars." },
-                         { name: "Rising Star", req: "Score 50+ in your very first year on GitHub." },
-                         { name: "Veteran Coder", req: "Maintain an active presence for 5+ years." },
+                         { name: "Star Collector", req: "Accumulate 100+ total stars across your repos.", img: "/badge-star.png", filter: "" },
+                         { name: "Open Source Hero", req: "Reach a prestigious 1,000+ total stars.", img: "/badge-hero.png", filter: "hue-rotate(15deg) brightness(1.1)" },
+                         { name: "Polyglot", req: "Show proficiency in 5+ different languages.", img: "/badge-polyglot.png", filter: "hue-rotate(200deg)" },
+                         { name: "Consistent Contributor", req: "Maintain activity with 3+ repos updated in 30 days.", img: "/badge-consistent.png", filter: "hue-rotate(330deg)" },
+                         { name: "Community Builder", req: "Build an audience of 50+ followers.", img: "/badge-community.png", filter: "hue-rotate(250deg)" },
+                         { name: "Prolific Creator", req: "Successfully manage 20+ public repositories.", img: "/badge-prolific.png", filter: "hue-rotate(30deg)" },
+                         { name: "Elite Profile", req: "Achieve a total profile score of 75+.", img: "/badge-elite.png", filter: "hue-rotate(45deg) saturate(1.5)" },
+                         { name: "Top Repo Builder", req: "Build at least one 'flagship' repo with 50+ stars.", img: "/badge-toprepo.png", filter: "hue-rotate(180deg)" },
+                         { name: "Rising Star", req: "Score 50+ in your very first year on GitHub.", img: "/badge-rising.png", filter: "hue-rotate(280deg)" },
+                         { name: "Veteran Coder", req: "Maintain an active presence for 5+ years.", img: "/badge-veteran.png", filter: "hue-rotate(120deg) brightness(0.8)" },
                        ].map((b, i) => (
-                         <div key={i} className="rounded-xl border border-border bg-muted/20 p-3">
-                           <div className="text-xs font-black uppercase text-brand-1">{b.name}</div>
-                           <div className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{b.req}</div>
+                         <div key={i} className="flex items-center gap-4 rounded-xl border border-border bg-muted/20 p-3">
+                           <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full border border-brand/20 bg-background shadow-sm">
+                             <img src={b.img} alt={b.name} className="h-full w-full object-cover" style={{ filter: b.filter }} />
+                           </div>
+                           <div>
+                             <div className="text-xs font-black uppercase text-brand-1">{b.name}</div>
+                             <div className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{b.req}</div>
+                           </div>
                          </div>
                        ))}
                      </div>

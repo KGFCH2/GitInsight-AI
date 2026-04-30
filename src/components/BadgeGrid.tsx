@@ -74,12 +74,12 @@ export function BadgeGrid({ badges }: { badges: { name: string; description: str
             className="group relative overflow-hidden rounded-xl border border-border bg-card-grad p-4 transition-all hover:border-brand-1 hover:shadow-glow"
           >
             <div className="flex gap-4">
-              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-brand/20 bg-muted/20 shadow-xl transition-all duration-300 group-hover:scale-110 group-hover:border-brand-1/50 group-hover:shadow-brand-1/20">
+              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-brand/20 bg-muted/20 shadow-xl transition-all duration-300 hover:scale-110 hover:border-brand-1/50 hover:shadow-brand-1/20">
                 {img ? (
                   <img 
                     src={img} 
                     alt={b.name} 
-                    className="h-full w-full object-cover" 
+                    className="h-full w-full object-cover transition-transform duration-300" 
                     style={{ filter }}
                   />
                 ) : (
