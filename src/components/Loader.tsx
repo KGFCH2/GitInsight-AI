@@ -58,7 +58,7 @@ export function Loader({ text, duration = 2500, onComplete }: Props) {
         <motion.div
           animate={{ y: [0, -6, 0] }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          className="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-border/50 bg-card/80 shadow-glow backdrop-blur"
+          className="relative flex h-16 w-16 items-center justify-center"
         >
           <img src="/favicon.png" alt="GitInsight" className="h-10 w-10 object-contain" />
         </motion.div>
