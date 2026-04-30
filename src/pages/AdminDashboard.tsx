@@ -105,10 +105,13 @@ const AdminDashboard = () => {
     }
   };
 
-  const filteredAmbassadors = ambassadors.filter(a => 
-    a.login.toLowerCase().includes(search.toLowerCase()) || 
-    a.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredAmbassadors = ambassadors
+    .sort((a, b) => b.xp - a.xp)
+    .filter(a => 
+      a.login.toLowerCase().includes(search.toLowerCase()) || 
+      a.name.toLowerCase().includes(search.toLowerCase())
+    )
+    .slice(0, 10);
 
   return (
     <div className="min-h-screen p-4 md:p-8 space-y-8">
@@ -224,10 +227,12 @@ const AdminDashboard = () => {
                     className="glass-card p-4 rounded-2xl border border-border group hover:border-brand-1 transition-all hover:shadow-glow flex items-center gap-4"
                   >
                     <div className="flex flex-col items-center justify-center w-8">
-                      <span className={`text-xl font-display font-black italic ${i === 0 ? "text-gradient" : "text-muted-foreground/30"}`}>
+                      <span className={`text-xl font-display font-black italic ${i < 3 ? "text-gradient" : "text-muted-foreground/30"}`}>
                         #{i + 1}
                       </span>
                       {i === 0 && <Crown className="h-3 w-3 text-warning -mt-1" />}
+                      {i === 1 && <Trophy className="h-3 w-3 text-brand-1 -mt-1" />}
+                      {i === 2 && <Award className="h-3 w-3 text-accent -mt-1" />}
                     </div>
                     
                     <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-brand-1/20 group-hover:border-brand-1/50 transition-colors">
