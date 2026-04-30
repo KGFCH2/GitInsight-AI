@@ -3,16 +3,16 @@ import type { AnalysisResult } from "./types";
 
 // Premium Color palette (RGB)
 const C = {
-  brand: [249, 115, 22] as [number, number, number],      // Orange
-  brandDark: [234, 88, 12] as [number, number, number],   // Dark Orange
-  success: [16, 185, 129] as [number, number, number],    // Emerald
-  warning: [245, 158, 11] as [number, number, number],    // Amber
-  danger: [239, 68, 68] as [number, number, number],      // Red/Crimson
-  accent: [244, 63, 94] as [number, number, number],      // Rose
-  ink: [15, 23, 42] as [number, number, number],          // Slate 900
-  body: [51, 65, 85] as [number, number, number],         // Slate 700
-  muted: [100, 116, 139] as [number, number, number],     // Slate 500
-  border: [226, 232, 240] as [number, number, number],    // Slate 200
+  brand: [194, 65, 12] as [number, number, number],      // Deep Orange (Orange 700)
+  brandDark: [124, 45, 18] as [number, number, number],   // Very Deep Orange (Orange 900)
+  success: [6, 78, 59] as [number, number, number],       // Deep Emerald (Emerald 800)
+  warning: [146, 64, 14] as [number, number, number],     // Deep Amber (Amber 800)
+  danger: [153, 27, 27] as [number, number, number],      // Deep Red (Red 800)
+  accent: [159, 18, 57] as [number, number, number],      // Deep Rose (Rose 800)
+  ink: [2, 6, 23] as [number, number, number],            // Deepest Slate (Slate 950)
+  body: [30, 41, 59] as [number, number, number],         // Slate 800
+  muted: [71, 85, 105] as [number, number, number],       // Slate 600
+  border: [203, 213, 225] as [number, number, number],    // Slate 300
   soft: [248, 250, 252] as [number, number, number],      // Slate 50
   white: [255, 255, 255] as [number, number, number],
 };
@@ -111,29 +111,15 @@ export function exportPdf(
     doc.rect(0, i * (bandH/4), W, bandH/4, "F");
   });
   
-  // Favicon
-  const fx = margin;
-  const fy = 40;
-  if (faviconB64) {
-    try {
-      doc.addImage(faviconB64, "PNG", fx, fy - 12, 12, 12);
-    } catch (e) {
-      console.warn("Favicon render error", e);
-      setFill(C.white); doc.rect(fx, fy - 12, 12, 12, "F");
-    }
-  } else {
-    setFill(C.white); doc.rect(fx, fy - 12, 12, 12, "F");
-  }
-
-  // Title
+  // Title Group
   doc.setFont(FONT, "bolditalic");
   doc.setFontSize(30);
   setText(C.white);
-  doc.text("GITINSIGHT AI", margin + 25, 45);
+  doc.text("GITINSIGHT AI", margin, 45);
   
   doc.setFont(FONT, "normal");
   doc.setFontSize(10);
-  doc.text("Professional Developer Profile Audit Report", margin + 25, 60);
+  doc.text("Professional Developer Profile Audit Report", margin, 60);
 
   // Minimalist Audit Seal
   const sealX = W - margin - 40;
@@ -150,12 +136,12 @@ export function exportPdf(
   doc.setFont(FONT, "bold");
   doc.setFontSize(10);
   const pillW = doc.getTextWidth(handle) + 20;
-  roundedRect(margin + 25, 72, pillW, 18, 9, [255, 255, 255]);
+  roundedRect(margin, 72, pillW, 18, 9, [255, 255, 255]);
   setText(C.brand);
-  doc.text(handle, margin + 35, 84);
+  doc.text(handle, margin + 10, 84);
 
   // Direct GitHub Redirect Link
-  doc.link(margin + 25, 72, pillW, 18, { url: `https://github.com/${data.user.login}` });
+  doc.link(margin, 72, pillW, 18, { url: `https://github.com/${data.user.login}` });
 
   y = bandH + 25;
 
@@ -274,33 +260,26 @@ export function exportPdf(
   if (data.badges.length && y < H - 80) {
     sectionHeader("STRATEGIC BADGES", C.brandDark);
     data.badges.slice(0, 10).forEach((b) => {
-      const bImg = badgeIcons?.[b.name];
       const radius = 15;
       const diameter = radius * 2;
       
       // Check for page overflow
       if (y + diameter > H - margin) { doc.addPage(); y = margin + 20; }
       
-      if (bImg) {
-        try {
-          doc.addImage(bImg, "PNG", margin, y, diameter, diameter);
-        } catch { /* skip */ }
-      }
-      
       doc.setFont(FONT, "bold");
-      doc.setFontSize(9);
+      doc.setFontSize(10);
       setText(C.brandDark);
-      doc.text(b.name, margin + diameter + 5, y + 12);
+      doc.text(b.name, margin, y + 10);
       
       doc.setFont(FONT, "normal");
-      doc.setFontSize(7);
+      doc.setFontSize(8);
       setText(C.muted);
       // Word wrap description
       const desc = b.description;
-      const splitDesc = doc.splitTextToSize(desc, W - margin * 2 - diameter - 10);
-      doc.text(splitDesc, margin + diameter + 5, y + 20);
+      const splitDesc = doc.splitTextToSize(desc, W - margin * 2 - 10);
+      doc.text(splitDesc, margin, y + 22);
 
-      y += diameter + 10;
+      y += 40;
     });
   }
 
