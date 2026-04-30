@@ -323,7 +323,7 @@ const AdminDashboard = () => {
                       variant="ghost"
                       size="sm"
                       onClick={() => navigate("/history")}
-                      className="w-full mt-2 text-[10px] font-black uppercase italic tracking-wider text-brand-1 hover:bg-brand-1/5"
+                      className="w-full mt-2 text-[10px] font-black uppercase italic tracking-wider text-brand-1 hover:bg-brand-1/10 hover:text-black dark:hover:text-white"
                     >
                       <HistoryIcon className="h-3 w-3 mr-1.5" /> Full History Console
                     </Button>
