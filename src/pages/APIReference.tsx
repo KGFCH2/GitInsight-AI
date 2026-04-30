@@ -6,7 +6,7 @@ export default function APIReference() {
     <div className="container py-12">
       <div className="mx-auto max-w-3xl">
         <div className="text-xs uppercase tracking-widest text-brand">Developers</div>
-        <h1 className="hover-pop mt-2 flex items-center gap-4 font-display text-4xl font-bold sm:text-5xl">
+        <h1 className="text-gradient hover-pop mt-2 flex items-center gap-4 font-display text-4xl font-bold sm:text-5xl">
           <Code2 className="h-10 w-10 text-brand-1" />
           API Reference
         </h1>
@@ -16,7 +16,7 @@ export default function APIReference() {
           <div className="space-y-4">
             <Feature icon={Globe} title="GitHub REST API v3">
               <p className="text-sm leading-relaxed text-muted-foreground">
-                We use the official GitHub REST API to fetch user profiles, repository data, and activity statistics. 
+                We use the official GitHub REST API to fetch user profiles, repository data, and activity statistics.
                 Most requests are performed using standard <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">GET</code> endpoints.
               </p>
               <ul className="mt-3 list-inside list-disc space-y-1 text-sm text-muted-foreground">
@@ -28,7 +28,7 @@ export default function APIReference() {
 
             <Feature icon={Lock} title="Authentication & Rate Limits">
               <p className="text-sm leading-relaxed text-muted-foreground">
-                By default, unauthenticated requests to GitHub are limited to 60 per hour. 
+                By default, unauthenticated requests to GitHub are limited to 60 per hour.
                 Users can provide a <strong>Personal Access Token (PAT)</strong> in the settings to increase this limit to 5,000 requests per hour.
               </p>
             </Feature>
@@ -51,7 +51,7 @@ export default function APIReference() {
 
             <Feature icon={Server} title="Client-Side Architecture">
               <p className="text-sm leading-relaxed text-muted-foreground">
-                GitInsight AI is a <strong>Serverless</strong> application. All API calls are initiated directly from your browser. 
+                GitInsight AI is a <strong>Serverless</strong> application. All API calls are initiated directly from your browser.
                 Your API keys are stored in <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">localStorage</code> and never touch our servers.
               </p>
             </Feature>
@@ -62,7 +62,7 @@ export default function APIReference() {
   );
 }
 
-function Feature({ icon: Icon, title, children }: { icon: any; title: string; children: React.ReactNode }) {
+function Feature({ icon: Icon, title, children }: { icon: React.ComponentType<{ className?: string }>; title: string; children: React.ReactNode }) {
   return (
     <div className="hover-pop group rounded-2xl border border-border bg-card-grad p-6 shadow-sm transition-all duration-300 hover:shadow-glow">
       <div className="flex items-center gap-4">
@@ -70,7 +70,7 @@ function Feature({ icon: Icon, title, children }: { icon: any; title: string; ch
           <Icon className="h-8 w-8" />
         </div>
         <div>
-          <h3 className="font-display text-xl font-bold">{title}</h3>
+          <h3 className="text-gradient font-display text-xl font-bold">{title}</h3>
           <div className="mt-2">{children}</div>
         </div>
       </div>
