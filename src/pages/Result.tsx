@@ -327,7 +327,7 @@ const Result = () => {
                       loading="lazy"
                     />
                     <div className="flex-1">
-                      <div className="mb-2 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/60">
+                      <div className="mb-2 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-gradient">
                         Ambassador Report
                       </div>
                       <div className="flex flex-wrap items-center gap-2">
