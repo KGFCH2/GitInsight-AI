@@ -2,8 +2,6 @@
 
 GitInsight AI is a gamified, AI-powered platform designed to help developers showcase their impact, analyze their growth, and connect with recruiters through data-driven insights. It transforms raw GitHub data into a professional, strategic career asset.
 
-![GitInsight AI Favicon](/public/favicon.png)
-
 ## 🚀 Core Features
 
 - **Multi-Dimensional Scoring**: A precise 0-100 score evaluating Popularity, Activity, Quality, Breadth, Community, and Tenure.
