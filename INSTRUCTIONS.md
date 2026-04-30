@@ -1,110 +1,47 @@
-# 📘 Instructions GitInsight AI
+# Platform Instructions — GitInsight AI
 
-This document explains how to run the project, how users should use it, and the working principle of every file in the repository.
+Welcome to GitInsight AI. Follow these steps to maximize your experience as a developer or administrator.
 
-## 🧰 Prerequisites
+## 1. Getting Started (Developer)
 
-1. Node.js 18 or newer.
-1. npm 9 or newer.
-1. Internet access for GitHub API and AI APIs.
+1. **Analysis**: Enter your GitHub username on the home page.
+2. **Review**: Check your AI-powered score, strengths, and weaknesses.
+3. **Badges**: Unlock up to 10 unique achievement badges by improving your profile.
+4. **Export**: Use the **Export PDF** button to get a professional report for recruiters.
+5. **Share**: Use the **Share** button to copy your unique analysis URL.
 
-## ⚙️ Setup
+## 2. Admin Terminal Usage
 
-1. Open the project folder.
+1. **Access**: Click the **Shield** icon in the navbar or navigate to `/admin`.
+2. **Authentication**: Register or Sign In with your administrative credentials.
+3. **Leaderboard**: View the top 10 ambassadors ranked by XP.
+4. **Operations**: Use the **Previous Operations** card to access the full history of analyzed users.
+5. **Branding**: Set your custom administrative avatar via the profile header.
+
+## 3. Achievement Badges
+
+The platform tracks 10 unique achievements:
+- **Star Collector**: Based on your repository stars.
+- **Open Source Hero**: Based on public contributions.
+- **Polyglot**: Based on the diversity of languages used.
+- **Rising Star**: Based on recent growth and activity.
+- ...and 6 more elite milestones.
+
+## 4. Technical Setup
 
 ```bash
-cd gitinsight-ai
-```
+# Clone the repository
+git clone https://github.com/KGFCH2/GitInsight-AI.git
 
-1. Install dependencies.
-
-```bash
+# Install dependencies
 npm install
-```
 
-1. Create a `.env` file from `.env.example` and set values.
-
-```env
-APP_GITHUB_TOKEN=your_github_token
-APP_GROQ_API_KEY=your_groq_key
-APP_GEMINI_API_KEY=your_gemini_key_1
-APP_GEMINI_API_KEY_2=optional_second_gemini_key
-APP_GEMINI_API_KEY_3=optional_third_gemini_key
-```
-
-1. Start development server.
-
-```bash
+# Start development server
 npm run dev
+
+# Build for production
+npm run build
 ```
 
-1. Open the URL shown in terminal, usually `http://localhost:8080`.
-
-## 🧭 User Guidance
-
-1. Open Home and read feature summary.
-1. Go to Analyze and enter a valid GitHub username without URL.
-1. **Note on Casing**: The analyzer enforces **Strict Case Matching**. If a user's GitHub username is `KGFCH2`, entering `kgfch2` will result in a casing mismatch error. Always use the exact casing found on GitHub.
-1. Wait for profile, repos, score, and AI insights to load.
-1. Review score breakdown and repository labels (good, improve, archive).
-1. Export report using PDF download action on Result page.
-1. Reopen previous analyses from History page.
-1. Use Docs page for scoring method and FAQ.
-1. Toggle theme using the navbar icon as needed.
-
-## 🛠️ Troubleshooting
-
-1. **Casing Mismatch**: If you see an error about username mismatch, double check the exact casing of the GitHub login.
-1. **API Keys**: If AI insights fail, ensure you have at least one valid Gemini API key. The system will rotate through up to 3 keys if provided.
-1. **GitHub Requests**: If requests fail, check your GitHub token. No scopes are required for public data.
-1. **Deterministic Mode**: If all AI providers fail (rate limits/keys), the app will still render a complete report using deterministic score and repo analytics.
-1. **Static Assets**: If images or icons do not update, hard refresh your browser.
-
-## 🧪 Scripts
-
-1. `npm run dev` starts development server.
-1. `npm run build` creates production build.
-1. `npm run preview` previews built output.
-1. `npm run lint` runs ESLint.
-1. `npm run test` runs Vitest.
-
-## 🗂️ Working Principle Of Every File
-
-### 📁 Root Files
-
-1. `.env.example` defines safe template variables for local environment setup.
-1. `.gitignore` prevents local secrets and generated artifacts from being committed.
-1. `ARCHITECTURE.md` documents system design, flow, and architectural decisions.
-1. `INSTRUCTIONS.md` provides setup guidance and per-file behavior notes.
-1. `LICENSE.md` contains project license terms.
-1. `README.md` presents project overview, features, and quick start information.
-1. `vite.config.ts` configures dev server with the custom `APP_` environment prefix.
-
-### 🧠 Core Logic In src/lib
-
-1. `src/lib/api.ts` handles:
-   - **Strict Case Validation**: Verifies input matches GitHub login casing.
-   - **Multi-Key Gemini Integration**: Rotates through API keys to handle volume.
-   - **Groq Fallback**: Ensures insights generate even if Gemini is unavailable.
-   - **Deterministic Scoring**: Calculates the 0–100 profile score.
-1. `src/lib/pdf.ts` generates downloadable PDF report using jsPDF.
-
-### 🧱 Feature Components In src/components
-
-1. `src/components/Navbar.tsx` implements analysis persistence logic (remembers results until Home is clicked).
-1. `src/components/AnalyzeForm.tsx` captures username and handles initial navigation.
-
-### 📄 Pages In src/pages
-
-1. `src/pages/Result.tsx` orchestrates the analysis fetch, displays the report, handles real-time refreshes, and renders themed detail modals for stars, followers, and languages.
-1. `src/pages/Documentation.tsx` explains the scoring methodology and provides user FAQs.
-
-## 🔁 Development Workflow Guidance
-
-1. Keep secrets only in `.env` and never hardcode keys.
-1. Add or update types in `src/lib/types.ts` first when API shape changes.
-1. Keep UI primitives in `src/components/ui` and feature composition in `src/components`.
-
-## ⚖️ License
-
-Project license text is in `LICENSE.md`.
+---
+*Created by Babin Bid — GitInsight AI Engineering*
